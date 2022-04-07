@@ -1,0 +1,33 @@
+= Demonstration of this solution
+
+Include here content related to potential existing demos: blogs, articles, recorded videos, walkthrough guides, tutorials.
+
+[#demo-video]
+== Watch a demonstration
+
+In this video you can see xpto:
+
+video::3yULVMdqJ98[youtube, width=800, height=480]
+
+Next, you can learn how to walkthrough this demo.
+
+[#demo-walthough]
+== Demonstration walkthrough guide
+
+=== Prerequisites:
+
+To run this demo, you will need xpto. Adding to that, make sure to have: 
+
+* ABC
+* XYZ
+* XPTO
+
+=== Walkthrough
+
+To get started lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elit magna, congue vehicula eleifend ac, malesuada eu libero. Suspendisse vitae sapien enim. Aenean et nisi libero.
+
+==== Step 1
+
+1. Vestibulum in metus ut nisl rhoncus ultricies.
+2. Nunc quis tellus sit amet risus venenatis suscipit.
+3. Nunc vitae turpis ac lorem volutpat dictum facilisis in elit.

@@ -1,0 +1,9 @@
+= Solution Pattern Template Title
+
+Description of this solution pattern
+
+[#background]
+== Background
+
+Background context for the creation of this solution pattern
+

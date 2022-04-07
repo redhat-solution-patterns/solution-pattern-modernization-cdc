@@ -1,0 +1,12 @@
+* xref:01-pattern.adoc[1. Solution Pattern: Solution Pattern Template Title]
+** xref:01-pattern.adoc#background[Background]
+
+* xref:02-architecture.adoc[2. Architecture]
+** xref:02-architecture.adoc#in-depth-description[In depth description]
+** xref:02-architecture.adoc#technology-stack[Technology stack]
+
+* xref:03-demo.adoc[3. Demonstration of this solution]
+** xref:03-demo.adoc#demo-video[Watch a demonstration]
+** xref:03-demo.adoc#demo-walthough[Demonstration walkthrough guide]
+
+* https://redhat-solution-patterns.github.io/[Other Red Hat Solution Patterns]

@@ -1,0 +1,19 @@
+= Architecture 
+
+Introduction for the architecture of this solution pattern.
+
+[#in-depth-description]
+== In depth description
+
+Technical description including all or some of the following:
+
+- architecture ir ed diagrams. 
+- In-depth details of the decisions made and solutions used. 
+- Description of each service and what it is used for. 
+- Description of any integration.
+
+[#technology-stack]
+== Technology stack
+
+What technology was used and "learn more" links to these.   
+

@@ -1,0 +1,24 @@
+= Solution Patterns Template
+:page-layout: home
+:!sectids:
+
+[.text-center.strong]
+== Introduction
+
+A brief introduction of this solution pattern. 
+
+[.tiles.browse]
+== Content overview
+
+[decimal]
+. xref:01-pattern.adoc[Solution Pattern: Name of This Solution Pattern]
+- xref:01-pattern.adoc#background[Background]
+. xref:02-architecture.adoc[Architecture]
+- xref:02-architecture.adoc#in-depth-description[In depth description]
+- xref:02-architecture.adoc#technology-stack[Technology stack]
+. xref:03-demo.adoc[Demonstration]
+- xref:03-demo.adoc#demo-video[Watch this demonstration video]
+- xref:03-demo.adoc#_walkthrough[Walkthrough]
+
+== Explore more solution patterns
+include::https://raw.githubusercontent.com/redhat-solution-patterns/redhat-solution-patterns.github.io/master/documentation/modules/ROOT/pages/solution-pattern-list.adoc[]
