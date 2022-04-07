@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+<loc>https://redhat-solution-patterns.github.io/solution-patterns/solution-pattern-template/01-pattern.html</loc>
+<lastmod>2022-04-07T20:57:15.987Z</lastmod>
+</url>
+<url>
+<loc>https://redhat-solution-patterns.github.io/solution-patterns/solution-pattern-template/02-architecture.html</loc>
+<lastmod>2022-04-07T20:57:15.987Z</lastmod>
+</url>
+<url>
+<loc>https://redhat-solution-patterns.github.io/solution-patterns/solution-pattern-template/03-demo.html</loc>
+<lastmod>2022-04-07T20:57:15.987Z</lastmod>
+</url>
+<url>
+<loc>https://redhat-solution-patterns.github.io/solution-patterns/solution-pattern-template/index.html</loc>
+<lastmod>2022-04-07T20:57:15.987Z</lastmod>
+</url>
+</urlset>
