@@ -238,11 +238,53 @@
 <h1 class="page">Solution Pattern: Using Change Data Capture for Stack Modernization</h1>
 <div id="preamble">
 <div class="sectionbody">
-<div class="paragraph text-left">
+<div class="paragraph">
 <p>This solution pattern brings an architectural solution for scenarios where services integration must happen through data integration and cause no impact to the existing stack.</p>
 </div>
 <div class="paragraph">
 <p>The architecture demonstrates how <strong><a href="https://www.redhat.com/en/topics/integration/what-is-change-data-capture">Change Data Capture (CDC)</a></strong> design pattern and event-driven architectures supports the <strong>extension of existing capabilities with no changes to legacy apps</strong> where new features can be delivered by cloud-native microservices and can deliver with <strong>zero impact new search capabilities</strong> through the integration of legacy and new services with specialized search index services.</p>
+</div>
+<h2 id="_content_overview" class="discrete">Content overview</h2>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset1_a-href-1-solution-pattern-a"></a><a href="#">1. Solution Pattern</a></p>
+</li>
+<li>
+<p><a id="tabset1_a-href-02-architecture-html-class-xref-page-2-architecture-a"></a><a href="02-architecture.html" class="xref page">2. Architecture</a></p>
+</li>
+<li>
+<p><a id="tabset1_a-href-03-demo-html-class-xref-page-3-demonstration-a"></a><a href="03-demo.html" class="xref page">3. Demonstration</a></p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset1_a-href-1-solution-pattern-a">
+<div class="paragraph">
+<p><a href="#use-cases">a. Use cases</a><br>
+<a href="01-pattern.html#_the_story_behind_this_solution_pattern" class="xref page">b. The story behind this solution pattern</a><br>
+<a href="#use-cases">c. Use cases</a><br>
+<a href="01-pattern.html#_the_solution" class="xref page">d. The solution</a><br>
+<a href="#content_overview">e. Content overview</a><br>
+<a href="#_explore_more_solution_patterns">f. Explore more solution patterns</a></p>
+</div>
+</div>
+<div class="tab-pane" aria-labelledby="tabset1_a-href-02-architecture-html-class-xref-page-2-architecture-a">
+<div class="paragraph">
+<p><a href="02-architecture.html#_common_challenges_when_extending_stack_capabilities" class="xref page">a. Common challenges</a><br>
+<a href="02-architecture.html#tech_stack" class="xref page">b. Technology stack</a><br>
+<a href="02-architecture.html#in_depth" class="xref page">c. An in-depth look at the solution&#8217;s architecture</a><br>
+<a href="02-architecture.html#more_tech" class="xref page">d. More about the technology stack</a></p>
+</div>
+</div>
+<div class="tab-pane" aria-labelledby="tabset1_a-href-03-demo-html-class-xref-page-3-demonstration-a">
+<div class="paragraph">
+<p><a href="03-demo.html#_demonstration" class="xref page">a. Demonstration</a><br>
+<a href="03-demo.html#_walkthrough_guide" class="xref page">b. Walkthrough guide</a></p>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -428,62 +470,6 @@ For detailed architecture diagrams please check the <a href="02-architecture.htm
 <img src="_images/01/simplified-tech-usage.png" alt="simplified tech usage" width="100%">
 </div>
 <div class="title">Figure 1. Simplified representation of the integration between the legacy application and the new technology stack.</div>
-</div>
-<h2 id="_content_overview" class="discrete tiles browse">Content overview</h2>
-<div class="ulist decimal">
-<ul class="decimal">
-<li>
-<p><a href="#">1. Solution Pattern: Using Change Data Capture for Stack Modernization</a></p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="#use-cases">1.1 Use cases</a></p>
-</li>
-<li>
-<p><a href="01-pattern.html#_the_story_behind_this_solution_pattern" class="xref page">1.2 The story behind this solution pattern</a></p>
-</li>
-<li>
-<p><a href="01-pattern.html#_the_solution" class="xref page">1.3 The solution</a></p>
-</li>
-<li>
-<p><a href="#content_overview">1.4 Content Overview</a></p>
-</li>
-<li>
-<p><a href="#_explore_more_solution_patterns">1.5 Explore more solution patterns</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p><a href="02-architecture.html" class="xref page">2. Architecture</a></p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="02-architecture.html#_common_challenges_when_extending_stack_capabilities" class="xref page">2.1. Common challenges</a></p>
-</li>
-<li>
-<p><a href="02-architecture.html#tech_stack" class="xref page">2.2. Technology stack</a></p>
-</li>
-<li>
-<p><a href="02-architecture.html#in_depth" class="xref page">2.3. An in-depth look at the solution&#8217;s architecture</a></p>
-</li>
-<li>
-<p><a href="02-architecture.html#more_tech" class="xref page">2.4. More about the technology stack</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p><a href="03-demo.html" class="xref page">3. See the Solution in Action</a></p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="03-demo.html#demo" class="xref page">3.1. Demonstration</a></p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
 </div>
 <h2 id="_explore_more_solution_patterns" class="discrete">Explore more solution patterns</h2>
 <div class="paragraph">

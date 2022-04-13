@@ -2,18 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://redhat-solution-patterns.github.io/solution-patterns/solution-pattern-modernization-cdc/01-pattern.html</loc>
-<lastmod>2022-04-13T20:41:42.708Z</lastmod>
+<lastmod>2022-04-13T22:28:31.749Z</lastmod>
 </url>
 <url>
 <loc>https://redhat-solution-patterns.github.io/solution-patterns/solution-pattern-modernization-cdc/02-architecture.html</loc>
-<lastmod>2022-04-13T20:41:42.708Z</lastmod>
+<lastmod>2022-04-13T22:28:31.749Z</lastmod>
 </url>
 <url>
 <loc>https://redhat-solution-patterns.github.io/solution-patterns/solution-pattern-modernization-cdc/03-demo.html</loc>
-<lastmod>2022-04-13T20:41:42.708Z</lastmod>
+<lastmod>2022-04-13T22:28:31.749Z</lastmod>
+</url>
+<url>
+<loc>https://redhat-solution-patterns.github.io/solution-patterns/solution-pattern-modernization-cdc/content-overview.html</loc>
+<lastmod>2022-04-13T22:28:31.749Z</lastmod>
 </url>
 <url>
 <loc>https://redhat-solution-patterns.github.io/solution-patterns/solution-pattern-modernization-cdc/index.html</loc>
-<lastmod>2022-04-13T20:41:42.708Z</lastmod>
+<lastmod>2022-04-13T22:28:31.749Z</lastmod>
 </url>
 </urlset>
