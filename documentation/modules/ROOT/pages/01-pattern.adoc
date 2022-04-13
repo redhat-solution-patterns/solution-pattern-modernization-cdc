@@ -5,7 +5,6 @@ The solution pattern is backed by the story of a retail store that has been acti
 [quote, Alex Tizon - CEO, About company current situation]
 We are a leading retail store acting in the market for over 15 years. We managed to start digital technologies adoption many years ago by acquiring a solution for our inventory and sales registrations. Our biggest challenge is to join competition with high-tech competitors.
 
-
 Here are some characteristics of the existing technology stack:
 
 - The technology has been acquired many years ago, and no source code is available. 

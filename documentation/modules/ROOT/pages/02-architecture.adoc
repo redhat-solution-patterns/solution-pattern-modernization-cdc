@@ -77,7 +77,7 @@ A situation when a service inserts and/or changes data in two or more different 
 
 
 [#in_depth]
-== In Depth Description
+== An in-depth look at the solution's architecture
 
 Technical description including all or some of the following:
 
