@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Solution Pattern: Using Change Data Capture for Stack Modernization :: Solution Patterns for Cloud Native Architectures</title>
+    <link rel="canonical" href="https://redhat-solution-patterns.github.io/solution-patterns/solution-pattern-modernization-cdc/index.html">
+    <link rel="next" href="01-pattern.html#_story">
+    <meta name="generator" content="Antora 3.0.0">
+    <link rel="stylesheet" href="../_/css/site.css">
+<link rel="icon" href="../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://redhat.com" target="_blank"><img
+          src="../_/img/logo.png" height="40px" alt="Cloud Native Architecture Solution Patterns"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="https://redhat-solution-patterns.github.io/solution-patterns">Solution Patterns for Cloud Native Architectures</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+
+       
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Solution Patterns</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Adopt Change Data Capture for <br/>stack modernization</a>
+            <a class="navbar-item" href="#">Edge-to-Cloud Pipelines</a>     <a class="navbar-item" href="#">Event driven architecture</a>
+          </div>
+        </div>
+
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Other</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://redhat-gitops-patterns.io/">GitOps Solution Patterns</a>
+            <a class="navbar-item" href="https://hybrid-cloud-patterns.io/">Hybrid Cloud Solution Patterns</a>
+          </div>
+        </div>
+
+        <a class="navbar-item" target="_blank" href="https://www.redhat.com/en/products/middleware">Red Hat Application Services</a>
+
+        <a class="navbar-item" target="_blank" href="https://developers.redhat.com/middleware">Learn more</a>
+
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="solution-pattern-modernization-cdc" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html" class=" query-params-link">Adopting Change Data Capture for stack modernization</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">1. Home page</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#use-cases">1.1 Use cases</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-pattern.html#_story">1.2 The story behind this solution pattern</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-pattern.html#_solution">1.3 The solution</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#_content_overview">1.4 Content Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#_content_overview">1.5 Explore more solution patterns</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="02-architecture.html">2. Architecture</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-architecture.html#challenges">2.1. Common challenges</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-architecture.html#tech_stack">2.2. Technology stack</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-architecture.html#in_depth">2.3. An in-depth look at the solution&#8217;s architecture</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-architecture.html#more_tech_stack">2.4. More about the technology stack</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="03-demo.html">3. See the Solution in Action</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-demo.html#demo_desc">3.1. Demonstration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="03-demo.html#run_demo">3.2. Run this demonstration</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="03-demo.html#pre_reqs_demo">3.3. Before getting started</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="03-demo.html#install_demo">3.4. Installing the demo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="03-demo.html#walthrough_demo">3.5. Walkthrough guide</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#04-workshop.adoc">4. Workshop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#04-workshop.adoc#install_wksp">4.1. Installing the workshop environment</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#04-workshop.adoc#pre_reqs_wksp">4.2. Before getting started</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#04-workshop.adoc#install_wksp_details">4.3. Installing the environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#04-workshop.adoc#deliver_wksp">4.4. Delivering the workshop</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="https://redhat-solution-patterns.github.io/">5. Other Red Hat Solution Patterns</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">6. Home page</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#use-cases">6.6 Use cases</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#_the_modernization_solution">6.7 Solution</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="01-pattern.html">7. The solution pattern</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-pattern.html#background">7.5. Background</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="02-architecture.html">8. Architecture</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-architecture.html#in-depth-description">8.6. In depth description</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-architecture.html#technology-stack">8.7. Technology stack</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="03-demo.html">9. Demonstration of this solution</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-demo.html#demo-video">9.5. Watch a demonstration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-demo.html#demo-walthough">9.6. Demonstration walkthrough guide</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="https://redhat-solution-patterns.github.io/">10. Other Red Hat Solution Patterns</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Adopting Change Data Capture for stack modernization</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Adopting Change Data Capture for stack modernization</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link is-current"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Adopting Change Data Capture for stack modernization</a></li>
+    <li><a href="index.html">1. Home page</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/kmacedovarela/solution-pattern-modernization-cdc/edit/master/documentation/modules/ROOT/pages/index.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Solution Pattern: Using Change Data Capture for Stack Modernization</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph text-left">
+<p>This solution pattern brings an architectural solution for scenarios where services integration must happen through data integration and cause no impact to the existing stack.</p>
+</div>
+<div class="paragraph">
+<p>The architecture demonstrates how <strong><a href="https://www.redhat.com/en/topics/integration/what-is-change-data-capture">Change Data Capture (CDC)</a></strong> design pattern and event-driven architectures supports the <strong>extension of existing capabilities with no changes to legacy apps</strong> where new features can be delivered by cloud-native microservices and can deliver with <strong>zero impact new search capabilities</strong> through the integration of legacy and new services with specialized search index services.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="use-cases"><a class="anchor" href="#use-cases"></a><a class="link" href="#use-cases">1. Use cases</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Common use cases that can be address with this architecture are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Legacy services need to be extended or enhanced but, it is <strong>not</strong> a possibility to implement the changes in the existing application;</p>
+</li>
+<li>
+<p>New applications or services must leverage existing data from an existing stack of services;</p>
+</li>
+<li>
+<p>The organization seeks to move towards cloud environments and comply to best practices on cloud-native architectures but must also guarantee that any production-active legacy system data is also synchronized to the new services;</p>
+</li>
+<li>
+<p>The organization seeks to move towards cloud environments and comply to best practices on cloud-native architectures but must also guarantee that any production-active legacy system data is also synchronized to the new services;</p>
+</li>
+<li>
+<p>Legacy applications are now extended and complemented by capabilities delivered by new microservices or services (e.g. search index, cache) but the data should always be synchronized.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_story_behind_this_solution_pattern"><a class="anchor" href="#_the_story_behind_this_solution_pattern"></a><a class="link" href="#_the_story_behind_this_solution_pattern">2. The story behind this solution pattern</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The solution pattern is backed by the story of a retail store that has been active in the market for more than fifteen years. This retail store uses a single application to manage the <code>inventory</code>, <code>catalog</code> and <code>sales</code> during their daily operations.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+We are a leading retail store acting in the market for over 15 years. We managed to start digital technologies adoption many years ago by acquiring a solution for our inventory and sales registrations. Our biggest challenge is to join competition with high-tech competitors.
+</blockquote>
+<div class="attribution">
+&#8212; Alex Tizon - CEO<br>
+<cite>About company current situation</cite>
+</div>
+</div>
+<div class="paragraph">
+<p>Here are some characteristics of the existing technology stack:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The technology has been acquired many years ago, and no source code is available.</p>
+</li>
+<li>
+<p>The application, application server and databases are installed and running in an on premise environment.</p>
+</li>
+<li>
+<p>There are domain experts who know how to keep the inventory and catalog list updated.</p>
+</li>
+<li>
+<p>There are operations running 24/7 using the sales application, stopping the application impacts the money income directly.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>It&#8217;s getting hard to compete with more high-tech companies, but the technical team does not have the required skills to boostrap the adoption of cloud-native technologies to enhance the organization online services.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+Our first step into modernization is developing a new cashback system for our customers. Adding to that, our current service lacks good searching capabilities so we need better ways for customers to find what they need.
+</blockquote>
+<div class="attribution">
+&#8212; Avery Smith- CTO<br>
+<cite>On modernization goals</cite>
+</div>
+</div>
+<h3 id="_story_goals" class="discrete">Story Goals</h3>
+<div class="paragraph">
+<p>To get started, the business and technical executives came up with initial goals to be achieved as a first step towards the organization modernization:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">The Cashback Wallet Functionality</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p>Customers should receive a percentage of their purchases as cashback.</p>
+</li>
+<li>
+<p>All the earned cashback is now part of the Cashback Wallet.</p>
+</li>
+<li>
+<p>With this, upcoming purchases can be paid either with the customer money or using available cashback in the customer Cashback Wallet.</p>
+</li>
+<li>
+<p>The customer should be able to check all transaction history including earned cashback and spent cashback</p>
+</li>
+<li>
+<p>New services and technologies must easily fit in cloud environments as we seek to move forward with clo adoption.</p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1">Enhanced search capabilities</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p>Customers should be able to easily search for what they need;</p>
+</li>
+<li>
+<p>They should be able to search by part or all of the product name.</p>
+</li>
+<li>
+<p>The operations should still be able to use the legacy application to maintain the catalog and this data should benefit from the enhanced search capabilities.</p>
+</li>
+<li>
+<p>The new solution should be able to provide to technical team metrics about the search, like query latency and  request rate;</p>
+</li>
+<li>
+<p>If a new tool is used, we want to be able to choose where to deploy it - we want to be free of vendor lock-in.</p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_solution"><a class="anchor" href="#_the_solution"></a><a class="link" href="#_the_solution">3. The Solution</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This solution pattern builds on top an event-driven architecture in order to support the extension of the legacy stack. The architecture includes new microservices, event streaming, event processing and search indexing tools.</p>
+</div>
+<div class="paragraph">
+<p>In respect to the <a href="#_story_goals">story goals</a> and <a href="#use-cases">targeted use cases</a>, it&#8217;s recommended to consider adopting an <a href="https://www.enterpriseintegrationpatterns.com/">Enterprise Integration Pattern</a> for data integration, more specifically, adopting the <a href="https://www.redhat.com/en/topics/integration/what-is-change-data-capture">Change Data Capture (CDC)</a> pattern.</p>
+</div>
+<div class="paragraph">
+<p>This solution requires <strong>no source code changes</strong> in the existing services. The core concept builds on data integration between legacy and new services through usage of asynchronous events. A short description of this solution key concept is:</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>Relevant changes to data persisted in the tracked databases (e.g. delete/insert/update) are captured and published as events. Then, external services react to events and execute necessary operations.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The integration happens like this:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Using <a href="https://debezium.io/">Debezium</a>, the database becomes an event stream. Since data changes are directly tracked, the legacy application code won&#8217;t require changes.</p>
+</li>
+<li>
+<p>The captured data changes are pushed to topics in a <a href="https://www.redhat.com/en/topics/integration/what-is-apache-kafka">Kafka</a> broker.</p>
+</li>
+<li>
+<p>The services that offers that extra capabilities can then subscribe to relevant topics and use the events to obtain the information needed to execute its logic.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+For detailed architecture diagrams please check the <a href="02-architecture.html" class="xref page">In Depth Architecture</a>] section.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>See below a simplified representation of the solution:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/01/simplified-tech-usage.png" alt="simplified tech usage" width="100%">
+</div>
+<div class="title">Figure 1. Simplified representation of the integration between the legacy application and the new technology stack.</div>
+</div>
+<h2 id="_content_overview" class="discrete tiles browse">Content overview</h2>
+<div class="ulist decimal">
+<ul class="decimal">
+<li>
+<p><a href="#">1. Solution Pattern: Using Change Data Capture for Stack Modernization</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#use-cases">1.1 Use cases</a></p>
+</li>
+<li>
+<p><a href="01-pattern.html#_the_story_behind_this_solution_pattern" class="xref page">1.2 The story behind this solution pattern</a></p>
+</li>
+<li>
+<p><a href="01-pattern.html#_the_solution" class="xref page">1.3 The solution</a></p>
+</li>
+<li>
+<p><a href="#content_overview">1.4 Content Overview</a></p>
+</li>
+<li>
+<p><a href="#_explore_more_solution_patterns">1.5 Explore more solution patterns</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><a href="02-architecture.html" class="xref page">2. Architecture</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="02-architecture.html#_common_challenges_when_extending_stack_capabilities" class="xref page">2.1. Common challenges</a></p>
+</li>
+<li>
+<p><a href="02-architecture.html#tech_stack" class="xref page">2.2. Technology stack</a></p>
+</li>
+<li>
+<p><a href="02-architecture.html#in_depth" class="xref page">2.3. An in-depth look at the solution&#8217;s architecture</a></p>
+</li>
+<li>
+<p><a href="02-architecture.html#more_tech" class="xref page">2.4. More about the technology stack</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><a href="03-demo.html" class="xref page">3. See the Solution in Action</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="03-demo.html#demo" class="xref page">3.1. Demonstration</a></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<h2 id="_explore_more_solution_patterns" class="discrete">Explore more solution patterns</h2>
+<div class="paragraph">
+<p>It&#8217;s time to boost your cloud-native application architectural design with bleeding-edge technology backed by open-source software. Explore the use cases and learn recommended solutions for each of these challenges:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#app-modernization.adoc" class="xref unresolved"><strong>Application Modernization</strong></a></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#app-modernization.adoc#cdc" class="xref unresolved">Effective application modernization with change data capture</a></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Edge-to-Cloud Pipelines</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Gather and prepare data for AI/ML</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Event driven architecture</strong>c</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Extend app modernization to bring agility, responsiveness and extensibility</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="next"><a href="01-pattern.html#_story" class="query-params-link">1.2 The story behind this solution pattern</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img
+          src="../_/img/app-services-logo.png" height="40px" alt="Cloud Native Architecture Solution Patterns"  href="https://redhat.com" ></a>
+</footer><script src="../_/js/vendor/clipboard.js"></script>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
