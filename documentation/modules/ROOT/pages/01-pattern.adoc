@@ -1,9 +1,66 @@
-= Solution Pattern Template Title
+== The story behind this solution pattern
 
-Description of this solution pattern
+The solution pattern is backed by the story of a retail store that has been active in the market for more than fifteen years. This retail store uses a single application to manage the `inventory`, `catalog` and `sales` during their daily operations.
 
-[#background]
-== Background
+[quote, Alex Tizon - CEO, About company current situation]
+We are a leading retail store acting in the market for over 15 years. We managed to start digital technologies adoption many years ago by acquiring a solution for our inventory and sales registrations. Our biggest challenge is to join competition with high-tech competitors.
 
-Background context for the creation of this solution pattern
+
+Here are some characteristics of the existing technology stack:
+
+- The technology has been acquired many years ago, and no source code is available. 
+- The application, application server and databases are installed and running in an on premise environment.
+- There are domain experts who know how to keep the inventory and catalog list updated.
+- There are operations running 24/7 using the sales application, stopping the application impacts the money income directly.
+
+It's getting hard to compete with more high-tech companies, but the technical team does not have the required skills to boostrap the adoption of cloud-native technologies to enhance the organization online services.
+
+[quote, Avery Smith- CTO, On modernization goals]
+Our first step into modernization is developing a new cashback system for our customers. Adding to that, our current service lacks good searching capabilities so we need better ways for customers to find what they need.
+
+[discrete]
+=== Story Goals
+
+To get started, the business and technical executives came up with initial goals to be achieved as a first step towards the organization modernization:
+
+The Cashback Wallet Functionality::
+- Customers should receive a percentage of their purchases as cashback. 
+- All the earned cashback is now part of the Cashback Wallet. 
+- With this, upcoming purchases can be paid either with the customer money or using available cashback in the customer Cashback Wallet.  
+- The customer should be able to check all transaction history including earned cashback and spent cashback
+- New services and technologies must easily fit in cloud environments as we seek to move forward with clo adoption.
+
+Enhanced search capabilities::
+- Customers should be able to easily search for what they need;
+- They should be able to search by part or all of the product name.
+- The operations should still be able to use the legacy application to maintain the catalog and this data should benefit from the enhanced search capabilities.
+- The new solution should be able to provide to technical team metrics about the search, like query latency and  request rate;
+- If a new tool is used, we want to be able to choose where to deploy it - we want to be free of vendor lock-in.
+
+== The Solution
+
+This solution pattern builds on top an event-driven architecture in order to support the extension of the legacy stack. The architecture includes new microservices, event streaming, event processing and search indexing tools.
+
+In respect to the xref:_story_goals[story goals] and xref:use-cases[targeted use cases], it's recommended to consider adopting an https://www.enterpriseintegrationpatterns.com/[Enterprise Integration Pattern] for data integration, more specifically, adopting the https://www.redhat.com/en/topics/integration/what-is-change-data-capture[Change Data Capture (CDC)] pattern.
+
+This solution requires *no source code changes* in the existing services. The core concept builds on data integration between legacy and new services through usage of asynchronous events. A short description of this solution key concept is:
+
+****
+Relevant changes to data persisted in the tracked databases (e.g. delete/insert/update) are captured and published as events. Then, external services react to events and execute necessary operations.
+****
+
+The integration happens like this:
+
+1. Using https://debezium.io/[Debezium], the database becomes an event stream. Since data changes are directly tracked, the legacy application code won't require changes. 
+2. The captured data changes are pushed to topics in a https://www.redhat.com/en/topics/integration/what-is-apache-kafka[Kafka] broker. 
+3. The services that offers that extra capabilities can then subscribe to relevant topics and use the events to obtain the information needed to execute its logic.
+
+[TIP]
+For detailed architecture diagrams please check the xref:02-architecture.adoc[In Depth Architecture]] section.
+
+See below a simplified representation of the solution:
+
+.Simplified representation of the integration between the legacy application and the new technology stack. 
+
+image::01/simplified-tech-usage.png[width=100%]
 

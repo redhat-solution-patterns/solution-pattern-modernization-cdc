@@ -1,5 +1,5 @@
-name: solution-pattern-template
-title: Template Tutorial
+name: solution-pattern-modernization-cdc
+title: Adopting Change Data Capture for stack modernization
 version: master
 nav:
   - modules/ROOT/nav.adoc

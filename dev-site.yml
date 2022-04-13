@@ -4,7 +4,7 @@ runtime:
 site:
   title: Solution Patterns for Cloud Native Architectures (Dev Mode)  
   url: http://localhost:3000/
-  start_page: solution-pattern-template::index.adoc
+  start_page: solution-pattern-modernization-cdc::index.adoc
 
 content:
   sources:

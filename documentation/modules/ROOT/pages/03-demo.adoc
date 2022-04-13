@@ -1,9 +1,15 @@
-= Demonstration of this solution
+= Solution Pattern: Using Change Data Capture for Stack Modernization
+:sectnums:
+:sectlinks:
+:doctype: book
+
+= See the Solution in Action
 
 Include here content related to potential existing demos: blogs, articles, recorded videos, walkthrough guides, tutorials.
+== Demonstration
 
 [#demo-video]
-== Watch a demonstration
+=== Watch a demonstration
 
 In this video you can see xpto:
 
@@ -11,10 +17,9 @@ video::3yULVMdqJ98[youtube, width=800, height=480]
 
 Next, you can learn how to walkthrough this demo.
 
-[#demo-walthough]
-== Demonstration walkthrough guide
+== Run this demonstration
 
-=== Prerequisites:
+=== Before getting started:
 
 To run this demo, you will need xpto. Adding to that, make sure to have: 
 
@@ -22,7 +27,9 @@ To run this demo, you will need xpto. Adding to that, make sure to have:
 * XYZ
 * XPTO
 
-=== Walkthrough
+=== Installing the demo
+
+=== Walkthrough guide
 
 To get started lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elit magna, congue vehicula eleifend ac, malesuada eu libero. Suspendisse vitae sapien enim. Aenean et nisi libero.
 

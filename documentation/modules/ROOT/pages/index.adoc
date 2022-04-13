@@ -1,24 +1,51 @@
-= Solution Patterns Template
+= Solution Pattern: Using Change Data Capture for Stack Modernization
 :page-layout: home
-:!sectids:
+:sectnums:
+:sectlinks:
+:doctype: book
 
-[.text-center.strong]
-== Introduction
+[.text-left]
+[discrete]
 
-A brief introduction of this solution pattern. 
+This solution pattern brings an architectural solution for scenarios where services integration must happen through data integration and cause no impact to the existing stack. 
+
+The architecture demonstrates how *https://www.redhat.com/en/topics/integration/what-is-change-data-capture[Change Data Capture (CDC)]* design pattern and event-driven architectures supports the *extension of existing capabilities with no changes to legacy apps* where new features can be delivered by cloud-native microservices and can deliver with *zero impact new search capabilities* through the integration of legacy and new services with specialized search index services.
+
+[#use-cases]
+== Use cases
+
+Common use cases that can be address with this architecture are: 
+
+- Legacy services need to be extended or enhanced but, it is *not* a possibility to implement the changes in the existing application;
+- New applications or services must leverage existing data from an existing stack of services;
+- The organization seeks to move towards cloud environments and comply to best practices on cloud-native architectures but must also guarantee that any production-active legacy system data is also synchronized to the new services;
+- The organization seeks to move towards cloud environments and comply to best practices on cloud-native architectures but must also guarantee that any production-active legacy system data is also synchronized to the new services;
+- Legacy applications are now extended and complemented by capabilities delivered by new microservices or services (e.g. search index, cache) but the data should always be synchronized.
+
+include::01-pattern.adoc[]
 
 [.tiles.browse]
+[discrete]
 == Content overview
 
 [decimal]
-. xref:01-pattern.adoc[Solution Pattern: Name of This Solution Pattern]
-- xref:01-pattern.adoc#background[Background]
-. xref:02-architecture.adoc[Architecture]
-- xref:02-architecture.adoc#in-depth-description[In depth description]
-- xref:02-architecture.adoc#technology-stack[Technology stack]
-. xref:03-demo.adoc[Demonstration]
-- xref:03-demo.adoc#demo-video[Watch this demonstration video]
-- xref:03-demo.adoc#_walkthrough[Walkthrough]
+* xref:index.adoc[{counter:module}. Solution Pattern: Using Change Data Capture for Stack Modernization]
+** xref:index.adoc#use-cases[{module}.{counter:submodule1} Use cases]
+** xref:01-pattern.adoc#_the_story_behind_this_solution_pattern[{module}.{counter:submodule1} The story behind this solution pattern]
+** xref:01-pattern#_the_solution[{module}.{counter:submodule1} The solution]
+** xref:index.adoc#content_overview[{module}.{counter:submodule1} Content Overview]
+** xref:index.adoc#_explore_more_solution_patterns[{module}.{counter:submodule1} Explore more solution patterns]
 
+* xref:02-architecture.adoc[{counter:module}. Architecture]
+** xref:02-architecture.adoc#_common_challenges_when_extending_stack_capabilities[{module}.{counter:submodule2}. Common challenges]
+** xref:02-architecture.adoc#tech_stack[{module}.{counter:submodule2}. Technology stack]
+** xref:02-architecture.adoc#in_depth[{module}.{counter:submodule2}. An in-depth look at the solution's architecture]
+** xref:02-architecture.adoc#more_tech[{module}.{counter:submodule2}. More about the technology stack]
+
+* xref:03-demo.adoc[{counter:module}. See the Solution in Action]
+** xref:03-demo.adoc#demo[{module}.{counter:submodule3}. Demonstration]
+
+.xref:04-workshop.adoc[{counter:module}. Workshop]
+[discrete]
 == Explore more solution patterns
 include::https://raw.githubusercontent.com/redhat-solution-patterns/redhat-solution-patterns.github.io/master/documentation/modules/ROOT/pages/solution-pattern-list.adoc[]
