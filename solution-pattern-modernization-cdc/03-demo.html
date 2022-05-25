@@ -112,9 +112,6 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="02-architecture.html#more_tech">2.4. More about the technology stack</a>
-  </li>
 </ul>
   </li>
   <li class="nav-item is-current-page" data-depth="1">
@@ -207,73 +204,315 @@
 <h1 id="_see_the_solution_in_action" class="sect0"><a class="anchor" href="#_see_the_solution_in_action"></a><a class="link" href="#_see_the_solution_in_action">See the Solution in Action</a></h1>
 <div class="openblock partintro">
 <div class="content">
-Include here content related to potential existing demos: blogs, articles, recorded videos, walkthrough guides, tutorials.
+This section brings information about the implementation of the solution pattern, how you can install it, try it out and check the details of the implementation with an actual running application.
 </div>
 </div>
 <div class="sect1">
-<h2 id="_demonstration"><a class="anchor" href="#_demonstration"></a><a class="link" href="#_demonstration">1. Demonstration</a></h2>
+<h2 id="_run_this_demonstration"><a class="anchor" href="#_run_this_demonstration"></a><a class="link" href="#_run_this_demonstration">1. Run this demonstration</a></h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="demo-video"><a class="anchor" href="#demo-video"></a><a class="link" href="#demo-video">1.1. Watch a demonstration</a></h3>
 <div class="paragraph">
-<p>In this video you can see xpto:</p>
-</div>
-<div class="videoblock">
-<div class="content">
-<iframe width="800" height="480" src="https://www.youtube.com/embed/3yULVMdqJ98?rel=0" frameborder="0" allowfullscreen></iframe>
-</div>
-</div>
-<div class="paragraph">
-<p>Next, you can learn how to walkthrough this demo.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_run_this_demonstration"><a class="anchor" href="#_run_this_demonstration"></a><a class="link" href="#_run_this_demonstration">2. Run this demonstration</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_before_getting_started"><a class="anchor" href="#_before_getting_started"></a><a class="link" href="#_before_getting_started">2.1. Before getting started:</a></h3>
-<div class="paragraph">
-<p>To run this demo, you will need xpto. Adding to that, make sure to have:</p>
+<p>Before getting started, here are some key information around this solution pattern demo:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>ABC</p>
+<p>Most part of the solution runs on OpenShift, except for Kafka;</p>
 </li>
 <li>
-<p>XYZ</p>
+<p>This hybrid cloud solution includes services integration through <a href="https://red.ht/TryKafka">OpenShift Streams for Apache Kafka</a>. It is a free managed Kafka service offered by Red Hat and  can be used by everyone.</p>
 </li>
 <li>
-<p>XPTO</p>
+<p>The provisioned retail database (simulates the legacy service) is pre-populated with data for customers and products, but no cashback data is pre-populated;</p>
 </li>
 </ul>
 </div>
-</div>
 <div class="sect2">
-<h3 id="_installing_the_demo"><a class="anchor" href="#_installing_the_demo"></a><a class="link" href="#_installing_the_demo">2.2. Installing the demo</a></h3>
-
-</div>
-<div class="sect2">
-<h3 id="_walkthrough_guide"><a class="anchor" href="#_walkthrough_guide"></a><a class="link" href="#_walkthrough_guide">2.3. Walkthrough guide</a></h3>
+<h3 id="_pre_requisites"><a class="anchor" href="#_pre_requisites"></a><a class="link" href="#_pre_requisites">1.1. Pre-requisites:</a></h3>
 <div class="paragraph">
-<p>To get started lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elit magna, congue vehicula eleifend ac, malesuada eu libero. Suspendisse vitae sapien enim. Aenean et nisi libero.</p>
+<p>To run this solution, you will need:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Access to an OpenShift cluster (version &gt;= 4.9) with <em>cluster-admin</em> privileges</p>
+</li>
+<li>
+<p><code>oc</code> OpenShift CLI installed</p>
+</li>
+<li>
+<p>Logged in into the OpenShift cluster with <code>oc</code> as <em>cluster-admin</em></p>
+</li>
+<li>
+<p>Ansible - the playbook was tested with version 2.9</p>
+</li>
+<li>
+<p>Ansible <code>kubernetes.core</code> module.</p>
+<div class="paragraph">
+<p>This module can be installed with <code>ansible-galaxy</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ ansible-galaxy collection install kubernetes.core</code></pre>
+</div>
+</div>
+</li>
+</ul>
 </div>
 <div class="sect3">
-<h4 id="_step_1"><a class="anchor" href="#_step_1"></a><a class="link" href="#_step_1">2.3.1. Step 1</a></h4>
+<h4 id="_preparing_your_managed_kafka"><a class="anchor" href="#_preparing_your_managed_kafka"></a><a class="link" href="#_preparing_your_managed_kafka">1.1.1. Preparing your Managed Kafka</a></h4>
+<div class="paragraph">
+<p>Before moving ahead to the steps of provisioning the services within your OpenShift cluster, first you should provision and configure your Kafka instance.</p>
+</div>
+<div class="paragraph">
+<p>INFO: For detailed instructions on provisioning and configuration of your managed Kafka instance, please check  <a href="https://redhat-scholars.github.io/managed-kafka-workshop/managed-kafka-workshop/main/index.html">this page</a>.</p>
+</div>
+<div class="paragraph">
+<p>Short instructions:</p>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Vestibulum in metus ut nisl rhoncus ultricies.</p>
+<p>Navigate to [console.redhat.com](<a href="https://console.redhat.com" class="bare">https://console.redhat.com</a>) and log in with your Red Hat Account ID;</p>
 </li>
 <li>
-<p>Nunc quis tellus sit amet risus venenatis suscipit.</p>
+<p>On the [console.redhat.com](<a href="https://console.redhat.com" class="bare">https://console.redhat.com</a>) landing page, select <strong>Application Services &#8594; Streams for Apache Kafka &#8594; Kafka instances</strong>;</p>
 </li>
 <li>
-<p>Nunc vitae turpis ac lorem volutpat dictum facilisis in elit.</p>
+<p>Create a new Kafka instance;</p>
+</li>
+<li>
+<p>Create a new Service Account to connect to your Kafka instance;</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>IMPORTANT</strong>: Take note of the service account id and password, you&#8217;ll need both information during the provisioning.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Configure the ACL for your Service Account. The Service Account should have the following permissions:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>read</code>, <code>write</code>, <code>create</code> permissions for all topics</p>
+</li>
+<li>
+<p><code>read</code> permissions for all consumer groups</p>
+</li>
+<li>
+<p>If you have <code>rhosak</code> CLI installed, you can execute the following commands to login to the service, select your kafka instance and add the proper configuration, <strong>replacing <code>srvc-acct-9999</code> with your service client id</strong>:</p>
+</li>
+</ul>
+</div>
 </li>
 </ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ssh hljs" data-lang="ssh">$ rhoas login
+$ rhoas kafka list
+$ rhoas kafka use
+$ rhoas kafka acl grant-access --producer --consumer --service-account srvc-acct-9999 --topic all --group all -y</code></pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Create the following topics:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>retail.sale-aggregated</code>, with 1 partition</p>
+</li>
+<li>
+<p><code>retail.expense-event</code>, with 1 partition</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_installing_the_demo"><a class="anchor" href="#_installing_the_demo"></a><a class="link" href="#_installing_the_demo">1.2. Installing the demo</a></h3>
+<div class="paragraph">
+<p>This solution pattern offers an easy installation process through ansible automation and helm charts. To get your environment up and running, follow the steps below:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Clone the repository below to your workstation</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">$ git clone https://github.com/solution-pattern-cdc/ansible.git
+$ cd ansible</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Copy the <code>inventories/inventory.template</code> file to <code>inventories/inventory</code>;</p>
+</li>
+<li>
+<p>In the <code>inventories/inventory</code> file, provide the connection details for your Kafka instance:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>rhosak_bootstrap_server</strong>: Bootstrap server of your managed Kafka instance;</p>
+</li>
+<li>
+<p><strong>rhosak_service_account_client_id</strong>: Client ID of your Service Account;</p>
+</li>
+<li>
+<p><strong>rhosak_service_account_client_secret</strong>: Client Secret of your Service Account;</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Run the Ansible playbook:</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">$ ansible-playbook -i inventories/inventory playbooks/install.yml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once the playbook finished successfully, you should be able to see the different components of the demo installed in the <code>retail</code> namespace on your OpenShift cluster.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_walkthrough_guide"><a class="anchor" href="#_walkthrough_guide"></a><a class="link" href="#_walkthrough_guide">1.3. Walkthrough guide</a></h3>
+<div class="paragraph">
+<p>A retail store specialized in plants wants to grow its market by expanding in the online market. To do so, they need to start the adoption of new technologies without impacting the existing application that is currently running in production. All information about sales, customers and products are still maintained via legacy application, but this data is also required by the new capabilities.</p>
+</div>
+<div class="sect3">
+<h4 id="_the_environment"><a class="anchor" href="#_the_environment"></a><a class="link" href="#_the_environment">1.3.1. The environment</a></h4>
+<div class="paragraph">
+<p>To get started, let&#8217;s understand the environment we currently have and take a look at the deployed services.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Access your OpenShift console, and using the Administrator view, on the left menu select <strong>Workloads &#8594; Deployments</strong>, or use the <code>oc</code> client to list them:</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">$ oc get deployment -n retail</code></pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>You should be able to see 11 services deployed:<br></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>cashback-db</code>: PostgreSQL database for cashback related information;</p>
+</li>
+<li>
+<p><code>retail-db</code>: PostgreSQL database used by the legacy services;</p>
+</li>
+<li>
+<p><code>kafka-connect-connect</code>: kafka connectors for database event streaming (debezium);</p>
+</li>
+<li>
+<p><code>cashback-connector</code>: Camel + Quarkus service for event-driven processing of expenses and customers;</p>
+</li>
+<li>
+<p><code>elastic-connector</code>: Camel + Quarkus service for event-driven synchronization of product data with ElasticSearch;</p>
+</li>
+<li>
+<p><code>sales-streams</code>: Quarkus + Kafka Streams event-driven service for purchase data (sales data) aggregation and synchronization;</p>
+</li>
+<li>
+<p><code>cashback-service</code>: Quarkus + Camel event-driven service responsible for calculating and maintaining cashback data up-to-date in the new database;</p>
+</li>
+<li>
+<p><code>cashback-ui</code>: Quarkus + Panache back-end service to facilitate the visualization of cashback information;</p>
+</li>
+<li>
+<p><code>kafdrop</code>: a kafka client ui to facilitate the visualization of events and topics;</p>
+</li>
+<li>
+<p><code>retail-simulation</code>: a Quarkus application that allows simulating a pre-selected number of purchases in the retail database;</p>
+</li>
+<li>
+<p><code>search-service</code>: Quarkus + ElasticSearch extension to simplify the visualization of the indexed data residing in elastic search;</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="sect4">
+<h5 id="_components_configuration"><a class="anchor" href="#_components_configuration"></a><a class="link" href="#_components_configuration">Components configuration</a></h5>
+<div class="paragraph">
+<p>All the customization of the services is externalized using OpenShift secrets. As an example, let&#8217;s check the connection information for the <code>cashback-connector</code> service.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigating to <strong>Workloads &#8594; Deployments &#8594; cashback-connector &#8658; YAML</strong>, the following configuration section can be visualized:</p>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="_images/03/cashback-connector-deployment-configuration.png" target="_blank" rel="noopener"><img src="_images/03/cashback-connector-deployment-configuration.png" alt="cashback connector deployment configuration" width="100%"></a>
+</div>
+</div>
+</li>
+<li>
+<p>In order to find out exactly which configuration values are being used by the <code>cashback-connector</code> service, let&#8217;s take a look at the configured secret. On the left menu navigate to <strong>Workloads &#8594; Secrets</strong></p>
+</li>
+<li>
+<p>In the filter, search by the name <code>cashback-connector</code> and select the secret:</p>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="_images/03/cashback-connector-secret.png" target="_blank" rel="noopener"><img src="_images/03/cashback-connector-secret.png" alt="cashback connector secret" width="100%"></a>
+</div>
+</div>
+</li>
+<li>
+<p>Scroll to the bottom of the page and click on <strong>Reveal values</strong>, located in the Data section.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>The parameters you used in your Ansible provisioning inventory was used by Helm charts in order to generate these final values, which are a mix of default template values, plus your custom configuration.</p>
+</li>
+<li>
+<p>This service is configured to:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Connect to the Managed Kafka bootstrap server;</p>
+</li>
+<li>
+<p>Subscribe to the topics <code>retail.sale-aggregated</code> and <code>retail.updates.public.customer</code>;</p>
+</li>
+<li>
+<p>Be a publisher of events on the topic <code>retail.expense-event</code>;</p>
+</li>
+<li>
+<p>Connect to the <code>cashback-db</code>, a postgresql database;</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_search_capabilities"><a class="anchor" href="#_search_capabilities"></a><a class="link" href="#_search_capabilities">1.3.2. Search capabilities</a></h4>
+<div class="paragraph">
+<p><em>Section under development.</em></p>
 </div>
 </div>
 </div>
