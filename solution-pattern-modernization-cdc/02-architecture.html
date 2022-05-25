@@ -77,13 +77,13 @@
     <a class="nav-link" href="index.html#use-cases">1.1 Use cases</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="01-pattern.html#_story">1.2 The story behind this solution pattern</a>
+    <a class="nav-link" href="index.html#_content_overview">1.2 Content Overview</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="01-pattern.html#_solution">1.3 The solution</a>
+    <a class="nav-link" href="01-pattern.html#_story">1.3 The story behind this solution pattern</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="index.html#_content_overview">1.4 Content Overview</a>
+    <a class="nav-link" href="01-pattern.html#_solution">1.4 The solution</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="index.html#_content_overview">1.5 Explore more solution patterns</a>
@@ -101,10 +101,19 @@
     <a class="nav-link" href="#tech_stack">2.2. Technology stack</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="#in_depth">2.3. An in-depth look at the solution&#8217;s architecture</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#scenario-cashback-wallet">2.3.1 Scenario: Cashback Wallet</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#scenario-search">2.3.2 Scenario: Full-text search for data in legacy database</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#more_tech_stack">2.4. More about the technology stack</a>
+    <a class="nav-link" href="#more_tech">2.4. More about the technology stack</a>
   </li>
 </ul>
   </li>
@@ -353,6 +362,135 @@ Introduction for the architecture of this solution pattern.
 <h2 id="in_depth"><a class="anchor" href="#in_depth"></a><a class="link" href="#in_depth">3. An in-depth look at the solution&#8217;s architecture</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
+<p>The whole solution builds upon the event streams flowing for each change on the database. The data integration is the enabler for all the new services to execute their respective operations.</p>
+</div>
+<div class="paragraph">
+<p>The following <a href="https://c4model.com">diagram</a> represents an abstract architectural view of the system scope, personas involved, the multiple apps and storage:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="_images/02/architectural-overview.png" target="_blank" rel="noopener"><img src="_images/02/architectural-overview.png" alt="architectural overview" width="100%"></a>
+</div>
+<div class="title">Figure 1. Architecture Diagram: System Context. An abstract representation of the whole solution.</div>
+</div>
+<div class="paragraph">
+<p>Three main application contexts are part of this architecture. The <strong>retail application</strong> represents the legacy application. The <strong>cashback application</strong> and the <strong>search application</strong>, represent the two new use cases to be addressed without impacting the existing service.</p>
+</div>
+<div class="paragraph">
+<p>The two base scenarios targeted are, first, the event-driven processing of cashback for every customer purchase according to his/her customer status, and second, allowing the usage of full-text search capabilities for data that is still maintained via legacy application.</p>
+</div>
+<div class="sect2">
+<h3 id="scenario-cashback-wallet"><a class="anchor" href="#scenario-cashback-wallet"></a><a class="link" href="#scenario-cashback-wallet">3.1. Scenario: Cashback Wallet</a></h3>
+<div class="paragraph">
+<p>a) <strong>Cashback Wallet:</strong> A new microservice implements new capabilities enabled by data integration. This integration happens via database event streaming and processing from legacy database to the new cashback database.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="_images/02/arch-cashback-overview.png" target="_blank" rel="noopener"><img src="_images/02/arch-cashback-overview.png" alt="arch cashback overview" width="100%"></a>
+</div>
+<div class="title">Figure 2. Architecture Diagram: Cashback Wallet Context. A representation of the solution for cashback functionality.</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The cashback processing kicks-off when a new purchase is registered via legacy application. In the demonstration implemented for this solution pattern, we use a service to simulate purchases and register them in the database.</p>
+</li>
+<li>
+<p>Debezium will capture all changes in the database tables below;</p>
+<div class="ulist">
+<ul>
+<li>
+<p>List of tracked tables in retail database: <code>public.customer</code>,<code>public.sale</code>,<code>public.line_item</code>,<code>public.product</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Next, <a href="https://debezium.io">Debezium</a> streams the data them over to Kafka. The event streaming solution can be hosted on-premise or on the cloud. In this implementation, we are using <a href="https://red.ht/TryKafka">Red Hat Managed OpenShift Streams for Apache Kafka</a>.</p>
+</li>
+<li>
+<p>An integration microservice, <code>sales-streams</code>, reacts to events captured by Debezium and published on three topics, respective to <code>sale-change-event</code> and <code>lineitem-change-event</code>.</p>
+</li>
+<li>
+<p>Using <a href="https://quarkus.io/guides/kafka-streams">Kafka Streams</a>, the service aggregates multiple events that correlates to a unique purchase. The service will calculate the total amount of the purchase based on individual items price captured, and will publish the enriched data to the topic <code>sales-aggregated</code>.</p>
+</li>
+<li>
+<p>Another event-driven microservice is responsible for tracking customer&#8217;s change streamed by Debezium, and for reacting to new enriched sales information - in other words, reacting to data processed by the <code>sales-stream</code> application.</p>
+</li>
+<li>
+<p>The service synchronizes <code>customers</code> and <code>expenses</code> in the cashback database. This database used to store new cashback feature-related data.</p>
+</li>
+<li>
+<p>Once the <code>cashback-connector</code> microservice finished its operations, it will notify the ecosystem that a new or updated expense is available - especially for cashback-processing. A new event is published to an <code>expense-events</code> topic so that interested (subscribed) services can act if needed.</p>
+</li>
+<li>
+<p>Now that every information is synchronized in the cashback database, the system can calculate and update any incoming cashback amount the customer earned when purchasing products. The choreography goes on as the <code>cashback-service</code> jumps in and reacts to the <code>expense-events</code> topic.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>This microservice is reponsible for the calculation of the cashback based on a customer status, and for making sure the customer will earn a percentual relative to each expense amount. Every customer owns a <strong>Cashback Wallet</strong>, in other words, all incoming cashback can be accumulated and used later. Since this service is responsible for integrating services in a cloud environment, the  technologies used in the demo implementation are <a href="https://quarkus.io/guides/camel">Camel, with Quarkus as the runtime</a>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>With the values properly calculated, the <code>cashback-service</code> persists cashback-related information, including new cashback wallets for first-time customers, incoming cashback for each single customer&#8217;s expense, and total cashback.</p>
+</li>
+<li>
+<p>The user can visualize cashback data using a sample application <code>cashback-ui</code>, which runs with Quarkus and uses Panache Rest to handle persistence and expose REST endpoints. Information is finally displayed through an angular-based page. This application is used in the demo to help developers visualizing the demonstration results.</p>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="_images/02/cashback-ui.png" target="_blank" rel="noopener"><img src="_images/02/cashback-ui.png" alt="cashback ui" width="100%"></a>
+</div>
+<div class="title">Figure 3. Cashback Wallet UI: sample demo ui for easier data visualization when trying the solution pattern implementation.</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="scenario-search"><a class="anchor" href="#scenario-search"></a><a class="link" href="#scenario-search">3.2. Scenario: Full-text search for data in legacy database</a></h3>
+<div class="paragraph">
+<p>b) <strong>Full-text search of legacy data:</strong> enables full-text search for legacy data by adopting data integration through event streaming and processing. All changes to the legacy database tracked tables, including the operations create, updated and delete, should be reflected in the search index tool. The indexing tool will then store and index data in a way that supports fast searches.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="_images/02/arch-search-overview.png" target="_blank" rel="noopener"><img src="_images/02/arch-search-overview.png" alt="arch search overview" width="100%"></a>
+</div>
+<div class="title">Figure 4. Architecture Diagram: Search Solution Context. A representation of the solution for the new search functionality.</div>
+</div>
+<div class="paragraph">
+<p>Similarly to the behavior of the cashback scenario, here Debezium is tracking changes in the retail database. All changes to product data is streamed to Kafka. The <code>elastic-connector</code> service reacts to product events and synchronizes it within ElasticSearch product index.</p>
+</div>
+<div class="paragraph">
+<p>For demonstration purposes, the <code>search-service</code> holds a sample UI to allow searching data in the indexing tool.</p>
+</div>
+<div class="paragraph">
+<p>The following services are part of this scenario:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Retail database</strong>: stores all information from the legacy application. It includes information about <strong>products</strong>, <strong>customers</strong> and new <strong>sales</strong> (detailed through <strong>line items</strong>).The tables in this database are tracked by Debezium.</p>
+</li>
+<li>
+<p><strong>Debezium</strong>: tracks all events that happens in tables from retail db (public.customer,public.sale,public.line_item,public.product) and streams changes into Kafka streams;</p>
+</li>
+<li>
+<p><strong>Elastic connector service</strong>: an event-driven microservice that reacts to products' events and push relevant updates to Elastic. This service capabilities were developed with with Camel and Quarkus.</p>
+</li>
+<li>
+<p><strong>Search service</strong>: a sample quarkus service that integrates with ElasticSearch using the <a href="https://quarkus.io/guides/elasticsearch">quarkus elastic-rest-client extension</a>, and exposes a REST endpoint for searching products by name and description. For demonstration purposes, this service has a page to facilitate visualizing the search results.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="_images/02/search-ui.png" target="_blank" rel="noopener"><img src="_images/02/search-ui.png" alt="search ui" width="100%"></a>
+</div>
+<div class="title">Figure 5. Seach Service: a Quarkus client that integrates with Elastic for easier search results visualization.</div>
+</div>
+<div class="paragraph">
 <p>Technical description including all or some of the following:</p>
 </div>
 <div class="ulist">
@@ -373,6 +511,7 @@ Introduction for the architecture of this solution pattern.
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
 <h2 id="more_tech"><a class="anchor" href="#more_tech"></a><a class="link" href="#more_tech">4. About the Technology Stack</a></h2>
 <div class="sectionbody">
@@ -382,7 +521,7 @@ Introduction for the architecture of this solution pattern.
 </div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="index.html#_content_overview" class="query-params-link">1.4 Content Overview</a></span>
+  <span class="prev"><a href="index.html#_content_overview" class="query-params-link">1.5 Explore more solution patterns</a></span>
   <span class="next"><a href="03-demo.html" class="query-params-link">3. See the Solution in Action</a></span>
 </nav>
 </article>
