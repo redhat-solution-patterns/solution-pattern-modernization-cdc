@@ -11,7 +11,6 @@
 ** xref:02-architecture.adoc#in_depth[{module}.{counter:submodule2}. An in-depth look at the solution's architecture]
 *** xref:02-architecture.adoc#scenario-cashback-wallet[{module}.{submodule2}.{counter:_submodule2} Scenario: Cashback Wallet]
 *** xref:02-architecture.adoc#scenario-search[{module}.{submodule2}.{counter:_submodule2} Scenario: Full-text search for data in legacy database]]
-** xref:02-architecture.adoc#more_tech[{module}.{counter:submodule2}. More about the technology stack]
 
 * xref:03-demo.adoc[{counter:module}. See the Solution in Action]
 ** xref:03-demo.adoc#demo_desc[{module}.{counter:submodule3}. Demonstration]
