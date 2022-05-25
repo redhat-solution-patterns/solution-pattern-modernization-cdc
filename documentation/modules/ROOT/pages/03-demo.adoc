@@ -5,37 +5,144 @@
 
 = See the Solution in Action
 
-Include here content related to potential existing demos: blogs, articles, recorded videos, walkthrough guides, tutorials.
+This section brings information about the implementation of the solution pattern, how you can install it, try it out and check the details of the implementation with an actual running application.
 
-== Demonstration
-
-[#demo-video]
-=== Watch a demonstration
-
-In this video you can see xpto:
-
-video::3yULVMdqJ98[youtube, width=800, height=480]
-
-Next, you can learn how to walkthrough this demo.
+//== Demonstration
+//
+//[#demo-video]
+//=== Watch a demonstration
+//
+//In this video you can see xpto:
+//
+//video::3yULVMdqJ98[youtube, width=800, height=480]
+//
+//Next, you can learn how to walkthrough this demo.
 
 == Run this demonstration
 
-=== Before getting started:
+Before getting started, here are some key information around this solution pattern demo:
 
-To run this demo, you will need xpto. Adding to that, make sure to have: 
+- Most part of the solution runs on OpenShift, except for Kafka;
+- This hybrid cloud solution includes services integration through https://red.ht/TryKafka[OpenShift Streams for Apache Kafka]. It is a free managed Kafka service offered by Red Hat and  can be used by everyone.
+- The provisioned retail database (simulates the legacy service) is pre-populated with data for customers and products, but no cashback data is pre-populated; 
 
-* ABC
-* XYZ
-* XPTO
+=== Pre-requisites:
+
+To run this solution, you will need:
+
+* Access to an OpenShift cluster (version >= 4.9) with _cluster-admin_ privileges
+* `oc` OpenShift CLI installed
+* Logged in into the OpenShift cluster with `oc` as _cluster-admin_
+* Ansible - the playbook was tested with version 2.9
+* Ansible `kubernetes.core` module.
++
+This module can be installed with `ansible-galaxy`:
++
+```
+$ ansible-galaxy collection install kubernetes.core
+```
+
+==== Preparing your Managed Kafka 
+
+Before moving ahead to the steps of provisioning the services within your OpenShift cluster, first you should provision and configure your Kafka instance.
+
+INFO: For detailed instructions on provisioning and configuration of your managed Kafka instance, please check  https://redhat-scholars.github.io/managed-kafka-workshop/managed-kafka-workshop/main/index.html[this page].
+
+Short instructions:
+
+1. Navigate to [console.redhat.com](https://console.redhat.com) and log in with your Red Hat Account ID;
+1. On the [console.redhat.com](https://console.redhat.com) landing page, select *Application Services -> Streams for Apache Kafka -> Kafka instances*;
+1. Create a new Kafka instance;
+1. Create a new Service Account to connect to your Kafka instance;
++
+* *IMPORTANT*: Take note of the service account id and password, you'll need both information during the provisioning.
++
+1. Configure the ACL for your Service Account. The Service Account should have the following permissions:
++
+* `read`, `write`, `create` permissions for all topics
+* `read` permissions for all consumer groups
+* If you have `rhosak` CLI installed, you can execute the following commands to login to the service, select your kafka instance and add the proper configuration, *replacing `srvc-acct-9999` with your service client id*:
+```ssh
+$ rhoas login
+$ rhoas kafka list 
+$ rhoas kafka use
+$ rhoas kafka acl grant-access --producer --consumer --service-account srvc-acct-9999 --topic all --group all -y
+```
+1. Create the following topics:
+* `retail.sale-aggregated`, with 1 partition
+* `retail.expense-event`, with 1 partition
 
 === Installing the demo
 
+This solution pattern offers an easy installation process through ansible automation and helm charts. To get your environment up and running, follow the steps below:
+
+1. Clone the repository below to your workstation
++
+```shell
+$ git clone https://github.com/solution-pattern-cdc/ansible.git
+$ cd ansible
+```
++
+1. Copy the `inventories/inventory.template` file to `inventories/inventory`;
+1. In the `inventories/inventory` file, provide the connection details for your Kafka instance:
+* **rhosak_bootstrap_server**: Bootstrap server of your managed Kafka instance;
+* **rhosak_service_account_client_id**: Client ID of your Service Account;
+* **rhosak_service_account_client_secret**: Client Secret of your Service Account;
+1. Run the Ansible playbook:
+```
+$ ansible-playbook -i inventories/inventory playbooks/install.yml
+```
+
+Once the playbook finished successfully, you should be able to see the different components of the demo installed in the `retail` namespace on your OpenShift cluster.
+
 === Walkthrough guide
 
-To get started lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elit magna, congue vehicula eleifend ac, malesuada eu libero. Suspendisse vitae sapien enim. Aenean et nisi libero.
+A retail store specialized in plants wants to grow its market by expanding in the online market. To do so, they need to start the adoption of new technologies without impacting the existing application that is currently running in production. All information about sales, customers and products are still maintained via legacy application, but this data is also required by the new capabilities.
 
-==== Step 1
+==== The environment
 
-1. Vestibulum in metus ut nisl rhoncus ultricies.
-2. Nunc quis tellus sit amet risus venenatis suscipit.
-3. Nunc vitae turpis ac lorem volutpat dictum facilisis in elit.
+To get started, let's understand the environment we currently have and take a look at the deployed services.
+
+1. Access your OpenShift console, and using the Administrator view, on the left menu select *Workloads -> Deployments*, or use the `oc` client to list them:
+```sh
+$ oc get deployment -n retail
+```
+2. You should be able to see 11 services deployed: + 
+- `cashback-db`: PostgreSQL database for cashback related information;
+- `retail-db`: PostgreSQL database used by the legacy services;
+- `kafka-connect-connect`: kafka connectors for database event streaming (debezium);
+- `cashback-connector`: Camel + Quarkus service for event-driven processing of expenses and customers; 
+- `elastic-connector`: Camel + Quarkus service for event-driven synchronization of product data with ElasticSearch;
+- `sales-streams`: Quarkus + Kafka Streams event-driven service for purchase data (sales data) aggregation and synchronization;   
+- `cashback-service`: Quarkus + Camel event-driven service responsible for calculating and maintaining cashback data up-to-date in the new database; 
+- `cashback-ui`: Quarkus + Panache back-end service to facilitate the visualization of cashback information;
+- `kafdrop`: a kafka client ui to facilitate the visualization of events and topics;
+- `retail-simulation`: a Quarkus application that allows simulating a pre-selected number of purchases in the retail database;
+- `search-service`: Quarkus + ElasticSearch extension to simplify the visualization of the indexed data residing in elastic search;
+
+===== Components configuration
+
+All the customization of the services is externalized using OpenShift secrets. As an example, let's check the connection information for the `cashback-connector` service. 
+
+1. Navigating to *Workloads -> Deployments -> cashback-connector => YAML*, the following configuration section can be visualized:
++
+[link=_images/03/cashback-connector-deployment-configuration.png, window="_blank"]
+image::03/cashback-connector-deployment-configuration.png[width=100%]
++
+4. In order to find out exactly which configuration values are being used by the `cashback-connector` service, let's take a look at the configured secret. On the left menu navigate to *Workloads -> Secrets*
+4. In the filter, search by the name `cashback-connector` and select the secret:
++
+[link=_images/03/cashback-connector-secret.png, window="_blank"]
+image::03/cashback-connector-secret.png[width=100%]
++
+5. Scroll to the bottom of the page and click on *Reveal values*, located in the Data section. 
+*  The parameters you used in your Ansible provisioning inventory was used by Helm charts in order to generate these final values, which are a mix of default template values, plus your custom configuration.
+* This service is configured to:
+** Connect to the Managed Kafka bootstrap server;
+** Subscribe to the topics `retail.sale-aggregated` and `retail.updates.public.customer`;
+** Be a publisher of events on the topic `retail.expense-event`;
+** Connect to the `cashback-db`, a postgresql database;
+
+==== Search capabilities
+
+_Section under development._
