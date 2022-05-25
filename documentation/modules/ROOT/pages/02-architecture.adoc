@@ -79,6 +79,28 @@ A situation when a service inserts and/or changes data in two or more different 
 [#in_depth]
 == An in-depth look at the solution's architecture
 
+The whole solution builds upon the event streams flowing for each change on the database. The data integration is the enabler for all the new services to execute their respective operations. 
+
+The following https://c4model.com[diagram] represents an abstract architectural view of the system scope, personas involved, the multiple apps and storage:
+
+.Architecture Diagram: System Context. An abstract representation of the whole solution.
+[link=_images/02/architectural-overview.png, window="_blank"]
+image::02/architectural-overview.png[width=100%]
+
+Three main application contexts are part of this architecture. The *retail application* represents the legacy application. The *cashback application* and the *search application*, represent the two new use cases to be addressed without impacting the existing service.
+
+The two base scenarios targeted are, first, the event-driven processing of cashback for every customer purchase according to his/her customer status, and second, allowing the usage of full-text search capabilities for data that is still maintained via legacy application. 
+
+[#scenario-cashback-wallet]
+=== Scenario: Cashback Wallet
+
+include::partials/_02-architecture-cashback-scenario.adoc[]
+
+[#scenario-search]
+=== Scenario: Full-text search for data in legacy database
+
+include::partials/_02-architecture-search-scenario.adoc[]
+
 Technical description including all or some of the following:
 
 - architecture ir ed diagrams. 

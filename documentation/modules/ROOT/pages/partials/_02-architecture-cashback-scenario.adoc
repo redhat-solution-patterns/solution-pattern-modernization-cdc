@@ -1,0 +1,23 @@
+a) *Cashback Wallet:* A new microservice implements new capabilities enabled by data integration. This integration happens via database event streaming and processing from legacy database to the new cashback database.
+
+.Architecture Diagram: Cashback Wallet Context. A representation of the solution for cashback functionality.
+[link=_images/02/arch-cashback-overview.png, window="_blank"]
+image::02/arch-cashback-overview.png[width=100%]
+
+1. The cashback processing kicks-off when a new purchase is registered via legacy application. In the demonstration implemented for this solution pattern, we use a service to simulate purchases and register them in the database.
+2. Debezium will capture all changes in the database tables below;
+- List of tracked tables in retail database: `public.customer`,`public.sale`,`public.line_item`,`public.product`
+3. Next, https://debezium.io[Debezium] streams the data them over to Kafka. The event streaming solution can be hosted on-premise or on the cloud. In this implementation, we are using https://red.ht/TryKafka[Red Hat Managed OpenShift Streams for Apache Kafka].
+4. An integration microservice, `sales-streams`, reacts to events captured by Debezium and published on three topics, respective to `sale-change-event` and `lineitem-change-event`.
+5. Using https://quarkus.io/guides/kafka-streams[Kafka Streams], the service aggregates multiple events that correlates to a unique purchase. The service will calculate the total amount of the purchase based on individual items price captured, and will publish the enriched data to the topic `sales-aggregated`.
+6. Another event-driven microservice is responsible for tracking customer's change streamed by Debezium, and for reacting to new enriched sales information - in other words, reacting to data processed by the `sales-stream` application.
+7. The service synchronizes `customers` and `expenses` in the cashback database. This database used to store new cashback feature-related data.
+8. Once the `cashback-connector` microservice finished its operations, it will notify the ecosystem that a new or updated expense is available - especially for cashback-processing. A new event is published to an `expense-events` topic so that interested (subscribed) services can act if needed.
+9. Now that every information is synchronized in the cashback database, the system can calculate and update any incoming cashback amount the customer earned when purchasing products. The choreography goes on as the `cashback-service` jumps in and reacts to the `expense-events` topic. 
+- This microservice is reponsible for the calculation of the cashback based on a customer status, and for making sure the customer will earn a percentual relative to each expense amount. Every customer owns a *Cashback Wallet*, in other words, all incoming cashback can be accumulated and used later. Since this service is responsible for integrating services in a cloud environment, the  technologies used in the demo implementation are https://quarkus.io/guides/camel[Camel, with Quarkus as the runtime].  
+10. With the values properly calculated, the `cashback-service` persists cashback-related information, including new cashback wallets for first-time customers, incoming cashback for each single customer's expense, and total cashback. 
+11. The user can visualize cashback data using a sample application `cashback-ui`, which runs with Quarkus and uses Panache Rest to handle persistence and expose REST endpoints. Information is finally displayed through an angular-based page. This application is used in the demo to help developers visualizing the demonstration results.
++
+.Cashback Wallet UI: sample demo ui for easier data visualization when trying the solution pattern implementation.
+[link=_images/02/cashback-ui.png, window="_blank"]
+image::02/cashback-ui.png[width=100%]
