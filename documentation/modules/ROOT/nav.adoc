@@ -17,6 +17,7 @@
 ** xref:03-demo.adoc#run_demo[{module}.{counter:submodule3}. Run this demonstration]
 *** xref:03-demo.adoc#pre_reqs_demo[{module}.{counter:submodule3}. Before getting started]
 *** xref:03-demo.adoc#install_demo[{module}.{counter:submodule3}. Installing the demo]
+
 *** xref:03-demo.adoc#walthrough_demo[{module}.{counter:submodule3}. Walkthrough guide]
 
 * xref:04-workshop.adoc[{counter:module}. Workshop]

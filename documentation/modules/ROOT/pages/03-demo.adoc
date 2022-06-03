@@ -2,10 +2,13 @@
 :sectnums:
 :sectlinks:
 :doctype: book
+:toc:
+:page-toclevels: 3
 
-= See the Solution in Action
+== See the Solution in Action
 
 This section brings information about the implementation of the solution pattern, how you can install it, try it out and check the details of the implementation with an actual running application.
+
 
 //== Demonstration
 //
@@ -20,129 +23,429 @@ This section brings information about the implementation of the solution pattern
 
 == Run this demonstration
 
-Before getting started, here are some key information around this solution pattern demo:
+In order to try out this demonstration you will need to provision the environment. From an overall perspective, these are the steps to provision the demo:
 
-- Most part of the solution runs on OpenShift, except for Kafka;
-- This hybrid cloud solution includes services integration through https://red.ht/TryKafka[OpenShift Streams for Apache Kafka]. It is a free managed Kafka service offered by Red Hat and  can be used by everyone.
-- The provisioned retail database (simulates the legacy service) is pre-populated with data for customers and products, but no cashback data is pre-populated; 
+1. Log in to OpenShift with `cluster-admin` role;
+2. Create an OpenShift Streams instance, configure ACL and topics;
+3. For ansible, configure the set of variables pointing with your environment settings;
+4. Run the ansible playbook and enjoy the demo.
 
-=== Pre-requisites:
+=== Pre-requisites
+==== Preparing the local environment 
 
-To run this solution, you will need:
+Here is the list of tools you need in your machine to so you can use the automated installation.
 
-* Access to an OpenShift cluster (version >= 4.9) with _cluster-admin_ privileges
-* `oc` OpenShift CLI installed
-* Logged in into the OpenShift cluster with `oc` as _cluster-admin_
-* Ansible - the playbook was tested with version 2.9
-* Ansible `kubernetes.core` module.
-+
-This module can be installed with `ansible-galaxy`:
-+
+TIP: For a better experience during provisioning and demo usage, it's recommended to have these CLI tools installed locally.
+
+* https://docs.openshift.com/container-platform/4.10/cli_reference/openshift_cli/getting-started-cli.html#installing-openshift-cli[OpenShift CLI (oc client)]
+* https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html[Ansible CLI] (_tested with v2.9_)
+** Ansible https://docs.ansible.com/ansible/latest/collections/kubernetes/core/k8s_module.html[kubernetes.core] module
+* __(optional)__ https://github.com/redhat-developer/app-services-guides/tree/main/docs/rhoas/rhoas-cli-installation#installing-the-rhoas-cli[RHOAS CLI] for OpenShift Streams management.
+
+To check if you have the cli tools, you can open your terminal and use following commands:
+
+[.console-input]
+[source,shell script]
+```
+oc version #openshift cli client
+ansible --version 
+ansible-galaxy --version 
+ansible-galaxy collection list #the list should include kubernetes.core
+```
+
+If you can't see `kubernetes.core` collection listed, you can install it with `ansible-galaxy`:
+
+[.console-input]
+[source,shell script]
 ```
 $ ansible-galaxy collection install kubernetes.core
 ```
 
-==== Preparing your Managed Kafka 
+*Optional: Managing OpenShift Streams using a CLI tool*
+
+It is possible to do all interaction with your OpenShift Streams managed service (kafka) via the web console. If instead you like using the terminal and want to use a CLI tool, you will need *rhoas cli*. This cli allows interaction with Red Hat OpenShift Application Services like the OpenShift Streams kafka we will use.
+
+You can find a straightforward installation guide for multiple OS at https://github.com/redhat-developer/app-services-guides/tree/main/docs/rhoas/rhoas-cli-installation#installing-the-rhoas-cli[Installing the RHOAS CLI].
+
+==== Preparing the platforms
+
+* OpenShift cluster (version >= 4.9) with _cluster-admin_ privileges.
++
+TIP: If you have access to rhpds, you can request and use an `OpenShift 4.10 Workshop` enviroment.
++
+
+* Access to OpenShift Streams for Apache Kafka.
++
+TIP: If it's your first time using OpenShift Streams, don't worry. It's a zero-cost service for developers and everyone can try it out. You can register and order your instance at https://red.ht/TryKafka[https://red.ht/TryKafka].
+
+=== Provisioning the demo
+
+The solution's components and services can be automatically provisioned using an ansible playbook.
+
+The following steps will guide you on setting up an instance of OpenShift Streams for Apache Kafka and its resources, plus provisioning the demo services using Ansible.
+[#cli-tools]
+
+==== Provisioning OpenShift Streams (Kafka) 
 
 Before moving ahead to the steps of provisioning the services within your OpenShift cluster, first you should provision and configure your Kafka instance.
 
-INFO: For detailed instructions on provisioning and configuration of your managed Kafka instance, please check  https://redhat-scholars.github.io/managed-kafka-workshop/managed-kafka-workshop/main/index.html[this page].
+TIP: If you need detailed instructions on how to provision, configure and operate of your managed Kafka instance, please check this step-by-step https://redhat-scholars.github.io/managed-kafka-workshop/managed-kafka-workshop/main/01-getting-started.html[Getting Started with OpenShift Streams for Apache Kafka] guide.
 
-Short instructions:
+See below a straightforward guide to create and your instance:
 
-1. Navigate to [console.redhat.com](https://console.redhat.com) and log in with your Red Hat Account ID;
-1. On the [console.redhat.com](https://console.redhat.com) landing page, select *Application Services -> Streams for Apache Kafka -> Kafka instances*;
-1. Create a new Kafka instance;
-1. Create a new Service Account to connect to your Kafka instance;
+1. Navigate to https://console.redhat.com and log in with your Red Hat Account ID;
+1. Select the *Service Account* menu and create a new Service Account to connect to your Kafka instance;
 +
-* *IMPORTANT*: Take note of the service account id and password, you'll need both information during the provisioning.
+IMPORTANT: Take note of the service account id and password, you'll need both information during the provisioning.
++
+1. Next, in the left menu, select *Application and Data Services -> Streams for Apache Kafka -> Kafka instances*;
+1. Create a new Kafka instance;
+    - Use a name of your choice. You can use the default values for creating the instance.
+1. Once your instance is ready, click on the instance and open the "connection" tab. take note of the following data:
+- Bootstrap server (e.g. cdc-kafka-caah-ekucfsh--lhhsqa.bf2.kafka.rhcloud.com:443)
++
+image::03/kafka_instance_connection_info.png[]
 +
 1. Configure the ACL for your Service Account. The Service Account should have the following permissions:
 +
 * `read`, `write`, `create` permissions for all topics
 * `read` permissions for all consumer groups
 * If you have `rhosak` CLI installed, you can execute the following commands to login to the service, select your kafka instance and add the proper configuration, *replacing `srvc-acct-9999` with your service client id*:
++
+IMPORTANT: If you do not use the right service account id, the deployed services will throw an authentication error.
++
+[.console-input]
+[source,shell script]
 ```ssh
-$ rhoas login
-$ rhoas kafka list 
-$ rhoas kafka use
-$ rhoas kafka acl grant-access --producer --consumer --service-account srvc-acct-9999 --topic all --group all -y
+rhoas login
+rhoas kafka list 
+rhoas kafka use
+rhoas kafka acl grant-access --producer --consumer --service-account srvc-acct-9999 --topic all --group all -y
 ```
-1. Create the following topics:
-* `retail.sale-aggregated`, with 1 partition
-* `retail.expense-event`, with 1 partition
++
+1. Create the following topics, *all with 1 partition*:
+* `retail.sale-aggregated`
+* `retail.expense-event`
+* `retail.updates.public.line_item`
+* `retail.retail.updates.public.sale`
+* `retail.updates.public.customer`
+* `retail.updates.public.product`
++
+image::03/kafka_instance_topics.png[]
++
+ * if you are using `rhoas cli`, you can create the topics with these commands:
++
+[.console-input]
+[source,shell script]
+```ssh
+rhoas kafka topic create --name=retail.sale-aggregated --partitions=1
+rhoas kafka topic create --name=retail.updates.public.customer --partitions=1
+rhoas kafka topic create --name=retail.updates.public.product --partitions=1
+rhoas kafka topic create --name=retail.updates.public.sale --partitions=1
+rhoas kafka topic create --name=retail.updates.public.line_item --partitions=1
+rhoas kafka topic create --name=retail.expense-event --partitions=1
+```
 
-=== Installing the demo
+==== Installing the demo
 
 This solution pattern offers an easy installation process through ansible automation and helm charts. To get your environment up and running, follow the steps below:
 
 1. Clone the repository below to your workstation
 +
+[.console-input]
+[source,shell script]
 ```shell
-$ git clone https://github.com/solution-pattern-cdc/ansible.git
-$ cd ansible
+git clone https://github.com/solution-pattern-cdc/ansible.git
+cd ansible
 ```
 +
 1. Copy the `inventories/inventory.template` file to `inventories/inventory`;
-1. In the `inventories/inventory` file, provide the connection details for your Kafka instance:
+1. Remember the OpenShift Streams values we took note? It's time to use them. In the `inventories/inventory` file, provide the connection details for your Kafka instance:
 * **rhosak_bootstrap_server**: Bootstrap server of your managed Kafka instance;
 * **rhosak_service_account_client_id**: Client ID of your Service Account;
 * **rhosak_service_account_client_secret**: Client Secret of your Service Account;
 1. Run the Ansible playbook:
-```
-$ ansible-playbook -i inventories/inventory playbooks/install.yml
++
+[.console-input]
+[source,shell script]
+```sh
+ansible-playbook -i inventories/inventory playbooks/install.yml
 ```
 
 Once the playbook finished successfully, you should be able to see the different components of the demo installed in the `retail` namespace on your OpenShift cluster.
 
-=== Walkthrough guide
+To check if your environment is healthy:
+
+1. Access your OpenShift console, and using the Administrator view, on the left menu select *Workloads -> Deployments*;
+2. All services should be healthy, like displayed below:
++
+image::03/ocp_pods_running.png[]
+
+=== Obtaining services' URL
+
+You can access the three services that exposes a UI through the exposed routes. Use one of the two options below to get the routes:
+
+a. Using `oc cli`, copy and paste the whole command below:
++
+[.console-input]
+[source,shell script]
+``` 
+cat << EOF
+========================================
+Kafdrop: https://$(oc get route kafdrop --template='{{ .spec.host }}' -n retail) 
+Search service: https://$(oc get route search-service --template='{{ .spec.host }}' -n retail) 
+Simulation Service: https://$(oc get route retail-simulation --template='{{ .spec.host }}' -n retail)/q/swagger-ui 
+Cashback Wallet UI: https://$(oc get route cashback-service-ui --template='{{ .spec.host }}' -n retail)
+========================================
+EOF
+```
++
+b. Using the OpenShift console:
++    
+image::03/ocp_routes.png[]
+
+== Walkthrough guide
 
 A retail store specialized in plants wants to grow its market by expanding in the online market. To do so, they need to start the adoption of new technologies without impacting the existing application that is currently running in production. All information about sales, customers and products are still maintained via legacy application, but this data is also required by the new capabilities.
 
-==== The environment
+Two new functionalities are now part of the retail solution:
+1. Enhanced search capabilities for products
+1. Cashback wallet for customers
 
-To get started, let's understand the environment we currently have and take a look at the deployed services.
+Both solutions are build on top of an event driven architecture, which means that all services are integrated with an orchestration where each one execute its own operations when relevant events are published in the ecosystem.  
 
-1. Access your OpenShift console, and using the Administrator view, on the left menu select *Workloads -> Deployments*, or use the `oc` client to list them:
-```sh
-$ oc get deployment -n retail
+Let's see both solutions in action, starting with the new search capabilities.
+
+=== Enhanced search capabilities for products
+
+To test the enhanced search capabilities, we will:
+
+1. Use the `search service` to see existing data that is available in the ElasticSearch index;
+2. Add a new product directly to the `retail database` (legacy), to check the ecosystem behavior;
+3. Confirm that the new product shows up in the search;
+4. Check the events that were published in order for the synchronization to happen;
+4. Delete the product directly on the retail database; 
+4. Confirm that the product no longer shows up in the `search service`.
+
+==== Searching existing products
+
+1. Using your browser, open the `search service`.
++
+NOTE: You can get the URL as described in the section xref:03-demo.adoc#cli-tools[obtaining the services URL].
++
+2. In the search field, search for "*yellow*". You should see several results.
++
+image::03/search-service-result-yellow.png[]
++
+2. Next, search for "kopi" or "java. No result will show up.
+3. Let's insert a new product directly in the `retail-db` and see if it will reflect on this service. Use the console inside the `retail-db` container. You can either access the container using your browser, accessing the OpenShit Console (*Workloads -> Pods -> retail-db-XXXX -> Terminal*);
++
+Or by using your terminal as shown below:
++
 ```
-2. You should be able to see 11 services deployed: + 
-- `cashback-db`: PostgreSQL database for cashback related information;
-- `retail-db`: PostgreSQL database used by the legacy services;
-- `kafka-connect-connect`: kafka connectors for database event streaming (debezium);
-- `cashback-connector`: Camel + Quarkus service for event-driven processing of expenses and customers; 
-- `elastic-connector`: Camel + Quarkus service for event-driven synchronization of product data with ElasticSearch;
-- `sales-streams`: Quarkus + Kafka Streams event-driven service for purchase data (sales data) aggregation and synchronization;   
-- `cashback-service`: Quarkus + Camel event-driven service responsible for calculating and maintaining cashback data up-to-date in the new database; 
-- `cashback-ui`: Quarkus + Panache back-end service to facilitate the visualization of cashback information;
-- `kafdrop`: a kafka client ui to facilitate the visualization of events and topics;
-- `retail-simulation`: a Quarkus application that allows simulating a pre-selected number of purchases in the retail database;
-- `search-service`: Quarkus + ElasticSearch extension to simplify the visualization of the indexed data residing in elastic search;
-
-===== Components configuration
-
-All the customization of the services is externalized using OpenShift secrets. As an example, let's check the connection information for the `cashback-connector` service. 
-
-1. Navigating to *Workloads -> Deployments -> cashback-connector => YAML*, the following configuration section can be visualized:
+oc project retail
+oc rsh deployment/retail-db
+```
+5. Next, inside the container, we will access postgres, connect to the `retail` database and check the structure of the `product` table:
 +
-[link=_images/03/cashback-connector-deployment-configuration.png, window="_blank"]
-image::03/cashback-connector-deployment-configuration.png[width=100%]
+```
+psql
+\c retail
+\d product
+```
 +
-4. In order to find out exactly which configuration values are being used by the `cashback-connector` service, let's take a look at the configured secret. On the left menu navigate to *Workloads -> Secrets*
-4. In the filter, search by the name `cashback-connector` and select the secret:
+As we can see, a product has an `id`, `name`, `description` and a `price`.
 +
-[link=_images/03/cashback-connector-secret.png, window="_blank"]
-image::03/cashback-connector-secret.png[width=100%]
+image::03/retail-db-terminal.png[]
 +
-5. Scroll to the bottom of the page and click on *Reveal values*, located in the Data section. 
-*  The parameters you used in your Ansible provisioning inventory was used by Helm charts in order to generate these final values, which are a mix of default template values, plus your custom configuration.
-* This service is configured to:
-** Connect to the Managed Kafka bootstrap server;
-** Subscribe to the topics `retail.sale-aggregated` and `retail.updates.public.customer`;
-** Be a publisher of events on the topic `retail.expense-event`;
-** Connect to the `cashback-db`, a postgresql database;
+1. Let's add a new product in this table, the product "*Kopi luwak*": 
++
+```sql
+insert into public.product (product_id, name, price, description) values (7777, 'Kopi luwak', 20, 'Kopi luwak is a coffee that consists of partially digested coffee cherries, which have been eaten and defecated by the Asian palm civet (Paradoxurus hermaphroditus). It is produced mainly on the Indonesian islands of Sumatra, Java, Bali, Sulawesi, and in East Timor.');
+```
++
+1. Now, as required by the use case, even though this data was changed in the legacy database, it should be available for search in the new services. Let's confirm that this change was reflected in the ElasticSearch products index.
++
+Open the `search-service` application in your browser and search for "java" or "kopi". You should be able to see your new product.  
++
+image::03/search-service-result-java.png[]
 
-==== Search capabilities
+Let's delete this product from the retail database to validate if delete operations are also being tracked. 
 
-_Section under development._
+1. In the `retail-tb` container terminal, now execute the following SQL:
+```sql
+DELETE FROM public.product where product_id = 7777;
+```
+2. Go back to the `search-service` in your browser, and search for '*kopi*' or '*java*' again. 
+
+==== Looking behind the scenes
+
+It's now time to take a look at how the system is working in order to allow this capability to work as we have seen.
+
+The components of the search capability we have just tried are:
+
+[cols="28m,^.^13,~"]
+[frame=all, grid=all]
+|===
+|*Service* | *Type* | *Description* 
+| retail-db
+| PostgreSQL database used by the legacy services;
+| Persistence
+
+|kafka-connect-connect
+.2+| Integration
+| Kafka connectors for database event streaming (debezium);
+
+|elastic-connector
+|Camel + Quarkus service for event-driven synchronization of product data with ElasticSearch;
+
+|kafdrop
+.2+| Data Visualization
+|a kafka client ui to facilitate the visualization of events and topics;
+
+|search-service
+|Quarkus + ElasticSearch extension to simplify the visualization of the indexed data residing in elastic search;
+|===
+
+NOTE: If you go to your OpenShift, you should be able to see one `deployment` resource for each of the above services.
+
+*So, how was the new product added to the ElasticSearch index?*
+
+
+1. A new product is created in the `retail.product` table, in the legacy database `retail-db`;
+2. xref:appendix-a.adoc#_kafka_connect__debezium_installation[Debezium] tracks it and publishes the events it to topics in OpenShift Streams;
+3. The `elastic-connector`, implemented with Camel and Quarkus is subscribed to the topic mentioned above. It processes the event data and pushes the *product name* and *description* to an ElasticSearch index:
+
+.Partial code - processing logic in the https://github.com/solution-pattern-cdc/elastic-connector/blob/main/src/main/java/org/acme/retail/ProductRoute.java[`ProductRoute`]
+
+[.console-input]
+[source,java]
+----
+(...)
+    .process(exchange -> {
+        Message in = exchange.getIn();
+        JsonObject after = new JsonObject(in.getBody(Map.class)).getJsonObject("after");
+        Map<String, String> document = new HashMap<>();
+        document.put("name", after.getString("name"));
+        document.put("description", after.getString("description"));
+        IndexRequest request = new IndexRequest(in.getHeader(ElasticsearchConstants.PARAM_INDEX_NAME, String.class))
+                .id(String.valueOf(after.getLong("product_id"))).source(document);
+        in.setBody(request);
+    })
+(...)
+----
+
+This flow can be represented like this:
+
+image::03/arch_search.png[]
+
+=== Cashback Wallet functionality
+
+Now, let's see more ways we can explore CDC to add new capabilities to our existing stack. Since we have all the new sales being streamed as events, we can use it to build the new cashback wallet business.
+
+To walk through this demonstration, you will need to access the following services in your browser:
+* cashback-service-ui
+* kafdrop
+* simulation service Swagger-UI
+
+1. Open the `cashback-service-ui`:
+
++
+NOTE: You can get the URL as described in the section xref:03-demo.adoc#cli-tools[obtaining the services URL].
++
+2. You should be able to see a list of cashback wallets and its data:
++
+image::03/cashback-wallet-clean.png[]
++
+3. Choose one of the customers in that list that has no cashback. It will be easier ot see the new cashback credits. You can see the customer ID in the beggining of the line:
++
+image::03/cashback-wallet-customer-id.png[]
++
+4. Next, we will simulate as if a customer has purchased five items in the store. In your browser open the `simulation service` swagger-ui, (service-url/q/swagger-ui).
++
+image::03/simulate-purchase-result.png[]
++ 
+5. Click on `try it out`, input the customer ID you have chosen, and submit the request. This will generate five purchases for this customer. 
++
+image::03/simulate-purchase-result.png[]
++ 
+6. You should get an HTTP 200 result. In the legacy system, the purchases are stored in two different tables, the `retail.sale` and `retail.line_item`. So if you simulate five sales, the data will be stored in both tables and streamed as events by Debezium to two respective topics. 
++
+Through a series of orchestrated operations, the data will be aggregated, processed, and enriched (`sales-aggregated` service), to finally be used to calculate and update the cashback wallet's values (`cashback-service`). 
+8. Open Kafdrop in your browser.
+8. Locate and click on the topic `retail.sale-aggregated`, and then, click on *view messages*. See the result of the Kafka Streams (`sales-stream` service) aggregation, processing and enrichment of the events streamed by Debezium
++
+image::03/kafdrop-sales-aggregated-messages.png[]
++
+NOTE: To see a detailed explanation about the events processing refer to the xref:_looking_behind_the_scenes__cashback_solution[Looking behind the scenes] section.
++
+8. Open the Cashback Wallet in your browser and refresh the page. You should be able to check the new earned cashback for each purchase of your customer!
++
+image::03/cashback-wallet-complete.png[]
+
+See below a diagram that explains the event processing that just happened:
+
+image::03/arch-cashback.png[]
+
+//
+//==== Looking behind the scenes - cashback solution
+//
+//Differently than the search capability that only requires the integration layer (Retail DB -> ElasticSearch), to create cashback wallets we'll need to process and enrich the data before we use it. We will also need to guarantee the synchronization between the customer data in the `retail-db` and the `cashback-db`.
+//
+//1. When new sales are registered, new lines are created in the `retail.sale` and `retail.line_item` tables. 
+//2. Debezium will publish an event to two topics, one for each table, and one event for each line added/updated. Although, in order to apply the cashback logic, a good design decision for this microservice architecture is to do event data aggregation, processing and enrichment before we actually do the cashback operations; 
+//+
+//Here's a more detailed explanation: notice that, if someone buys two cactus and one lilly in the same purchase, there will be two line items registered for a single sale. But, to calculate the earned cashback for the sale, we need to know the total amount of the sale - the sum of all the line items of that sale. Debezium will stream each change individually, which results with several events in two topics, one of each table. In order to aggregate this data and process the sale total value we can use https://developers.redhat.com/learn/openshift-streams-for-apache-kafka/guided-workshop-for-kafka-streams/what-is-kafka-streams[*Kafka Streams*].
+//+
+//[.console-input]
+//[source,sql]
+//----
+//$ oc rsh deployment/retail-db #<1>
+//sh-4.4$ psql #<2>
+//psql (12.5)
+//Type "help" for help.
+//
+//postgres=# \c retail #<3>
+//You are now connected to database "retail" as user "postgres".
+//retail=# select * from sale;  #<4>
+//sale_id | customer_id |          date
+//---------+-------------+-------------------------
+//1000 |        1000 | 2022-06-03 20:27:57.66
+//1001 |        1000 | 2022-06-03 20:27:57.767
+//1002 |        1000 | 2022-06-03 20:27:57.852
+//1003 |        1000 | 2022-06-03 20:27:57.854
+//1004 |        1000 | 2022-06-03 20:27:57.857
+//(5 rows)
+//
+//retail=# select * from line_item; #<5>
+//line_item_id | sale_id | product_id | price  | quantity
+//--------------+---------+------------+--------+----------
+//1000 |    1000 |        198 |  99.40 |        2
+//1001 |    1000 |        851 |  72.97 |        3
+//1002 |    1000 |         87 |  66.19 |        3
+//1003 |    1000 |        243 |  83.20 |        1
+//1004 |    1001 |         80 | 127.56 |        3
+//1005 |    1001 |        639 | 193.80 |        1
+//1006 |    1002 |        563 | 156.08 |        3
+//1007 |    1003 |        532 |  89.98 |        3
+//1008 |    1003 |        374 |  87.17 |        1
+//1009 |    1003 |        932 |  32.69 |        3
+//1010 |    1003 |        662 | 141.31 |        3
+//1011 |    1003 |        304 |  39.84 |        1
+//1012 |    1004 |        138 | 125.81 |        3
+//1013 |    1004 |        656 | 103.99 |        3
+//1014 |    1004 |        285 | 168.79 |        3
+//1015 |    1004 |         84 | 113.79 |        2
+//(16 rows)
+//----
+//<1> Using `oc-client` to access the `retail-db` container;
+//<2> Accessing PostgreSQL from within the container;
+//<3> Connecting to the retail database;
+//<4> Listing all the sales;
+//<5> Listing all the items of the sales;
+//+
+//8. Next, back to the homepage of Kafdrop, open *`retail.expense-event` -> view messages -> view messages*; These events notify the service that will handle the cashback values processing, `cashback-service`.
+//+
+//images::03/kafdrop-expense-event.png[]
+//+
+// with https://developers.redhat.com/learn/openshift-streams-for-apache-kafka/guided-workshop-for-kafka-streams/what-is-kafka-streams[*Kafka Streams*], the `sales-aggregated` service aggregating, processing and enriching the events' data. Let's see the result of this processing with Kafdrop.

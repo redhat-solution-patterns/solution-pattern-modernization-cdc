@@ -1,0 +1,99 @@
+
+
+
+
+
+
+
+
+
+
+
+
+===== apendix a
+
+==== Services description
+
+Let's understand the environment we currently have and take a look at the deployed services.
+
+TIP: To see the pods you can either look at the OpenShift Console or use `oc get deployment -n retail`.
+
+These are the 11 services currently deployed:
+
+[cols="28m,^.^13,~"]
+[frame=all, grid=all]
+|===
+|*Service* | *Type* | *Description*
+| cashback-db
+.2+| Persistence
+| PostgreSQL database for cashback related information.
+
+| retail-db
+| PostgreSQL database used by the legacy services;
+
+|kafka-connect-connect
+.5+| Integration
+| Kafka connectors for database event streaming (debezium);
+
+|cashback-connector
+|Camel + Quarkus service for event-driven processing of expenses and customers;
+
+|elastic-connector
+|Camel + Quarkus service for event-driven synchronization of product data with ElasticSearch;
+
+|sales-streams
+|Quarkus + Kafka Streams event-driven service for purchase data (sales data) aggregation and synchronization;
+
+|cashback-service
+|Quarkus + Camel event-driven service responsible for calculating and maintaining cashback data up-to-date in the new database;
+
+|retail-simulation
+| Data simulation
+|a Quarkus application that allows simulating a pre-selected number of purchases in the retail database;
+
+|kafdrop
+.3+| Data Visualization
+|a kafka client ui to facilitate the visualization of events and topics;
+
+|cashback-ui
+|Quarkus + Panache back-end service to facilitate the visualization of cashback information;
+
+|search-service
+|Quarkus + ElasticSearch extension to simplify the visualization of the indexed data residing in elastic search;
+|===
+
+
+=== Components configuration
+
+All the customization of the services is externalized using OpenShift secrets. As an example, let's check the connection information for the `cashback-connector` service.
+
+1. Navigating to *Workloads -> Deployments -> cashback-connector => YAML*, the following configuration section can be visualized:
++
+[link=_images/03/cashback-connector-deployment-configuration.png, window="_blank"]
+image::03/cashback-connector-deployment-configuration.png[width=100%]
++
+4. In order to find out exactly which configuration values are being used by the `cashback-connector` service, let's take a look at the configured secret. On the left menu navigate to *Workloads -> Secrets*
+4. In the filter, search by the name `cashback-connector` and select the secret:
++
+[link=_images/03/cashback-connector-secret.png, window="_blank"]
+image::03/cashback-connector-secret.png[width=100%]
++
+5. Scroll to the bottom of the page and click on *Reveal values*, located in the Data section.
+*  The parameters you used in your Ansible provisioning inventory was used by Helm charts in order to generate these final values, which are a mix of default template values, plus your custom configuration.
+* This service is configured to:
+** Connect to the Managed Kafka bootstrap server;
+** Subscribe to the topics `retail.sale-aggregated` and `retail.updates.public.customer`;
+** Be a publisher of events on the topic `retail.expense-event`;
+** Connect to the `cashback-db`, a postgresql database;
+
+
+
+=== Additional information
+
+==== Kafka Connect - Debezium installation
+
+Debezium is provisioned on the cluster https://github.com/solution-pattern-cdc/helm/blob/main/retail/debezium/templates/debezium-connector.yaml[using Helm] and the Strimzi operator.
+
+image::03/kafka-connect.png[]
+
+
