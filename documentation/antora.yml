@@ -1,5 +1,5 @@
 name: solution-pattern-modernization-cdc
-title: Adopting Change Data Capture for stack modernization
+title: Modernize your stack by adopting Change Data Capture
 version: master
 nav:
   - modules/ROOT/nav.adoc

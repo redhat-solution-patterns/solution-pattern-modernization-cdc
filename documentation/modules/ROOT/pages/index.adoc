@@ -25,6 +25,7 @@ Common use cases that can be address with this architecture are:
 include::01-pattern.adoc[]
 
 .xref:04-workshop.adoc[{counter:module}. Workshop]
+
 [discrete]
 == Explore more solution patterns
 include::https://raw.githubusercontent.com/redhat-solution-patterns/redhat-solution-patterns.github.io/master/documentation/modules/ROOT/pages/solution-pattern-list.adoc[]

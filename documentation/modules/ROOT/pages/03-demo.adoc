@@ -227,7 +227,7 @@ To test the enhanced search capabilities, we will:
 4. Delete the product directly on the retail database; 
 4. Confirm that the product no longer shows up in the `search service`.
 
-==== Searching existing products
+==== Trying out the new enhanced search
 
 1. Using your browser, open the `search service`.
 +
@@ -278,7 +278,7 @@ DELETE FROM public.product where product_id = 7777;
 ```
 2. Go back to the `search-service` in your browser, and search for '*kopi*' or '*java*' again. 
 
-==== Looking behind the scenes
+==== Looking behind the scenes - enhanced search
 
 It's now time to take a look at how the system is working in order to allow this capability to work as we have seen.
 
@@ -348,6 +348,8 @@ To walk through this demonstration, you will need to access the following servic
 * kafdrop
 * simulation service Swagger-UI
 
+==== Trying out the new cashback wallet 
+
 1. Open the `cashback-service-ui`:
 
 +
@@ -363,7 +365,7 @@ image::03/cashback-wallet-customer-id.png[]
 +
 4. Next, we will simulate as if a customer has purchased five items in the store. In your browser open the `simulation service` swagger-ui, (service-url/q/swagger-ui).
 +
-image::03/simulate-purchase-result.png[]
+image::03/simulate-purchase.png[]
 + 
 5. Click on `try it out`, input the customer ID you have chosen, and submit the request. This will generate five purchases for this customer. 
 +
@@ -373,7 +375,7 @@ image::03/simulate-purchase-result.png[]
 +
 Through a series of orchestrated operations, the data will be aggregated, processed, and enriched (`sales-aggregated` service), to finally be used to calculate and update the cashback wallet's values (`cashback-service`). 
 8. Open Kafdrop in your browser.
-8. Locate and click on the topic `retail.sale-aggregated`, and then, click on *view messages*. See the result of the Kafka Streams (`sales-stream` service) aggregation, processing and enrichment of the events streamed by Debezium
+8. Locate and click on the topic `retail.sale-aggregated`, and then, click on *view messages*. This is the result of the Kafka Streams (`sales-stream` service) operations of aggregation, processing and enrichment of the events' data that were streamed by Debezium:
 +
 image::03/kafdrop-sales-aggregated-messages.png[]
 +
@@ -383,69 +385,148 @@ NOTE: To see a detailed explanation about the events processing refer to the xre
 +
 image::03/cashback-wallet-complete.png[]
 
-See below a diagram that explains the event processing that just happened:
+See below a diagram that represents the orchestration processing that just happened when you simulated new purchases and saw the respective incoming cashback:
 
 image::03/arch-cashback.png[]
 
-//
-//==== Looking behind the scenes - cashback solution
-//
-//Differently than the search capability that only requires the integration layer (Retail DB -> ElasticSearch), to create cashback wallets we'll need to process and enrich the data before we use it. We will also need to guarantee the synchronization between the customer data in the `retail-db` and the `cashback-db`.
-//
-//1. When new sales are registered, new lines are created in the `retail.sale` and `retail.line_item` tables. 
-//2. Debezium will publish an event to two topics, one for each table, and one event for each line added/updated. Although, in order to apply the cashback logic, a good design decision for this microservice architecture is to do event data aggregation, processing and enrichment before we actually do the cashback operations; 
-//+
-//Here's a more detailed explanation: notice that, if someone buys two cactus and one lilly in the same purchase, there will be two line items registered for a single sale. But, to calculate the earned cashback for the sale, we need to know the total amount of the sale - the sum of all the line items of that sale. Debezium will stream each change individually, which results with several events in two topics, one of each table. In order to aggregate this data and process the sale total value we can use https://developers.redhat.com/learn/openshift-streams-for-apache-kafka/guided-workshop-for-kafka-streams/what-is-kafka-streams[*Kafka Streams*].
-//+
-//[.console-input]
-//[source,sql]
-//----
-//$ oc rsh deployment/retail-db #<1>
-//sh-4.4$ psql #<2>
-//psql (12.5)
-//Type "help" for help.
-//
-//postgres=# \c retail #<3>
-//You are now connected to database "retail" as user "postgres".
-//retail=# select * from sale;  #<4>
-//sale_id | customer_id |          date
-//---------+-------------+-------------------------
-//1000 |        1000 | 2022-06-03 20:27:57.66
-//1001 |        1000 | 2022-06-03 20:27:57.767
-//1002 |        1000 | 2022-06-03 20:27:57.852
-//1003 |        1000 | 2022-06-03 20:27:57.854
-//1004 |        1000 | 2022-06-03 20:27:57.857
-//(5 rows)
-//
-//retail=# select * from line_item; #<5>
-//line_item_id | sale_id | product_id | price  | quantity
-//--------------+---------+------------+--------+----------
-//1000 |    1000 |        198 |  99.40 |        2
-//1001 |    1000 |        851 |  72.97 |        3
-//1002 |    1000 |         87 |  66.19 |        3
-//1003 |    1000 |        243 |  83.20 |        1
-//1004 |    1001 |         80 | 127.56 |        3
-//1005 |    1001 |        639 | 193.80 |        1
-//1006 |    1002 |        563 | 156.08 |        3
-//1007 |    1003 |        532 |  89.98 |        3
-//1008 |    1003 |        374 |  87.17 |        1
-//1009 |    1003 |        932 |  32.69 |        3
-//1010 |    1003 |        662 | 141.31 |        3
-//1011 |    1003 |        304 |  39.84 |        1
-//1012 |    1004 |        138 | 125.81 |        3
-//1013 |    1004 |        656 | 103.99 |        3
-//1014 |    1004 |        285 | 168.79 |        3
-//1015 |    1004 |         84 | 113.79 |        2
-//(16 rows)
-//----
-//<1> Using `oc-client` to access the `retail-db` container;
-//<2> Accessing PostgreSQL from within the container;
-//<3> Connecting to the retail database;
-//<4> Listing all the sales;
-//<5> Listing all the items of the sales;
-//+
-//8. Next, back to the homepage of Kafdrop, open *`retail.expense-event` -> view messages -> view messages*; These events notify the service that will handle the cashback values processing, `cashback-service`.
-//+
-//images::03/kafdrop-expense-event.png[]
-//+
-// with https://developers.redhat.com/learn/openshift-streams-for-apache-kafka/guided-workshop-for-kafka-streams/what-is-kafka-streams[*Kafka Streams*], the `sales-aggregated` service aggregating, processing and enriching the events' data. Let's see the result of this processing with Kafdrop.
+==== Looking behind the scenes - cashback solution
+
+Differently than the search capability that only requires the integration layer (Retail DB -> ElasticSearch), to create cashback wallets we'll need to process and enrich the data before we use it. We will also need to guarantee the synchronization between the customer data in the `retail-db` and the `cashback-db`.
+
+1. When a new sale is registered, new lines are created in the `retail.sale` and `retail.line_item` tables. 
+2. Debezium then tracks and publishes events to *two topics*, one for each respective table, and one event for each respective line added/updated event that was tracked. But notice that in order for us to apply the cashback calculation business logic, we'll have in mind good design and architecture practices for microservices, where each microservice "is supposed to do one thing, and do it well". So, the event data aggregation, processing and enrichment will be executed by a service (`sales-streams`) before we actually do the cashback operations in another service (`cashback-service`); 
++
+Here's another way to explain this:
++
+* if someone buys two cactus and one lilly in the same purchase, there will be two line_items registered for a single sale. See below the tables structures:
++
+[.console-input]
+[source,sql]
+----
+$ oc rsh deployment/retail-db #<1>
+sh-4.4$ psql #<2>
+psql (12.5)
+Type "help" for help.
+
+postgres=# \c retail #<3>
+You are now connected to database "retail" as user "postgres".
+retail=# select * from sale;  #<4>
+sale_id | customer_id |          date
+---------+-------------+-------------------------
+1000 |        1000 | 2022-06-03 20:27:57.66
+1001 |        1000 | 2022-06-03 20:27:57.767
+1002 |        1000 | 2022-06-03 20:27:57.852
+1003 |        1000 | 2022-06-03 20:27:57.854
+1004 |        1000 | 2022-06-03 20:27:57.857
+(5 rows)
+
+retail=# select * from line_item; #<5>
+line_item_id | sale_id | product_id | price  | quantity
+--------------+---------+------------+--------+----------
+1000 |    1000 |        198 |  99.40 |        2
+1001 |    1000 |        851 |  72.97 |        3
+1002 |    1000 |         87 |  66.19 |        3
+1003 |    1000 |        243 |  83.20 |        1
+1004 |    1001 |         80 | 127.56 |        3
+1005 |    1001 |        639 | 193.80 |        1
+1006 |    1002 |        563 | 156.08 |        3
+1007 |    1003 |        532 |  89.98 |        3
+1008 |    1003 |        374 |  87.17 |        1
+1009 |    1003 |        932 |  32.69 |        3
+1010 |    1003 |        662 | 141.31 |        3
+1011 |    1003 |        304 |  39.84 |        1
+1012 |    1004 |        138 | 125.81 |        3
+1013 |    1004 |        656 | 103.99 |        3
+1014 |    1004 |        285 | 168.79 |        3
+1015 |    1004 |         84 | 113.79 |        2
+(16 rows)
+----
+<1> Use `oc-client` to access the `retail-db` container;
+<2> Access PostgreSQL from within the container;
+<3> Connect to the retail database;
+<4> List all the sales;
+<5> List all the items of the sales;
++
+* Debezium will stream each change individually, which results with several events in two topics, one of each table.
+* But, when we calculate the earned cashback for the sale, we use the total amount of the sale - the sum of all the line items of that sale.
+* Using https://developers.redhat.com/learn/openshift-streams-for-apache-kafka/guided-workshop-for-kafka-streams/what-is-kafka-streams[*Kafka Streams*], the `sales-aggregated` service aggregates, processes and enriches the events' data.
++
+.Partial code in the `Sales-Streams` service used to aggregate and enrich data;
+[.console-input]
+[source,java] 
+----
+// Join LineItem events with sale events by foreign key, aggregate Linetem price in sale
+KTable<Long, AggregatedSale> aggregatedSales = lineItemTable
+        .join(saleTable, lineItem -> lineItem.sale,
+                (lineItem, sale) -> new SaleAndLineItem(sale, lineItem),
+                Materialized.with(Serdes.Long(), saleAndLineItemSerde))
+        .groupBy((key, value) -> KeyValue.pair(value.sale.saleId, value), Grouped.with(Serdes.Long(), saleAndLineItemSerde))
+        .aggregate(AggregatedSale::new, (key, value, aggregate) -> aggregate.addLineItem(value),
+                (key, value, aggregate) -> aggregate.removeLineItem(value),
+                Materialized.with(Serdes.Long(), aggregatedSaleSerde));
+
+aggregatedSales.toStream().to(aggregatedSaleTopic, Produced.with(Serdes.Long(), aggregatedSaleSerde));
+----
++
+8. Next, if you go back to the homepage of Kafdrop, open *`retail.expense-event` -> view messages -> view messages*; The `sales-streams` service to notify the ecosystem that new processed information is available by publishing events on the `expense-event` topic. 
++
+Let's see the result of this processing with Kafdrop.
++
+image::03/kafdrop-expense-event.png[]
++
+Based on these events published in the `expense-event`, services like the `cashback-service` can react and use the event data to handle the cashback business logic operations. 
++ 
+NOTE: See how the values are calculated and persisted in the https://github.com/solution-pattern-cdc/cashback-service/blob/main/src/main/java/org/acme/cashback/processor/ValuesProcessor.java[cashback values processor] in the `cashback-service`
++ 
+* Let's take a look over the cashback service processing:
++
+.Partial code implementation in the https://github.com/solution-pattern-cdc/cashback-service/blob/e116b0b0f8067c1a69298e6e4b214224c0d3e1b6/src/main/java/org/acme/cashback/route/CashbackRoute.java[Cashback Route] in the cashback-service.
+[.console-input]
+[source,java]
+----
+        from("kafka:{{kafka.expenses.topic.name}}?groupId={{kafka.cashback_processor.consumer.group}}" + #<1>
+                "&autoOffsetReset=earliest")
+                .routeId("CashbackProcessor") 
+                .unmarshal(new JacksonDataFormat(ExpenseEvent.class))
+                .setHeader("operation", simple("${body.operation}")) #<2>
+                .setHeader("sale_id", simple("${body.saleId}")) #<2>
+                .to("direct:filterInvalidOperationCodes") #<3>
+                .to("direct:getData") #<4>
+                .to("direct:filterInvalidData") #<5>
+                .choice()
+                .when().simple("${header.operation} == 'c'").log(LoggingLevel.DEBUG,"Processing create event") #<6>
+                    .process("valuesProcessor")
+                    .choice()
+                        .when(simple("${body.cashbackId} == null"))
+                            .log(LoggingLevel.DEBUG, "No cashback wallet exists. Creating new cashback for: ${body}")
+                            .to("direct:createAndPersistCashback") 
+                    .end()
+                    .to("direct:updateEarnedCashbackData")
+                .endChoice()
+                .otherwise().when().simple("${header.operation}== 'u'").log(LoggingLevel.DEBUG,"Processing update event") #<7>
+                    .process("valuesProcessor")
+                    .to("direct:updateEarnedCashbackData")
+                .end();
+----
+<1> Consumed topic with name configured in the property `kafka.expenses.topic.name`;
+<2> Sets incoming information in the message header;
+<3> Filter out incoming operations that are not `create` and `update`;  
+<4> Retrieves existing customer and cashback information from the local database for the incoming sale;
+<5> Filter out information for incoming data that is invalid - is not in the cashback database;
+<6> When a new expense "create" event is received, the service checks if the customer already has a wallet - if not, creates one. Then, it updates the cashback wallet values calculated and persisted.  
+<7> If the incoming operation is "update", then, a new wallet does not need to be created. The values are calculated and updated.
+
+
+== Conclusion 
+
+In this section you have learned how to:
+
+. Provision the demo environment;
+. How to try out and check how CDC enables the delivery of the demo implementation:
+.. How a new search index technology could be added to the existing solution and enable enhanced search capabilities for legacy data;
+.. How a whole new cashback wallet capability could be added without impacting the legacy systems by using a distributed, event-driven and microservice-based architecture; 
+. Learn in-depth details about services can be orchestrated;
+
+The solution is built on top of a hybrid cloud model, with containerized services running on OpenShift (can be on a private or public cloud depending on how you provision the demo) consuming a managed OpenShift Streams for Apache Kafka. OpenShift streams is heart of this solution - it's a resilient and highly available Kafka instance managed by Red Hat, where all the topics reside and where all services can receive and send all events from/to.
+
+This design is only possible by the designing the architecture based on the Change Data Capture pattern - which was delivered with Debezium and Kafka Connectors.   

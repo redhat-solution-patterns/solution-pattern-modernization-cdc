@@ -21,5 +21,5 @@ xref:02-architecture.adoc#in_depth[{counter:submodule2}. An in-depth look at the
 xref:03-demo.adoc[{counter:module}. Demonstration]::
 +
 xref:03-demo.adoc#_demonstration[{counter:submodule3:1}. Demonstration] +
-xref:03-demo.adoc#_walkthrough_guide[{counter:submodule3}. Walkthrough guide]
+xref:03-demo.adoc#_walkthrough_guide[{counter:submodule3}. Run this demonstration]
 ====
