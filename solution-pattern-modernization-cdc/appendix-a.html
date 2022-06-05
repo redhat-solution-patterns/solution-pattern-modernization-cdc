@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Solution Patterns for Cloud Native Architectures</title>
+    <link rel="canonical" href="https://redhat-solution-patterns.github.io/solution-pattern-modernization-cdc/solution-pattern-modernization-cdc/appendix-a.html">
+    <meta name="generator" content="Antora 3.0.0">
+<link rel="stylesheet" href="../_/css/site.css">
+<link rel="stylesheet" href="../_/css/extra.css">
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EFPESFY3D2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-EFPESFY3D2');
+</script>  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://redhat.com" target="_blank"><img
+          src="../_/img/logo.png" height="40px" alt="Cloud Native Architecture Solution Patterns"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="https://redhat-solution-patterns.github.io/solution-pattern-modernization-cdc">Solution Patterns for Cloud Native Architectures</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+
+       
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Solution Patterns</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Adopt Change Data Capture for <br/>stack modernization</a>
+            <a class="navbar-item" href="#">Edge-to-Cloud Pipelines</a>     <a class="navbar-item" href="#">Event driven architecture</a>
+          </div>
+        </div>
+
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Other</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://redhat-gitops-patterns.io/">GitOps Solution Patterns</a>
+            <a class="navbar-item" href="https://hybrid-cloud-patterns.io/">Hybrid Cloud Solution Patterns</a>
+          </div>
+        </div>
+
+        <a class="navbar-item" target="_blank" href="https://www.redhat.com/en/products/middleware">Red Hat Application Services</a>
+
+        <a class="navbar-item" target="_blank" href="https://developers.redhat.com/middleware">Learn more</a>
+
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="solution-pattern-modernization-cdc" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html" class=" query-params-link">Modernize your stack by adopting Change Data Capture</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">1. Home page</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html#use-cases">1.1 Use cases</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html#_content_overview">1.2 Content Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-pattern.html#_story">1.3 The story behind this solution pattern</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-pattern.html#_solution">1.4 The solution</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html#_content_overview">1.5 Explore more solution patterns</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="02-architecture.html">2. Architecture</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-architecture.html#challenges">2.1. Common challenges</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-architecture.html#tech_stack">2.2. Technology stack</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="02-architecture.html#in_depth">2.3. An in-depth look at the solution&#8217;s architecture</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="02-architecture.html#scenario-cashback-wallet">2.3.1 Scenario: Cashback Wallet</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="02-architecture.html#scenario-search">2.3.2 Scenario: Full-text search for data in legacy database</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="03-demo.html">3. See the Solution in Action</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-demo.html#demo_desc">3.1. Demonstration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="03-demo.html#run_demo">3.2. Run this demonstration</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="03-demo.html#pre_reqs_demo">3.3. Before getting started</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="03-demo.html#install_demo">3.4. Installing the demo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="03-demo.html#walthrough_demo">3.5. Walkthrough guide</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="https://redhat-solution-patterns.github.io/">4. Other Red Hat Solution Patterns</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Modernize your stack by adopting Change Data Capture</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Modernize your stack by adopting Change Data Capture</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/redhat-solution-patterns/solution-pattern-modernization-cdc/edit/master/documentation/modules/ROOT/pages/appendix-a.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<div class="sect4">
+<h5 id="_apendix_a"><a class="anchor" href="#_apendix_a"></a>apendix a</h5>
+
+</div>
+<div class="sect3">
+<h4 id="_services_description"><a class="anchor" href="#_services_description"></a>Services description</h4>
+<div class="paragraph">
+<p>Let&#8217;s understand the environment we currently have and take a look at the deployed services.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+To see the pods you can either look at the OpenShift Console or use <code>oc get deployment -n retail</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>These are the 11 services currently deployed:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 28%;">
+<col style="width: 13%;">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong>Service</strong></code></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>Type</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Description</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>cashback-db</code></p></td>
+<td class="tableblock halign-center valign-middle" rowspan="2"><p class="tableblock">Persistence</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PostgreSQL database for cashback related information.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>retail-db</code></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">PostgreSQL database used by the legacy services;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>kafka-connect-connect</code></p></td>
+<td class="tableblock halign-center valign-middle" rowspan="5"><p class="tableblock">Integration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Kafka connectors for database event streaming (debezium);</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>cashback-connector</code></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">Camel + Quarkus service for event-driven processing of expenses and customers;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastic-connector</code></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">Camel + Quarkus service for event-driven synchronization of product data with ElasticSearch;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sales-streams</code></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">Quarkus + Kafka Streams event-driven service for purchase data (sales data) aggregation and synchronization;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>cashback-service</code></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">Quarkus + Camel event-driven service responsible for calculating and maintaining cashback data up-to-date in the new database;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>retail-simulation</code></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">Data simulation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a Quarkus application that allows simulating a pre-selected number of purchases in the retail database;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>kafdrop</code></p></td>
+<td class="tableblock halign-center valign-middle" rowspan="3"><p class="tableblock">Data Visualization</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a kafka client ui to facilitate the visualization of events and topics;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>cashback-ui</code></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">Quarkus + Panache back-end service to facilitate the visualization of cashback information;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>search-service</code></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">Quarkus + ElasticSearch extension to simplify the visualization of the indexed data residing in elastic search;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_components_configuration"><a class="anchor" href="#_components_configuration"></a>Components configuration</h3>
+<div class="paragraph">
+<p>All the customization of the services is externalized using OpenShift secrets. As an example, let&#8217;s check the connection information for the <code>cashback-connector</code> service.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigating to <strong>Workloads &#8594; Deployments &#8594; cashback-connector &#8658; YAML</strong>, the following configuration section can be visualized:</p>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="_images/03/cashback-connector-deployment-configuration.png" target="_blank" rel="noopener"><img src="_images/03/cashback-connector-deployment-configuration.png" alt="cashback connector deployment configuration" width="100%"></a>
+</div>
+</div>
+</li>
+<li>
+<p>In order to find out exactly which configuration values are being used by the <code>cashback-connector</code> service, let&#8217;s take a look at the configured secret. On the left menu navigate to <strong>Workloads &#8594; Secrets</strong></p>
+</li>
+<li>
+<p>In the filter, search by the name <code>cashback-connector</code> and select the secret:</p>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="_images/03/cashback-connector-secret.png" target="_blank" rel="noopener"><img src="_images/03/cashback-connector-secret.png" alt="cashback connector secret" width="100%"></a>
+</div>
+</div>
+</li>
+<li>
+<p>Scroll to the bottom of the page and click on <strong>Reveal values</strong>, located in the Data section.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>The parameters you used in your Ansible provisioning inventory was used by Helm charts in order to generate these final values, which are a mix of default template values, plus your custom configuration.</p>
+</li>
+<li>
+<p>This service is configured to:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Connect to the Managed Kafka bootstrap server;</p>
+</li>
+<li>
+<p>Subscribe to the topics <code>retail.sale-aggregated</code> and <code>retail.updates.public.customer</code>;</p>
+</li>
+<li>
+<p>Be a publisher of events on the topic <code>retail.expense-event</code>;</p>
+</li>
+<li>
+<p>Connect to the <code>cashback-db</code>, a postgresql database;</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_additional_information"><a class="anchor" href="#_additional_information"></a>Additional information</h3>
+<div class="sect3">
+<h4 id="_kafka_connect_debezium_installation"><a class="anchor" href="#_kafka_connect_debezium_installation"></a>Kafka Connect - Debezium installation</h4>
+<div class="paragraph">
+<p>Debezium is provisioned on the cluster <a href="https://github.com/solution-pattern-cdc/helm/blob/main/retail/debezium/templates/debezium-connector.yaml">using Helm</a> and the Strimzi operator.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/03/kafka-connect.png" alt="kafka connect">
+</div>
+</div>
+</div>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img
+          src="../_/img/app-services-logo.png" height="40px" alt="Cloud Native Architecture Solution Patterns"  href="https://redhat.com" ></a>
+</footer><script src="../_/js/vendor/clipboard.js"></script>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
