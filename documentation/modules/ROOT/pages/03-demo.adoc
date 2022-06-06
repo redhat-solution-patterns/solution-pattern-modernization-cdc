@@ -8,18 +8,19 @@ This section brings information about the implementation of the solution pattern
 
 == See the Solution in Action
 
-[#demo-video]
-=== The enhanced search 
+Here's a list of videos that you can use to explore this solution pattern.
 
-In this video you can see the working implementation of the new enhanced search capabilities:
+* xref:03-demo.adoc#_see_an_overview_and_demonstration_of_this_solution_pattern[Solution Pattern Overview]
+* xref:03-demo.adoc#_see_the_provisioning_in_action[How to provision this demo]
+* xref:03-demo.adoc#_see_the_search_feature_in_action[The enhanced search capability in action]
+* xref:03-demo.adoc#_see_the_cashback_wallet_in_action[The Cashback Wallet capability in action]
 
-video::C90x_utWQkk[youtube, width=800, height=480]
+[#_see_an_overview_and_demonstration_of_this_solution_pattern]
+See an overview and demonstration of this solution pattern:
 
-=== The cashback wallet 
+Check below a twenty minutes explanation and demonstration of this solution pattern:
 
-The following video shows the working implementation of the new cashback wallet capabilities:
-
-video::W813zm5qG2Q[youtube, width=800, height=480]
+video::vTdP2mLXiHg[youtube, width=800, height=480]
 
 == Run this demonstration
 
@@ -29,6 +30,8 @@ In order to try out this demonstration you will need to provision the environmen
 2. Create an OpenShift Streams instance, configure ACL and topics;
 3. For ansible, configure the set of variables pointing with your environment settings;
 4. Run the ansible playbook and enjoy the demo.
+
+=== See the provisioning in action 
 
 The video below demonstrates how to do the provisioning that is described in details the next sections. You can follow the provisioning steps as you follow the video. 
 
@@ -231,6 +234,12 @@ To test the enhanced search capabilities, we will:
 4. Delete the product directly on the retail database; 
 4. Confirm that the product no longer shows up in the `search service`.
 
+==== See the search feature in action
+
+In this video you can see the working implementation of the new enhanced search capabilities:
+
+video::C90x_utWQkk[youtube, width=800, height=480]
+
 ==== Trying out the new enhanced search
 
 1. Using your browser, open the `search service`.
@@ -348,9 +357,16 @@ image::03/arch_search.png[]
 Now, let's see more ways we can explore CDC to add new capabilities to our existing stack. Since we have all the new sales being streamed as events, we can use it to build the new cashback wallet business.
 
 To walk through this demonstration, you will need to access the following services in your browser:
+
 * cashback-service-ui
 * kafdrop
 * simulation service Swagger-UI
+
+=== See the Cashback Wallet in action 
+
+The following video shows the working implementation of the new cashback wallet capabilities:
+
+video::W813zm5qG2Q[youtube, width=800, height=480]
 
 ==== Trying out the new cashback wallet 
 
