@@ -13,12 +13,14 @@
 *** xref:02-architecture.adoc#scenario-search[{module}.{submodule2}.{counter:_submodule2} Scenario: Full-text search for data in legacy database]]
 
 * xref:03-demo.adoc[{counter:module}. See the Solution in Action]
-** xref:03-demo.adoc#demo_desc[{module}.{counter:submodule3}. Demonstration]
-** xref:03-demo.adoc#run_demo[{module}.{counter:submodule3}. Run this demonstration]
-*** xref:03-demo.adoc#pre_reqs_demo[{module}.{counter:submodule3}. Before getting started]
-*** xref:03-demo.adoc#install_demo[{module}.{counter:submodule3}. Installing the demo]
-
-*** xref:03-demo.adoc#walthrough_demo[{module}.{counter:submodule3}. Walkthrough guide]
+** xref:03-demo.adoc#_see_the_solution_in_action[{module}.{counter:submodule3}. Demonstration]
+** xref:03-demo.adoc#_run_this_demonstration[{module}.{counter:submodule3}. Run this demonstration]
+*** xref:03-demo.adoc#_pre_requisites[{module}.{submodule3}.{counter:_submodule3}. Pre-requisites]
+*** xref:03-demo.adoc#_provisioning_the_demo[{module}.{submodule3}.{counter:_submodule3}. Provisioning]
+*** xref:03-demo.adoc#_installing_the_demo[{module}.{submodule3}.{_submodule3}. Accessing Services]
+** xref:03-demo.adoc#_walkthrough_guide[{module}.{counter:submodule3}. Walkthrough guide]
+*** xref:03-demo.adoc#_enhanced_search_capabilities_for_products[{module}.{submodule3}.{counter:_submodule4}. Enhanced Search]
+*** xref:03-demo.adoc#_cashback_wallet_functionality[{module}.{submodule3}.{counter:_submodule4}. Cashback Wallet]
 
 //* xref:04-workshop.adoc[{counter:module}. Workshop]
 //** xref:04-workshop.adoc#install_wksp[{module}.{counter:submodule4}. Installing the workshop environment]

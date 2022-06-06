@@ -2,24 +2,24 @@
 :sectnums:
 :sectlinks:
 :doctype: book
-:toc:
 :page-toclevels: 3
-
-== See the Solution in Action
 
 This section brings information about the implementation of the solution pattern, how you can install it, try it out and check the details of the implementation with an actual running application.
 
+== See the Solution in Action
 
-//== Demonstration
-//
-//[#demo-video]
-//=== Watch a demonstration
-//
-//In this video you can see xpto:
-//
-//video::3yULVMdqJ98[youtube, width=800, height=480]
-//
-//Next, you can learn how to walkthrough this demo.
+[#demo-video]
+=== The enhanced search 
+
+In this video you can see the working implementation of the new enhanced search capabilities:
+
+video::C90x_utWQkk[youtube, width=800, height=480]
+
+=== The cashback wallet 
+
+The following video shows the working implementation of the new cashback wallet capabilities:
+
+video::W813zm5qG2Q[youtube, width=800, height=480]
 
 == Run this demonstration
 
@@ -29,6 +29,10 @@ In order to try out this demonstration you will need to provision the environmen
 2. Create an OpenShift Streams instance, configure ACL and topics;
 3. For ansible, configure the set of variables pointing with your environment settings;
 4. Run the ansible playbook and enjoy the demo.
+
+The video below demonstrates how to do the provisioning that is described in details the next sections. You can follow the provisioning steps as you follow the video. 
+
+video::TvrbX4gKiv0[youtube, width=800, height=480]
 
 === Pre-requisites
 ==== Preparing the local environment 
