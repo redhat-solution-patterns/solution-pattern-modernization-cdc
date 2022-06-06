@@ -205,26 +205,34 @@
 <div class="sect1">
 <h2 id="_see_the_solution_in_action"><a class="anchor" href="#_see_the_solution_in_action"></a><a class="link" href="#_see_the_solution_in_action">1. See the Solution in Action</a></h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="demo-video"><a class="anchor" href="#demo-video"></a><a class="link" href="#demo-video">1.1. The enhanced search</a></h3>
 <div class="paragraph">
-<p>In this video you can see the working implementation of the new enhanced search capabilities:</p>
+<p>Here&#8217;s a list of videos that you can use to explore this solution pattern.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#_see_an_overview_and_demonstration_of_this_solution_pattern">Solution Pattern Overview</a></p>
+</li>
+<li>
+<p><a href="#_see_the_provisioning_in_action">How to provision this demo</a></p>
+</li>
+<li>
+<p><a href="#_see_the_search_feature_in_action">The enhanced search capability in action</a></p>
+</li>
+<li>
+<p><a href="#_see_the_cashback_wallet_in_action">The Cashback Wallet capability in action</a></p>
+</li>
+</ul>
+</div>
+<div id="_see_an_overview_and_demonstration_of_this_solution_pattern" class="paragraph">
+<p>See an overview and demonstration of this solution pattern:</p>
+</div>
+<div class="paragraph">
+<p>Check below a twenty minutes explanation and demonstration of this solution pattern:</p>
 </div>
 <div class="videoblock">
 <div class="content">
-<iframe width="800" height="480" src="https://www.youtube.com/embed/C90x_utWQkk?rel=0" frameborder="0" allowfullscreen></iframe>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_the_cashback_wallet"><a class="anchor" href="#_the_cashback_wallet"></a><a class="link" href="#_the_cashback_wallet">1.2. The cashback wallet</a></h3>
-<div class="paragraph">
-<p>The following video shows the working implementation of the new cashback wallet capabilities:</p>
-</div>
-<div class="videoblock">
-<div class="content">
-<iframe width="800" height="480" src="https://www.youtube.com/embed/W813zm5qG2Q?rel=0" frameborder="0" allowfullscreen></iframe>
-</div>
+<iframe width="800" height="480" src="https://www.youtube.com/embed/vTdP2mLXiHg?rel=0" frameborder="0" allowfullscreen></iframe>
 </div>
 </div>
 </div>
@@ -251,6 +259,8 @@
 </li>
 </ol>
 </div>
+<div class="sect2">
+<h3 id="_see_the_provisioning_in_action"><a class="anchor" href="#_see_the_provisioning_in_action"></a><a class="link" href="#_see_the_provisioning_in_action">2.1. See the provisioning in action</a></h3>
 <div class="paragraph">
 <p>The video below demonstrates how to do the provisioning that is described in details the next sections. You can follow the provisioning steps as you follow the video.</p>
 </div>
@@ -259,10 +269,11 @@
 <iframe width="800" height="480" src="https://www.youtube.com/embed/TvrbX4gKiv0?rel=0" frameborder="0" allowfullscreen></iframe>
 </div>
 </div>
+</div>
 <div class="sect2">
-<h3 id="_pre_requisites"><a class="anchor" href="#_pre_requisites"></a><a class="link" href="#_pre_requisites">2.1. Pre-requisites</a></h3>
+<h3 id="_pre_requisites"><a class="anchor" href="#_pre_requisites"></a><a class="link" href="#_pre_requisites">2.2. Pre-requisites</a></h3>
 <div class="sect3">
-<h4 id="_preparing_the_local_environment"><a class="anchor" href="#_preparing_the_local_environment"></a><a class="link" href="#_preparing_the_local_environment">2.1.1. Preparing the local environment</a></h4>
+<h4 id="_preparing_the_local_environment"><a class="anchor" href="#_preparing_the_local_environment"></a><a class="link" href="#_preparing_the_local_environment">2.2.1. Preparing the local environment</a></h4>
 <div class="paragraph">
 <p>Here is the list of tools you need in your machine to so you can use the automated installation.</p>
 </div>
@@ -328,7 +339,7 @@ ansible-galaxy collection list #the list should include kubernetes.core</code></
 </div>
 </div>
 <div class="sect3">
-<h4 id="_preparing_the_platforms"><a class="anchor" href="#_preparing_the_platforms"></a><a class="link" href="#_preparing_the_platforms">2.1.2. Preparing the platforms</a></h4>
+<h4 id="_preparing_the_platforms"><a class="anchor" href="#_preparing_the_platforms"></a><a class="link" href="#_preparing_the_platforms">2.2.2. Preparing the platforms</a></h4>
 <div class="ulist">
 <ul>
 <li>
@@ -366,7 +377,7 @@ If it&#8217;s your first time using OpenShift Streams, don&#8217;t worry. It&#82
 </div>
 </div>
 <div class="sect2">
-<h3 id="_provisioning_the_demo"><a class="anchor" href="#_provisioning_the_demo"></a><a class="link" href="#_provisioning_the_demo">2.2. Provisioning the demo</a></h3>
+<h3 id="_provisioning_the_demo"><a class="anchor" href="#_provisioning_the_demo"></a><a class="link" href="#_provisioning_the_demo">2.3. Provisioning the demo</a></h3>
 <div class="paragraph">
 <p>The solution&#8217;s components and services can be automatically provisioned using an ansible playbook.</p>
 </div>
@@ -374,7 +385,7 @@ If it&#8217;s your first time using OpenShift Streams, don&#8217;t worry. It&#82
 <p>The following steps will guide you on setting up an instance of OpenShift Streams for Apache Kafka and its resources, plus provisioning the demo services using Ansible.</p>
 </div>
 <div class="sect3">
-<h4 id="cli-tools"><a class="anchor" href="#cli-tools"></a><a class="link" href="#cli-tools">2.2.1. Provisioning OpenShift Streams (Kafka)</a></h4>
+<h4 id="cli-tools"><a class="anchor" href="#cli-tools"></a><a class="link" href="#cli-tools">2.3.1. Provisioning OpenShift Streams (Kafka)</a></h4>
 <div class="paragraph">
 <p>Before moving ahead to the steps of provisioning the services within your OpenShift cluster, first you should provision and configure your Kafka instance.</p>
 </div>
@@ -524,7 +535,7 @@ rhoas kafka topic create --name=retail.expense-event --partitions=1</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_installing_the_demo"><a class="anchor" href="#_installing_the_demo"></a><a class="link" href="#_installing_the_demo">2.2.2. Installing the demo</a></h4>
+<h4 id="_installing_the_demo"><a class="anchor" href="#_installing_the_demo"></a><a class="link" href="#_installing_the_demo">2.3.2. Installing the demo</a></h4>
 <div class="paragraph">
 <p>This solution pattern offers an easy installation process through ansible automation and helm charts. To get your environment up and running, follow the steps below:</p>
 </div>
@@ -592,7 +603,7 @@ cd ansible</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_obtaining_services_url"><a class="anchor" href="#_obtaining_services_url"></a><a class="link" href="#_obtaining_services_url">2.3. Obtaining services' URL</a></h3>
+<h3 id="_obtaining_services_url"><a class="anchor" href="#_obtaining_services_url"></a><a class="link" href="#_obtaining_services_url">2.4. Obtaining services' URL</a></h3>
 <div class="paragraph">
 <p>You can access the three services that exposes a UI through the exposed routes. Use one of the two options below to get the routes:</p>
 </div>
@@ -671,7 +682,18 @@ EOF</code></pre>
 </ol>
 </div>
 <div class="sect3">
-<h4 id="_trying_out_the_new_enhanced_search"><a class="anchor" href="#_trying_out_the_new_enhanced_search"></a><a class="link" href="#_trying_out_the_new_enhanced_search">3.1.1. Trying out the new enhanced search</a></h4>
+<h4 id="_see_the_search_feature_in_action"><a class="anchor" href="#_see_the_search_feature_in_action"></a><a class="link" href="#_see_the_search_feature_in_action">3.1.1. See the search feature in action</a></h4>
+<div class="paragraph">
+<p>In this video you can see the working implementation of the new enhanced search capabilities:</p>
+</div>
+<div class="videoblock">
+<div class="content">
+<iframe width="800" height="480" src="https://www.youtube.com/embed/C90x_utWQkk?rel=0" frameborder="0" allowfullscreen></iframe>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_trying_out_the_new_enhanced_search"><a class="anchor" href="#_trying_out_the_new_enhanced_search"></a><a class="link" href="#_trying_out_the_new_enhanced_search">3.1.2. Trying out the new enhanced search</a></h4>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -775,7 +797,7 @@ oc rsh deployment/retail-db</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_looking_behind_the_scenes_enhanced_search"><a class="anchor" href="#_looking_behind_the_scenes_enhanced_search"></a><a class="link" href="#_looking_behind_the_scenes_enhanced_search">3.1.2. Looking behind the scenes - enhanced search</a></h4>
+<h4 id="_looking_behind_the_scenes_enhanced_search"><a class="anchor" href="#_looking_behind_the_scenes_enhanced_search"></a><a class="link" href="#_looking_behind_the_scenes_enhanced_search">3.1.3. Looking behind the scenes - enhanced search</a></h4>
 <div class="paragraph">
 <p>It&#8217;s now time to take a look at how the system is working in order to allow this capability to work as we have seen.</p>
 </div>
@@ -880,13 +902,34 @@ If you go to your OpenShift, you should be able to see one <code>deployment</cod
 <p>Now, let&#8217;s see more ways we can explore CDC to add new capabilities to our existing stack. Since we have all the new sales being streamed as events, we can use it to build the new cashback wallet business.</p>
 </div>
 <div class="paragraph">
-<p>To walk through this demonstration, you will need to access the following services in your browser:
-* cashback-service-ui
-* kafdrop
-* simulation service Swagger-UI</p>
+<p>To walk through this demonstration, you will need to access the following services in your browser:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>cashback-service-ui</p>
+</li>
+<li>
+<p>kafdrop</p>
+</li>
+<li>
+<p>simulation service Swagger-UI</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_see_the_cashback_wallet_in_action"><a class="anchor" href="#_see_the_cashback_wallet_in_action"></a><a class="link" href="#_see_the_cashback_wallet_in_action">3.3. See the Cashback Wallet in action</a></h3>
+<div class="paragraph">
+<p>The following video shows the working implementation of the new cashback wallet capabilities:</p>
+</div>
+<div class="videoblock">
+<div class="content">
+<iframe width="800" height="480" src="https://www.youtube.com/embed/W813zm5qG2Q?rel=0" frameborder="0" allowfullscreen></iframe>
+</div>
 </div>
 <div class="sect3">
-<h4 id="_trying_out_the_new_cashback_wallet"><a class="anchor" href="#_trying_out_the_new_cashback_wallet"></a><a class="link" href="#_trying_out_the_new_cashback_wallet">3.2.1. Trying out the new cashback wallet</a></h4>
+<h4 id="_trying_out_the_new_cashback_wallet"><a class="anchor" href="#_trying_out_the_new_cashback_wallet"></a><a class="link" href="#_trying_out_the_new_cashback_wallet">3.3.1. Trying out the new cashback wallet</a></h4>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -985,7 +1028,7 @@ To see a detailed explanation about the events processing refer to the <a href="
 </div>
 </div>
 <div class="sect3">
-<h4 id="_looking_behind_the_scenes_cashback_solution"><a class="anchor" href="#_looking_behind_the_scenes_cashback_solution"></a><a class="link" href="#_looking_behind_the_scenes_cashback_solution">3.2.2. Looking behind the scenes - cashback solution</a></h4>
+<h4 id="_looking_behind_the_scenes_cashback_solution"><a class="anchor" href="#_looking_behind_the_scenes_cashback_solution"></a><a class="link" href="#_looking_behind_the_scenes_cashback_solution">3.3.2. Looking behind the scenes - cashback solution</a></h4>
 <div class="paragraph">
 <p>Differently than the search capability that only requires the integration layer (Retail DB &#8594; ElasticSearch), to create cashback wallets we&#8217;ll need to process and enrich the data before we use it. We will also need to guarantee the synchronization between the customer data in the <code>retail-db</code> and the <code>cashback-db</code>.</p>
 </div>
