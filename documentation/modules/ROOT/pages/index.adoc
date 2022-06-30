@@ -4,27 +4,13 @@
 :sectlinks:
 :doctype: book
 
-
-This solution pattern brings an architectural solution for scenarios where services integration must happen through data integration and cause no impact to the existing stack. 
-
-The architecture demonstrates how *https://www.redhat.com/en/topics/integration/what-is-change-data-capture[Change Data Capture (CDC)]* design pattern and event-driven architectures supports the *extension of existing capabilities with no changes to legacy apps* where new features can be delivered by cloud-native microservices and can deliver with *zero impact new search capabilities* through the integration of legacy and new services with specialized search index services.
+include::partials/_about.adoc[]
 
 include::content-overview.adoc[]
 
-[#use-cases]
-== Use cases
-
-Common use cases that can be addressed with this architecture are: 
-
-- Legacy services need to be extended or enhanced but, it is *not* a possibility to implement the changes in the existing application;
-- New applications or services must leverage existing data from an existing stack of services;
-- The organization seeks to move towards cloud environments and comply to best practices on cloud-native architectures but must also guarantee that any production-active legacy system data is also synchronized to the new services;
-- The organization seeks to move towards cloud environments and comply to best practices on cloud-native architectures but must also guarantee that any production-active legacy system data is also synchronized to the new services;
-- Legacy applications are now extended and complemented by capabilities delivered by new microservices or services (e.g. search index, cache) but the data should always be synchronized.
+include::partials/_use-cases.adoc[]
 
 include::01-pattern.adoc[]
-
-.xref:04-workshop.adoc[{counter:module}. Workshop]
 
 [discrete]
 == Explore more solution patterns
