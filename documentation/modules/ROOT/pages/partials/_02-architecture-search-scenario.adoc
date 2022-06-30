@@ -1,3 +1,7 @@
+
+[#scenario-search]
+=== Scenario: Full-text search for data in legacy database
+
 b) *Full-text search of legacy data:* enables full-text search for legacy data by adopting data integration through event streaming and processing. All changes to the legacy database tracked tables, including the operations create, updated and delete, should be reflected in the search index tool. The indexing tool will then store and index data in a way that supports fast searches.
 
 .Architecture Diagram: Search Solution Context. A representation of the solution for the new search functionality.

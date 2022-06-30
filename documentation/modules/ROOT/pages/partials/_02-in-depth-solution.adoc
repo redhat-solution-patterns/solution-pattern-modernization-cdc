@@ -10,12 +10,3 @@ Three main application contexts are part of this architecture. The *retail appli
 
 The two base scenarios targeted are, first, the event-driven processing of cashback for every customer purchase according to his/her customer status, and second, allowing the usage of full-text search capabilities for data that is still maintained via legacy application.
 
-[#scenario-cashback-wallet]
-=== Scenario: Cashback Wallet
-
-include::_02-architecture-cashback-scenario.adoc[]
-
-[#scenario-search]
-=== Scenario: Full-text search for data in legacy database
-
-include::_02-architecture-search-scenario.adoc[]

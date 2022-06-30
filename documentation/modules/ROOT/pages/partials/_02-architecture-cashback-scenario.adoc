@@ -1,3 +1,7 @@
+
+[#scenario-cashback-wallet]
+=== Scenario: Cashback Wallet
+
 a) *Cashback Wallet:* A new microservice implements new capabilities enabled by data integration. This integration happens via database event streaming and processing from legacy database to the new cashback database.
 
 .Architecture Diagram: Cashback Wallet Context. A representation of the solution for cashback functionality.

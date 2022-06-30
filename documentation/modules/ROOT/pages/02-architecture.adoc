@@ -17,4 +17,13 @@ include::partials/_02-tech-stack.adoc[]
 
 include::partials/_02-in-depth-solution.adoc[]
 
+[#scenario-cashback-wallet]
+=== Scenario: Cashback Wallet
+
+include::partials/_02-architecture-cashback-scenario.adoc[]
+
+[#scenario-search]
+=== Scenario: Full-text search for data in legacy database
+
+include::partials/_02-architecture-search-scenario.adoc[]
 

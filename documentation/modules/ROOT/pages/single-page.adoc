@@ -20,6 +20,10 @@ include::{includedir}/_01-solution-summary.adoc[]
 
 include::{includedir}/_02-in-depth-solution.adoc[]
 
+include::{includedir}/_02-architecture-cashback-scenario.adoc[]
+
+include::{includedir}/_02-architecture-search-scenario.adoc[]
+
 == Solution's demonstration
 
 include::{includedir}/_03-solution-in-action.adoc[]
