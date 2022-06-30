@@ -1,0 +1,52 @@
+== Common Challenges when Extending Stack Capabilities
+
+To better explain and detail the reasons for the existence of this solution pattern we'll picture some common needs and challenges amongst organizations that already have production systems and seeks innovation and modernization.
+
+=== Distributed Systems and Data Access
+
+In a distributed system it's common to have services that must use data owned by other services to deliver its capabilities.
+
+====
+*First challenge*
+
+Currently, there is a production legacy *retail service* that persists all sales and inventory data in a single database. The challenge is now to deliver a *cashback* capability that is highly dependent on the retail data, leveraging modern technology and architecture design best practices.
+====
+
+At a first glance, a simple solution to such complex problem would be to implement the cashback service with its own database for cashback domain data, and directly accessing retail database to obtain and update sales information.
+
+image::01/incorrect-db-access.png[width=75%]
+
+Unfortunately, this is an anti-pattern for data access and management in a distributed architecture. Multiple services should not consume and change data directly in databases owned by other services.
+
+=== The need to store data in multiple data stores
+
+Another modernization challenge is enhancing search capabilities in huge set of data, improving efficiency by increasing search response time, reducing number of disk accesses, using efficient search algorithms and being able to scale according to demand. To address such problem, we could complement the retail service by adding a search index like https://www.elastic.co/[Elasticsearch].
+
+====
+*Second challenge*
+
+In other to start consuming search capabilities from tools like Elasticsearch, the first step is to feed data into the tool's index. This process is called `indexing`. All the queryable data needs to be pushed to the tool's storage, the index (Apache Lucene).
+
+The production stack is based on the *retail service* that currently persists data to a single database. The challenge is to make all the retail data searchable through a tool like Elasticsearch.
+====
+
+One could think about changing the service to push the data not only to its own database, but also to elasticsearch. It becomes a distributed system where the core data operations are no longer handled in single transactions. Be aware: this is yet another anti-pattern, called https://developers.redhat.com/articles/2021/07/30/avoiding-dual-writes-event-driven-applications[dual write].
+
+[IMPORTANT]
+https://developers.redhat.com/articles/2021/07/30/avoiding-dual-writes-event-driven-applications[Dual writes] can cause data inconsistency problems for distributed systems.
+
+image::01/incorrect-dual-write.png[width=75%]
+
+The consequence of issues in this solution would be to have an outdated data being queried by the user, in other words, a user could potentially see an item for sale that is no longer available, or see a list of items with an outdated price.
+
+Other than data inconsistency, changes to the legacy application would be required. Such changes are not always possible either for business or technological restrictions.
+
+[.anti-patterns]
+==== Avoid Antipatterns
+
+Think twice before delivering solutions with antipatterns. Here's a summary of the two antipatterns we've seen so far:
+
+Shared databases::
+Multiple services are linked through a single database.
+Dual write::
+A situation when a service inserts and/or changes data in two or more different data stores or systems. (e.g. database and search index or a distributed cache).

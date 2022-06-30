@@ -1,0 +1,3 @@
+The solution is built on top of a hybrid cloud model, with containerized services running on OpenShift (can be on a private or public cloud depending on how you provision the demo) consuming a managed OpenShift Streams for Apache Kafka. OpenShift streams is heart of this solution - it's a resilient and highly available Kafka instance managed by Red Hat, where all the topics reside and where all services can receive and send all events from/to.
+
+This design is only possible by the designing the architecture based on the Change Data Capture pattern - which was delivered with Debezium and Kafka Connectors.
