@@ -14,7 +14,7 @@ include::content-overview.adoc[]
 [#use-cases]
 == Use cases
 
-Common use cases that can be address with this architecture are: 
+Common use cases that can be addressed with this architecture are: 
 
 - Legacy services need to be extended or enhanced but, it is *not* a possibility to implement the changes in the existing application;
 - New applications or services must leverage existing data from an existing stack of services;
