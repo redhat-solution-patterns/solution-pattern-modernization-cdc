@@ -8,26 +8,230 @@
 :toclevels: 1
 :sectlinks:
 
-include::{includedir}/_about.adoc[]
 
-include::{includedir}/_use-cases.adoc[]
+== Solution Overview
 
-include::{includedir}/_02-tech-stack.adoc[]
+This solution pattern brings an architectural solution for scenarios where services integration must happen through data integration and cause no impact to the existing stack.
 
-include::{includedir}/_02-common-challenges.adoc[]
+The architecture demonstrates how *https://www.redhat.com/en/topics/integration/what-is-change-data-capture[Change Data Capture (CDC)]* design pattern and event-driven architectures supports the *extension of existing capabilities with no changes to legacy apps* where new features can be delivered by cloud-native microservices and can deliver with *zero impact new search capabilities* through the integration of legacy and new services with specialized search index services.
 
-include::{includedir}/_01-solution-summary.adoc[]
 
-include::{includedir}/_02-in-depth-solution.adoc[]
+[#use-cases]
+== Use cases
 
-include::{includedir}/_02-architecture-cashback-scenario.adoc[]
+Common use cases that can be addressed with this architecture are:
 
-include::{includedir}/_02-architecture-search-scenario.adoc[]
+- Legacy services need to be extended or enhanced but, it is *not* a possibility to implement the changes in the existing application;
+- New applications or services must leverage existing data from an existing stack of services;
+- The organization seeks to move towards cloud environments and comply to best practices on cloud-native architectures but must also guarantee that any production-active legacy system data is also synchronized to the new services;
+- The organization seeks to move towards cloud environments and comply to best practices on cloud-native architectures but must also guarantee that any production-active legacy system data is also synchronized to the new services;
+- Legacy applications are now extended and complemented by capabilities delivered by new microservices or services (e.g. search index, cache) but the data should always be synchronized.
 
-== Solution's demonstration
 
-include::{includedir}/_03-solution-in-action.adoc[]
+[#tech_stack]
+== Technology Stack
+
+* https://www.redhat.com/en/technologies/cloud-computing/openshift[Red Hat OpenShift]
+* Red Hat Application Foundation
+** https://access.redhat.com/products/quarkus[Quarkus]
+** https://www.redhat.com/en/technologies/jboss-middleware/fuse[Camel (a.k.a. Red Hat Fuse)]
+** https://developers.redhat.com/articles/2021/12/06/improve-your-kafka-connect-builds-debezium[Debezium and Kafka connect]
+** https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-streams-for-apache-kafka[Kafka (a.k.a. Red Hat AMQ Streams]
+** https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-streams-for-apache-kafka[Kafka Streams]
+* Other:
+** https://www.elastic.co/[ElasticSearch]
+** https://www.postgresql.org/[PostgreSQL database]
+** https://helm.sh/[Helm]
+
+
+== Common Challenges when Extending Stack Capabilities
+
+To better explain and detail the reasons for the existence of this solution pattern we'll picture some common needs and challenges amongst organizations that already have production systems and seeks innovation and modernization.
+
+=== Distributed Systems and Data Access
+
+In a distributed system it's common to have services that must use data owned by other services to deliver its capabilities.
+
+====
+*First challenge*
+
+Currently, there is a production legacy *retail service* that persists all sales and inventory data in a single database. The challenge is now to deliver a *cashback* capability that is highly dependent on the retail data, leveraging modern technology and architecture design best practices.
+====
+
+At a first glance, a simple solution to such complex problem would be to implement the cashback service with its own database for cashback domain data, and directly accessing retail database to obtain and update sales information.
+
+image::01/incorrect-db-access.png[width=75%]
+
+Unfortunately, this is an anti-pattern for data access and management in a distributed architecture. Multiple services should not consume and change data directly in databases owned by other services.
+
+=== The need to store data in multiple data stores
+
+Another modernization challenge is enhancing search capabilities in huge set of data, improving efficiency by increasing search response time, reducing number of disk accesses, using efficient search algorithms and being able to scale according to demand. To address such problem, we could complement the retail service by adding a search index like https://www.elastic.co/[Elasticsearch].
+
+====
+*Second challenge*
+
+In other to start consuming search capabilities from tools like Elasticsearch, the first step is to feed data into the tool's index. This process is called `indexing`. All the queryable data needs to be pushed to the tool's storage, the index (Apache Lucene).
+
+The production stack is based on the *retail service* that currently persists data to a single database. The challenge is to make all the retail data searchable through a tool like Elasticsearch.
+====
+
+One could think about changing the service to push the data not only to its own database, but also to elasticsearch. It becomes a distributed system where the core data operations are no longer handled in single transactions. Be aware: this is yet another anti-pattern, called https://developers.redhat.com/articles/2021/07/30/avoiding-dual-writes-event-driven-applications[dual write].
+
+[IMPORTANT]
+https://developers.redhat.com/articles/2021/07/30/avoiding-dual-writes-event-driven-applications[Dual writes] can cause data inconsistency problems for distributed systems.
+
+image::01/incorrect-dual-write.png[width=75%]
+
+The consequence of issues in this solution would be to have an outdated data being queried by the user, in other words, a user could potentially see an item for sale that is no longer available, or see a list of items with an outdated price.
+
+Other than data inconsistency, changes to the legacy application would be required. Such changes are not always possible either for business or technological restrictions.
+
+[.anti-patterns]
+==== Avoid Antipatterns
+
+Think twice before delivering solutions with antipatterns. Here's a summary of the two antipatterns we've seen so far:
+
+Shared databases::
+Multiple services are linked through a single database.
+Dual write::
+A situation when a service inserts and/or changes data in two or more different data stores or systems. (e.g. database and search index or a distributed cache).
+
+== Technical overview
+
+This solution pattern builds on top an event-driven architecture in order to support the extension of the legacy stack. The architecture includes new microservices, event streaming, event processing and search indexing tools.
+
+In respect to the xref:_story_goals[story goals] and xref:use-cases[targeted use cases], it's recommended to consider adopting an https://www.enterpriseintegrationpatterns.com/[Enterprise Integration Pattern] for data integration, more specifically, adopting the https://www.redhat.com/en/topics/integration/what-is-change-data-capture[Change Data Capture (CDC)] pattern.
+
+This solution requires *no source code changes* in the existing services. The core concept builds on data integration between legacy and new services through usage of asynchronous events. A short description of this solution key concept is:
+
+****
+Relevant changes to data persisted in the tracked databases (e.g. delete/insert/update) are captured and published as events. Then, external services react to events and execute necessary operations.
+****
+
+The integration happens like this:
+
+1. Using https://debezium.io/[Debezium], the database becomes an event stream. Since data changes are directly tracked, the legacy application code won't require changes.
+2. The captured data changes are pushed to topics in a https://www.redhat.com/en/topics/integration/what-is-apache-kafka[Kafka] broker.
+3. The services that offers that extra capabilities can then subscribe to relevant topics and use the events to obtain the information needed to execute its logic.
+
+[TIP]
+For detailed architecture diagrams please check the xref:02-architecture.adoc[In Depth Architecture] section.
+
+See below a simplified representation of the solution:
+
+.Simplified representation of the integration between the legacy application and the new technology stack.
+
+image::01/simplified-tech-usage.png[width=100%]
+
+The whole solution builds upon the event streams flowing for each change on the database. The data integration is the enabler for all the new services to execute their respective operations.
+
+The following https://c4model.com[diagram] represents an abstract architectural view of the system scope, personas involved, the multiple apps and storage:
+
+.Architecture Diagram: System Context. An abstract representation of the whole solution.
+[link=_images/02/architectural-overview.png, window="_blank"]
+image::02/architectural-overview.png[width=100%]
+
+Three main application contexts are part of this architecture. The *retail application* represents the legacy application. The *cashback application* and the *search application*, represent the two new use cases to be addressed without impacting the existing service.
+
+The two base scenarios targeted are, first, the event-driven processing of cashback for every customer purchase according to his/her customer status, and second, allowing the usage of full-text search capabilities for data that is still maintained via legacy application.
+
+
+[#scenario-cashback-wallet]
+=== Scenario: Cashback Wallet
+
+a) *Cashback Wallet:* A new microservice implements new capabilities enabled by data integration. This integration happens via database event streaming and processing from legacy database to the new cashback database.
+
+.Architecture Diagram: Cashback Wallet Context. A representation of the solution for cashback functionality.
+[link=_images/02/arch-cashback-overview.png, window="_blank"]
+image::02/arch-cashback-overview.png[width=100%]
+
+1. The cashback processing kicks-off when a new purchase is registered via legacy application. In the demonstration implemented for this solution pattern, we use a service to simulate purchases and register them in the database.
+2. Debezium will capture all changes in the database tables below;
+- List of tracked tables in retail database: `public.customer`,`public.sale`,`public.line_item`,`public.product`
+3. Next, https://debezium.io[Debezium] streams the data them over to Kafka. The event streaming solution can be hosted on-premise or on the cloud. In this implementation, we are using https://red.ht/TryKafka[Red Hat Managed OpenShift Streams for Apache Kafka].
+4. An integration microservice, `sales-streams`, reacts to events captured by Debezium and published on three topics, respective to `sale-change-event` and `lineitem-change-event`.
+5. Using https://quarkus.io/guides/kafka-streams[Kafka Streams], the service aggregates multiple events that correlates to a unique purchase. The service will calculate the total amount of the purchase based on individual items price captured, and will publish the enriched data to the topic `sales-aggregated`.
+6. Another event-driven microservice is responsible for tracking customer's change streamed by Debezium, and for reacting to new enriched sales information - in other words, reacting to data processed by the `sales-stream` application.
+7. The service synchronizes `customers` and `expenses` in the cashback database. This database used to store new cashback feature-related data.
+8. Once the `cashback-connector` microservice finished its operations, it will notify the ecosystem that a new or updated expense is available - especially for cashback-processing. A new event is published to an `expense-events` topic so that interested (subscribed) services can act if needed.
+9. Now that every information is synchronized in the cashback database, the system can calculate and update any incoming cashback amount the customer earned when purchasing products. The choreography goes on as the `cashback-service` jumps in and reacts to the `expense-events` topic.
+- This microservice is reponsible for the calculation of the cashback based on a customer status, and for making sure the customer will earn a percentual relative to each expense amount. Every customer owns a *Cashback Wallet*, in other words, all incoming cashback can be accumulated and used later. Since this service is responsible for integrating services in a cloud environment, the  technologies used in the demo implementation are https://quarkus.io/guides/camel[Camel, with Quarkus as the runtime].
+10. With the values properly calculated, the `cashback-service` persists cashback-related information, including new cashback wallets for first-time customers, incoming cashback for each single customer's expense, and total cashback.
+11. The user can visualize cashback data using a sample application `cashback-ui`, which runs with Quarkus and uses Panache Rest to handle persistence and expose REST endpoints. Information is finally displayed through an angular-based page. This application is used in the demo to help developers visualizing the demonstration results.
++
+.Cashback Wallet UI: sample demo ui for easier data visualization when trying the solution pattern implementation.
+[link=_images/02/cashback-ui.png, window="_blank"]
+image::02/cashback-ui.png[width=100%]
+
+
+[#scenario-search]
+=== Scenario: Full-text search for data in legacy database
+
+b) *Full-text search of legacy data:* enables full-text search for legacy data by adopting data integration through event streaming and processing. All changes to the legacy database tracked tables, including the operations create, updated and delete, should be reflected in the search index tool. The indexing tool will then store and index data in a way that supports fast searches.
+
+.Architecture Diagram: Search Solution Context. A representation of the solution for the new search functionality.
+[link=_images/02/arch-search-overview.png, window="_blank"]
+image::02/arch-search-overview.png[width=100%]
+
+Similarly to the behavior of the cashback scenario, here Debezium is tracking changes in the retail database. All changes to product data is streamed to Kafka. The `elastic-connector` service reacts to product events and synchronizes it within ElasticSearch product index.
+
+For demonstration purposes, the `search-service` holds a sample UI to allow searching data in the indexing tool.
+
+The following services are part of this scenario:
+
+* *Retail database*: stores all information from the legacy application. It includes information about *products*, *customers* and new *sales* (detailed through *line items*).The tables in this database are tracked by Debezium.
+* *Debezium*: tracks all events that happens in tables from retail db (public.customer,public.sale,public.line_item,public.product) and streams changes into Kafka streams;
+* *Elastic connector service*: an event-driven microservice that reacts to products' events and push relevant updates to Elastic. This service capabilities were developed with with Camel and Quarkus.
+* *Search service*: a sample quarkus service that integrates with ElasticSearch using the https://quarkus.io/guides/elasticsearch[quarkus elastic-rest-client extension], and exposes a REST endpoint for searching products by name and description. For demonstration purposes, this service has a page to facilitate visualizing the search results.
+
+.Seach Service: a Quarkus client that integrates with Elastic for easier search results visualization.
+[link=_images/02/search-ui.png, window="_blank"]
+image::02/search-ui.png[width=100%]
+
+
+/== Solution's demonstration
+
+Here's a list of videos that you can use to explore this solution pattern.
+
+* xref:03-demo.adoc#_see_an_overview_and_demonstration_of_this_solution_pattern[Solution Pattern Overview]
+* xref:03-demo.adoc#_see_the_provisioning_in_action[How to provision this demo]
+* xref:03-demo.adoc#_see_the_search_feature_in_action[The enhanced search capability in action]
+* xref:03-demo.adoc#_see_the_cashback_wallet_in_action[The Cashback Wallet capability in action]
+
+[#_see_an_overview_and_demonstration_of_this_solution_pattern]
+See an overview and demonstration of this solution pattern:
+
+Check below a twenty minutes explanation and demonstration of this solution pattern:
+
+video::vTdP2mLXiHg[youtube, width=800, height=480]
 
 === Conclusion
 
-include::{includedir}/_03-wrap-up.adoc[]
+The solution is built on top of a hybrid cloud model, with containerized services running on OpenShift (can be on a private or public cloud depending on how you provision the demo) consuming a managed OpenShift Streams for Apache Kafka. OpenShift streams is heart of this solution - it's a resilient and highly available Kafka instance managed by Red Hat, where all the topics reside and where all services can receive and send all events from/to.
+
+This design is only possible by the designing the architecture based on the Change Data Capture pattern - which was delivered with Debezium and Kafka Connectors.
+
+//include::{includedir}/_about.adoc[]
+//
+//include::{includedir}/_use-cases.adoc[]
+//
+//include::{includedir}/_02-tech-stack.adoc[]
+//
+//include::{includedir}/_02-common-challenges.adoc[]
+//
+//include::{includedir}/_01-solution-summary.adoc[]
+//
+//include::{includedir}/_02-in-depth-solution.adoc[]
+//
+//include::{includedir}/_02-architecture-cashback-scenario.adoc[]
+//
+//include::{includedir}/_02-architecture-search-scenario.adoc[]
+//
+//== Solution's demonstration
+//
+//include::{includedir}/_03-solution-in-action.adoc[]
+//
+//=== Conclusion
+//
+//include::{includedir}/_03-wrap-up.adoc[]
