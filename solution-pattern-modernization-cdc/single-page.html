@@ -194,7 +194,19 @@
   <div class="content">
 <article class="doc">
 <h1 class="page">Solution Pattern: Using Change Data Capture for Stack Modernization</h1>
-<div id="preamble">
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_solution_overview">Solution Overview</a></li>
+<li><a href="#use-cases">Use cases</a></li>
+<li><a href="#tech_stack">Technology Stack</a></li>
+<li><a href="#_common_challenges_when_extending_stack_capabilities">Common Challenges when Extending Stack Capabilities</a></li>
+<li><a href="#_technical_overview">Technical overview</a></li>
+<li><a href="#_solutions_demonstration">Solution&#8217;s demonstration</a></li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="_solution_overview"><a class="anchor" href="#_solution_overview"></a><a class="link" href="#_solution_overview">Solution Overview</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This solution pattern brings an architectural solution for scenarios where services integration must happen through data integration and cause no impact to the existing stack.</p>
@@ -202,48 +214,13 @@
 <div class="paragraph">
 <p>The architecture demonstrates how <strong><a href="https://www.redhat.com/en/topics/integration/what-is-change-data-capture">Change Data Capture (CDC)</a></strong> design pattern and event-driven architectures supports the <strong>extension of existing capabilities with no changes to legacy apps</strong> where new features can be delivered by cloud-native microservices and can deliver with <strong>zero impact new search capabilities</strong> through the integration of legacy and new services with specialized search index services.</p>
 </div>
-<h2 id="_content_overview" class="discrete">Content overview</h2>
-<div class="exampleblock">
-<div class="content">
-<div class="dlist">
-<dl>
-<dt class="hdlist1"><a href="index.html" class="xref page">1. Solution Pattern</a></dt>
-<dd>
-<div class="paragraph">
-<p><a href="index.html#use-cases" class="xref page">1.1. Use cases</a><br>
-<a href="index.html#_content_overview" class="xref page">1.2. Content overview</a><br>
-<a href="01-pattern.html#_the_story_behind_this_solution_pattern" class="xref page">1.3. The story behind this solution pattern</a><br>
-<a href="01-pattern.html#_the_solution" class="xref page">1.4. The solution</a><br>
-<a href="index.html#_explore_more_solution_patterns" class="xref page">1.5. Explore more solution patterns</a></p>
-</div>
-</dd>
-<dt class="hdlist1"><a href="02-architecture.html" class="xref page">2. Architecture</a></dt>
-<dd>
-<div class="paragraph">
-<p><a href="02-architecture.html#_common_challenges_when_extending_stack_capabilities" class="xref page">2.1. Common challenges</a><br>
-<a href="02-architecture.html#tech_stack" class="xref page">2.2. Technology stack</a><br>
-<a href="02-architecture.html#in_depth" class="xref page">2.3. An in-depth look at the solution&#8217;s architecture</a><br></p>
-</div>
-</dd>
-<dt class="hdlist1"><a href="03-demo.html" class="xref page">3. Demonstration</a></dt>
-<dd>
-<div class="paragraph">
-<p><a href="03-demo.html#_see_the_solution_in_action" class="xref page">3.1. See the Solution in Action</a><br>
-<a href="03-demo.html#_run_this_demonstration" class="xref page">3.2. Run this demonstration</a><br>
-<a href="03-demo.html#_walkthrough_guide" class="xref page">3.3. Walkthrough guide</a></p>
-</div>
-</dd>
-</dl>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="use-cases"><a class="anchor" href="#use-cases"></a><a class="link" href="#use-cases">1. Use cases</a></h2>
+<h2 id="use-cases"><a class="anchor" href="#use-cases"></a><a class="link" href="#use-cases">Use cases</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Common use cases that can be address with this architecture are:</p>
+<p>Common use cases that can be addressed with this architecture are:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -267,271 +244,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_the_story_behind_this_solution_pattern"><a class="anchor" href="#_the_story_behind_this_solution_pattern"></a><a class="link" href="#_the_story_behind_this_solution_pattern">2. The story behind this solution pattern</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The solution pattern is backed by the story of a retail store that has been active in the market for more than fifteen years. This retail store uses a single application to manage the <code>inventory</code>, <code>catalog</code> and <code>sales</code> during their daily operations.</p>
-</div>
-<div class="quoteblock">
-<blockquote>
-We are a leading retail store acting in the market for over 15 years. We managed to start digital technologies adoption many years ago by acquiring a solution for our inventory and sales registrations. Our biggest challenge is to join competition with high-tech competitors.
-</blockquote>
-<div class="attribution">
-&#8212; Alex Tizon - CEO<br>
-<cite>About company current situation</cite>
-</div>
-</div>
-<div class="paragraph">
-<p>Here are some characteristics of the existing technology stack:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>The technology has been acquired many years ago, and no source code is available.</p>
-</li>
-<li>
-<p>The application, application server and databases are installed and running in an on premise environment.</p>
-</li>
-<li>
-<p>There are domain experts who know how to keep the inventory and catalog list updated.</p>
-</li>
-<li>
-<p>There are operations running 24/7 using the sales application, stopping the application impacts the money income directly.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>It&#8217;s getting hard to compete with more high-tech companies, but the technical team does not have the required skills to boostrap the adoption of cloud-native technologies to enhance the organization online services.</p>
-</div>
-<div class="quoteblock">
-<blockquote>
-Our first step into modernization is developing a new cashback system for our customers. Adding to that, our current service lacks good searching capabilities so we need better ways for customers to find what they need.
-</blockquote>
-<div class="attribution">
-&#8212; Avery Smith- CTO<br>
-<cite>On modernization goals</cite>
-</div>
-</div>
-<h3 id="_story_goals" class="discrete">Story Goals</h3>
-<div class="paragraph">
-<p>To get started, the business and technical executives came up with initial goals to be achieved as a first step towards the organization modernization:</p>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">The Cashback Wallet Functionality</dt>
-<dd>
-<div class="ulist">
-<ul>
-<li>
-<p>Customers should receive a percentage of their purchases as cashback.</p>
-</li>
-<li>
-<p>All the earned cashback is now part of the Cashback Wallet.</p>
-</li>
-<li>
-<p>With this, upcoming purchases can be paid either with the customer money or using available cashback in the customer Cashback Wallet.</p>
-</li>
-<li>
-<p>The customer should be able to check all transaction history including earned cashback and spent cashback</p>
-</li>
-<li>
-<p>New services and technologies must easily fit in cloud environments as we seek to move forward with clo adoption.</p>
-</li>
-</ul>
-</div>
-</dd>
-<dt class="hdlist1">Enhanced search capabilities</dt>
-<dd>
-<div class="ulist">
-<ul>
-<li>
-<p>Customers should be able to easily search for what they need;</p>
-</li>
-<li>
-<p>They should be able to search by part or all of the product name.</p>
-</li>
-<li>
-<p>The operations should still be able to use the legacy application to maintain the catalog and this data should benefit from the enhanced search capabilities.</p>
-</li>
-<li>
-<p>The new solution should be able to provide to technical team metrics about the search, like query latency and  request rate;</p>
-</li>
-<li>
-<p>If a new tool is used, we want to be able to choose where to deploy it - we want to be free of vendor lock-in.</p>
-</li>
-</ul>
-</div>
-</dd>
-</dl>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_the_solution"><a class="anchor" href="#_the_solution"></a><a class="link" href="#_the_solution">3. The Solution</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>This solution pattern builds on top an event-driven architecture in order to support the extension of the legacy stack. The architecture includes new microservices, event streaming, event processing and search indexing tools.</p>
-</div>
-<div class="paragraph">
-<p>In respect to the <a href="#_story_goals">story goals</a> and <a href="#use-cases">targeted use cases</a>, it&#8217;s recommended to consider adopting an <a href="https://www.enterpriseintegrationpatterns.com/">Enterprise Integration Pattern</a> for data integration, more specifically, adopting the <a href="https://www.redhat.com/en/topics/integration/what-is-change-data-capture">Change Data Capture (CDC)</a> pattern.</p>
-</div>
-<div class="paragraph">
-<p>This solution requires <strong>no source code changes</strong> in the existing services. The core concept builds on data integration between legacy and new services through usage of asynchronous events. A short description of this solution key concept is:</p>
-</div>
-<div class="sidebarblock">
-<div class="content">
-<div class="paragraph">
-<p>Relevant changes to data persisted in the tracked databases (e.g. delete/insert/update) are captured and published as events. Then, external services react to events and execute necessary operations.</p>
-</div>
-</div>
-</div>
-<div class="paragraph">
-<p>The integration happens like this:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Using <a href="https://debezium.io/">Debezium</a>, the database becomes an event stream. Since data changes are directly tracked, the legacy application code won&#8217;t require changes.</p>
-</li>
-<li>
-<p>The captured data changes are pushed to topics in a <a href="https://www.redhat.com/en/topics/integration/what-is-apache-kafka">Kafka</a> broker.</p>
-</li>
-<li>
-<p>The services that offers that extra capabilities can then subscribe to relevant topics and use the events to obtain the information needed to execute its logic.</p>
-</li>
-</ol>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-For detailed architecture diagrams please check the <a href="02-architecture.html" class="xref page">In Depth Architecture</a>] section.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>See below a simplified representation of the solution:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/01/simplified-tech-usage.png" alt="simplified tech usage" width="100%">
-</div>
-<div class="title">Figure 1. Simplified representation of the integration between the legacy application and the new technology stack.</div>
-</div>
-</div>
-</div>
-<h1 id="_solution_pattern_using_change_data_capture_for_stack_modernization" class="sect0"><a class="anchor" href="#_solution_pattern_using_change_data_capture_for_stack_modernization"></a><a class="link" href="#_solution_pattern_using_change_data_capture_for_stack_modernization">Solution Pattern: Using Change Data Capture for Stack Modernization</a></h1>
-
-<h1 id="_architecture" class="sect0"><a class="anchor" href="#_architecture"></a><a class="link" href="#_architecture">Architecture</a></h1>
-<div class="openblock partintro">
-<div class="content">
-Introduction for the architecture of this solution pattern.
-</div>
-</div>
-<div class="sect1">
-<h2 id="_common_challenges_when_extending_stack_capabilities"><a class="anchor" href="#_common_challenges_when_extending_stack_capabilities"></a><a class="link" href="#_common_challenges_when_extending_stack_capabilities">4. Common Challenges when Extending Stack Capabilities</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>To better explain and detail the reasons for the existence of this solution pattern we&#8217;ll picture some common needs and challenges amongst organizations that already have production systems and seeks innovation and modernization.</p>
-</div>
-<div class="sect2">
-<h3 id="_distributed_systems_and_data_access"><a class="anchor" href="#_distributed_systems_and_data_access"></a><a class="link" href="#_distributed_systems_and_data_access">4.1. Distributed Systems and Data Access</a></h3>
-<div class="paragraph">
-<p>In a distributed system it&#8217;s common to have services that must use data owned by other services to deliver its capabilities.</p>
-</div>
-<div class="exampleblock">
-<div class="content">
-<div class="paragraph">
-<p><strong>First challenge</strong></p>
-</div>
-<div class="paragraph">
-<p>Currently, there is a production legacy <strong>retail service</strong> that persists all sales and inventory data in a single database. The challenge is now to deliver a <strong>cashback</strong> capability that is highly dependent on the retail data, leveraging modern technology and architecture design best practices.</p>
-</div>
-</div>
-</div>
-<div class="paragraph">
-<p>At a first glance, a simple solution to such complex problem would be to implement the cashback service with its own database for cashback domain data, and directly accessing retail database to obtain and update sales information.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/01/incorrect-db-access.png" alt="incorrect db access" width="75%">
-</div>
-</div>
-<div class="paragraph">
-<p>Unfortunately, this is an anti-pattern for data access and management in a distributed architecture. Multiple services should not consume and change data directly in databases owned by other services.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_the_need_to_store_data_in_multiple_data_stores"><a class="anchor" href="#_the_need_to_store_data_in_multiple_data_stores"></a><a class="link" href="#_the_need_to_store_data_in_multiple_data_stores">4.2. The need to store data in multiple data stores</a></h3>
-<div class="paragraph">
-<p>Another modernization challenge is enhancing search capabilities in huge set of data, improving efficiency by increasing search response time, reducing number of disk accesses, using efficient search algorithms and being able to scale according to demand. To address such problem, we could complement the retail service by adding a search index like <a href="https://www.elastic.co/">Elasticsearch</a>.</p>
-</div>
-<div class="exampleblock">
-<div class="content">
-<div class="paragraph">
-<p><strong>Second challenge</strong></p>
-</div>
-<div class="paragraph">
-<p>In other to start consuming search capabilities from tools like Elasticsearch, the first step is to feed data into the tool&#8217;s index. This process is called <code>indexing</code>. All the queryable data needs to be pushed to the tool&#8217;s storage, the index (Apache Lucene).</p>
-</div>
-<div class="paragraph">
-<p>The production stack is based on the <strong>retail service</strong> that currently persists data to a single database. The challenge is to make all the retail data searchable through a tool like Elasticsearch.</p>
-</div>
-</div>
-</div>
-<div class="paragraph">
-<p>One could think about changing the service to push the data not only to its own database, but also to elasticsearch. It becomes a distributed system where the core data operations are no longer handled in single transactions. Be aware: this is yet another anti-pattern, called <a href="https://developers.redhat.com/articles/2021/07/30/avoiding-dual-writes-event-driven-applications">dual write</a>.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-<a href="https://developers.redhat.com/articles/2021/07/30/avoiding-dual-writes-event-driven-applications">Dual writes</a> can cause data inconsistency problems for distributed systems.
-</td>
-</tr>
-</table>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/01/incorrect-dual-write.png" alt="incorrect dual write" width="75%">
-</div>
-</div>
-<div class="paragraph">
-<p>The consequence of issues in this solution would be to have an outdated data being queried by the user, in other words, a user could potentially see an item for sale that is no longer available, or see a list of items with an outdated price.</p>
-</div>
-<div class="paragraph">
-<p>Other than data inconsistency, changes to the legacy application would be required. Such changes are not always possible either for business or technological restrictions.</p>
-</div>
-<div class="sect3 anti-patterns">
-<h4 id="_avoid_antipatterns"><a class="anchor" href="#_avoid_antipatterns"></a><a class="link" href="#_avoid_antipatterns">4.2.1. Avoid Antipatterns</a></h4>
-<div class="paragraph">
-<p>Think twice before delivering solutions with antipatterns. Here&#8217;s a summary of the two antipatterns we&#8217;ve seen so far:</p>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Shared databases</dt>
-<dd>
-<p>Multiple services are linked through a single database.</p>
-</dd>
-<dt class="hdlist1">Dual write</dt>
-<dd>
-<p>A situation when a service inserts and/or changes data in two or more different data stores or systems. (e.g. database and search index or a distributed cache).</p>
-</dd>
-</dl>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="tech_stack"><a class="anchor" href="#tech_stack"></a><a class="link" href="#tech_stack">5. Technology Stack</a></h2>
+<h2 id="tech_stack"><a class="anchor" href="#tech_stack"></a><a class="link" href="#tech_stack">Technology Stack</a></h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -581,8 +294,159 @@ Introduction for the architecture of this solution pattern.
 </div>
 </div>
 <div class="sect1">
-<h2 id="in_depth"><a class="anchor" href="#in_depth"></a><a class="link" href="#in_depth">6. An in-depth look at the solution&#8217;s architecture</a></h2>
+<h2 id="_common_challenges_when_extending_stack_capabilities"><a class="anchor" href="#_common_challenges_when_extending_stack_capabilities"></a><a class="link" href="#_common_challenges_when_extending_stack_capabilities">Common Challenges when Extending Stack Capabilities</a></h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>To better explain and detail the reasons for the existence of this solution pattern we&#8217;ll picture some common needs and challenges amongst organizations that already have production systems and seeks innovation and modernization.</p>
+</div>
+<div class="sect2">
+<h3 id="_distributed_systems_and_data_access"><a class="anchor" href="#_distributed_systems_and_data_access"></a><a class="link" href="#_distributed_systems_and_data_access">Distributed Systems and Data Access</a></h3>
+<div class="paragraph">
+<p>In a distributed system it&#8217;s common to have services that must use data owned by other services to deliver its capabilities.</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p><strong>First challenge</strong></p>
+</div>
+<div class="paragraph">
+<p>Currently, there is a production legacy <strong>retail service</strong> that persists all sales and inventory data in a single database. The challenge is now to deliver a <strong>cashback</strong> capability that is highly dependent on the retail data, leveraging modern technology and architecture design best practices.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>At a first glance, a simple solution to such complex problem would be to implement the cashback service with its own database for cashback domain data, and directly accessing retail database to obtain and update sales information.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/01/incorrect-db-access.png" alt="incorrect db access" width="75%">
+</div>
+</div>
+<div class="paragraph">
+<p>Unfortunately, this is an anti-pattern for data access and management in a distributed architecture. Multiple services should not consume and change data directly in databases owned by other services.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_the_need_to_store_data_in_multiple_data_stores"><a class="anchor" href="#_the_need_to_store_data_in_multiple_data_stores"></a><a class="link" href="#_the_need_to_store_data_in_multiple_data_stores">The need to store data in multiple data stores</a></h3>
+<div class="paragraph">
+<p>Another modernization challenge is enhancing search capabilities in huge set of data, improving efficiency by increasing search response time, reducing number of disk accesses, using efficient search algorithms and being able to scale according to demand. To address such problem, we could complement the retail service by adding a search index like <a href="https://www.elastic.co/">Elasticsearch</a>.</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p><strong>Second challenge</strong></p>
+</div>
+<div class="paragraph">
+<p>In other to start consuming search capabilities from tools like Elasticsearch, the first step is to feed data into the tool&#8217;s index. This process is called <code>indexing</code>. All the queryable data needs to be pushed to the tool&#8217;s storage, the index (Apache Lucene).</p>
+</div>
+<div class="paragraph">
+<p>The production stack is based on the <strong>retail service</strong> that currently persists data to a single database. The challenge is to make all the retail data searchable through a tool like Elasticsearch.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>One could think about changing the service to push the data not only to its own database, but also to elasticsearch. It becomes a distributed system where the core data operations are no longer handled in single transactions. Be aware: this is yet another anti-pattern, called <a href="https://developers.redhat.com/articles/2021/07/30/avoiding-dual-writes-event-driven-applications">dual write</a>.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<a href="https://developers.redhat.com/articles/2021/07/30/avoiding-dual-writes-event-driven-applications">Dual writes</a> can cause data inconsistency problems for distributed systems.
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/01/incorrect-dual-write.png" alt="incorrect dual write" width="75%">
+</div>
+</div>
+<div class="paragraph">
+<p>The consequence of issues in this solution would be to have an outdated data being queried by the user, in other words, a user could potentially see an item for sale that is no longer available, or see a list of items with an outdated price.</p>
+</div>
+<div class="paragraph">
+<p>Other than data inconsistency, changes to the legacy application would be required. Such changes are not always possible either for business or technological restrictions.</p>
+</div>
+<div class="sect3 anti-patterns">
+<h4 id="_avoid_antipatterns"><a class="anchor" href="#_avoid_antipatterns"></a><a class="link" href="#_avoid_antipatterns">Avoid Antipatterns</a></h4>
+<div class="paragraph">
+<p>Think twice before delivering solutions with antipatterns. Here&#8217;s a summary of the two antipatterns we&#8217;ve seen so far:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Shared databases</dt>
+<dd>
+<p>Multiple services are linked through a single database.</p>
+</dd>
+<dt class="hdlist1">Dual write</dt>
+<dd>
+<p>A situation when a service inserts and/or changes data in two or more different data stores or systems. (e.g. database and search index or a distributed cache).</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_technical_overview"><a class="anchor" href="#_technical_overview"></a><a class="link" href="#_technical_overview">Technical overview</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This solution pattern builds on top an event-driven architecture in order to support the extension of the legacy stack. The architecture includes new microservices, event streaming, event processing and search indexing tools.</p>
+</div>
+<div class="paragraph">
+<p>In respect to the <a href="#_story_goals">story goals</a> and <a href="#use-cases">targeted use cases</a>, it&#8217;s recommended to consider adopting an <a href="https://www.enterpriseintegrationpatterns.com/">Enterprise Integration Pattern</a> for data integration, more specifically, adopting the <a href="https://www.redhat.com/en/topics/integration/what-is-change-data-capture">Change Data Capture (CDC)</a> pattern.</p>
+</div>
+<div class="paragraph">
+<p>This solution requires <strong>no source code changes</strong> in the existing services. The core concept builds on data integration between legacy and new services through usage of asynchronous events. A short description of this solution key concept is:</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>Relevant changes to data persisted in the tracked databases (e.g. delete/insert/update) are captured and published as events. Then, external services react to events and execute necessary operations.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The integration happens like this:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Using <a href="https://debezium.io/">Debezium</a>, the database becomes an event stream. Since data changes are directly tracked, the legacy application code won&#8217;t require changes.</p>
+</li>
+<li>
+<p>The captured data changes are pushed to topics in a <a href="https://www.redhat.com/en/topics/integration/what-is-apache-kafka">Kafka</a> broker.</p>
+</li>
+<li>
+<p>The services that offers that extra capabilities can then subscribe to relevant topics and use the events to obtain the information needed to execute its logic.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+For detailed architecture diagrams please check the <a href="02-architecture.html" class="xref page">In Depth Architecture</a> section.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>See below a simplified representation of the solution:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/01/simplified-tech-usage.png" alt="simplified tech usage" width="100%">
+</div>
+<div class="title">Figure 1. Simplified representation of the integration between the legacy application and the new technology stack.</div>
+</div>
 <div class="paragraph">
 <p>The whole solution builds upon the event streams flowing for each change on the database. The data integration is the enabler for all the new services to execute their respective operations.</p>
 </div>
@@ -602,125 +466,22 @@ Introduction for the architecture of this solution pattern.
 <p>The two base scenarios targeted are, first, the event-driven processing of cashback for every customer purchase according to his/her customer status, and second, allowing the usage of full-text search capabilities for data that is still maintained via legacy application.</p>
 </div>
 <div class="sect2">
-<h3 id="scenario-cashback-wallet"><a class="anchor" href="#scenario-cashback-wallet"></a><a class="link" href="#scenario-cashback-wallet">6.1. Scenario: Cashback Wallet</a></h3>
+<h3 id="scenario-cashback-wallet"><a class="anchor" href="#scenario-cashback-wallet"></a><a class="link" href="#scenario-cashback-wallet">Scenario: Cashback Wallet</a></h3>
 <div class="paragraph">
-<p>a) <strong>Cashback Wallet:</strong> A new microservice implements new capabilities enabled by data integration. This integration happens via database event streaming and processing from legacy database to the new cashback database.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<a class="image" href="_images/02/arch-cashback-overview.png" target="_blank" rel="noopener"><img src="_images/02/arch-cashback-overview.png" alt="arch cashback overview" width="100%"></a>
-</div>
-<div class="title">Figure 3. Architecture Diagram: Cashback Wallet Context. A representation of the solution for cashback functionality.</div>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>The cashback processing kicks-off when a new purchase is registered via legacy application. In the demonstration implemented for this solution pattern, we use a service to simulate purchases and register them in the database.</p>
-</li>
-<li>
-<p>Debezium will capture all changes in the database tables below;</p>
-<div class="ulist">
-<ul>
-<li>
-<p>List of tracked tables in retail database: <code>public.customer</code>,<code>public.sale</code>,<code>public.line_item</code>,<code>public.product</code></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Next, <a href="https://debezium.io">Debezium</a> streams the data them over to Kafka. The event streaming solution can be hosted on-premise or on the cloud. In this implementation, we are using <a href="https://red.ht/TryKafka">Red Hat Managed OpenShift Streams for Apache Kafka</a>.</p>
-</li>
-<li>
-<p>An integration microservice, <code>sales-streams</code>, reacts to events captured by Debezium and published on three topics, respective to <code>sale-change-event</code> and <code>lineitem-change-event</code>.</p>
-</li>
-<li>
-<p>Using <a href="https://quarkus.io/guides/kafka-streams">Kafka Streams</a>, the service aggregates multiple events that correlates to a unique purchase. The service will calculate the total amount of the purchase based on individual items price captured, and will publish the enriched data to the topic <code>sales-aggregated</code>.</p>
-</li>
-<li>
-<p>Another event-driven microservice is responsible for tracking customer&#8217;s change streamed by Debezium, and for reacting to new enriched sales information - in other words, reacting to data processed by the <code>sales-stream</code> application.</p>
-</li>
-<li>
-<p>The service synchronizes <code>customers</code> and <code>expenses</code> in the cashback database. This database used to store new cashback feature-related data.</p>
-</li>
-<li>
-<p>Once the <code>cashback-connector</code> microservice finished its operations, it will notify the ecosystem that a new or updated expense is available - especially for cashback-processing. A new event is published to an <code>expense-events</code> topic so that interested (subscribed) services can act if needed.</p>
-</li>
-<li>
-<p>Now that every information is synchronized in the cashback database, the system can calculate and update any incoming cashback amount the customer earned when purchasing products. The choreography goes on as the <code>cashback-service</code> jumps in and reacts to the <code>expense-events</code> topic.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>This microservice is reponsible for the calculation of the cashback based on a customer status, and for making sure the customer will earn a percentual relative to each expense amount. Every customer owns a <strong>Cashback Wallet</strong>, in other words, all incoming cashback can be accumulated and used later. Since this service is responsible for integrating services in a cloud environment, the  technologies used in the demo implementation are <a href="https://quarkus.io/guides/camel">Camel, with Quarkus as the runtime</a>.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>With the values properly calculated, the <code>cashback-service</code> persists cashback-related information, including new cashback wallets for first-time customers, incoming cashback for each single customer&#8217;s expense, and total cashback.</p>
-</li>
-<li>
-<p>The user can visualize cashback data using a sample application <code>cashback-ui</code>, which runs with Quarkus and uses Panache Rest to handle persistence and expose REST endpoints. Information is finally displayed through an angular-based page. This application is used in the demo to help developers visualizing the demonstration results.</p>
-<div class="imageblock">
-<div class="content">
-<a class="image" href="_images/02/cashback-ui.png" target="_blank" rel="noopener"><img src="_images/02/cashback-ui.png" alt="cashback ui" width="100%"></a>
-</div>
-<div class="title">Figure 4. Cashback Wallet UI: sample demo ui for easier data visualization when trying the solution pattern implementation.</div>
-</div>
-</li>
-</ol>
+<p>Unresolved include directive in <a href="https://raw.githubusercontent.com/redhat-solution-patterns/solution-pattern-modernization-cdc/master/documentation/modules/ROOT/pages/partials/_02-in-depth-solution.adoc" class="bare">https://raw.githubusercontent.com/redhat-solution-patterns/solution-pattern-modernization-cdc/master/documentation/modules/ROOT/pages/partials/_02-in-depth-solution.adoc</a> - include::_02-architecture-cashback-scenario.adoc[]</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="scenario-search"><a class="anchor" href="#scenario-search"></a><a class="link" href="#scenario-search">6.2. Scenario: Full-text search for data in legacy database</a></h3>
+<h3 id="scenario-search"><a class="anchor" href="#scenario-search"></a><a class="link" href="#scenario-search">Scenario: Full-text search for data in legacy database</a></h3>
 <div class="paragraph">
-<p>b) <strong>Full-text search of legacy data:</strong> enables full-text search for legacy data by adopting data integration through event streaming and processing. All changes to the legacy database tracked tables, including the operations create, updated and delete, should be reflected in the search index tool. The indexing tool will then store and index data in a way that supports fast searches.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<a class="image" href="_images/02/arch-search-overview.png" target="_blank" rel="noopener"><img src="_images/02/arch-search-overview.png" alt="arch search overview" width="100%"></a>
-</div>
-<div class="title">Figure 5. Architecture Diagram: Search Solution Context. A representation of the solution for the new search functionality.</div>
-</div>
-<div class="paragraph">
-<p>Similarly to the behavior of the cashback scenario, here Debezium is tracking changes in the retail database. All changes to product data is streamed to Kafka. The <code>elastic-connector</code> service reacts to product events and synchronizes it within ElasticSearch product index.</p>
-</div>
-<div class="paragraph">
-<p>For demonstration purposes, the <code>search-service</code> holds a sample UI to allow searching data in the indexing tool.</p>
-</div>
-<div class="paragraph">
-<p>The following services are part of this scenario:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Retail database</strong>: stores all information from the legacy application. It includes information about <strong>products</strong>, <strong>customers</strong> and new <strong>sales</strong> (detailed through <strong>line items</strong>).The tables in this database are tracked by Debezium.</p>
-</li>
-<li>
-<p><strong>Debezium</strong>: tracks all events that happens in tables from retail db (public.customer,public.sale,public.line_item,public.product) and streams changes into Kafka streams;</p>
-</li>
-<li>
-<p><strong>Elastic connector service</strong>: an event-driven microservice that reacts to products' events and push relevant updates to Elastic. This service capabilities were developed with with Camel and Quarkus.</p>
-</li>
-<li>
-<p><strong>Search service</strong>: a sample quarkus service that integrates with ElasticSearch using the <a href="https://quarkus.io/guides/elasticsearch">quarkus elastic-rest-client extension</a>, and exposes a REST endpoint for searching products by name and description. For demonstration purposes, this service has a page to facilitate visualizing the search results.</p>
-</li>
-</ul>
-</div>
-<div class="imageblock">
-<div class="content">
-<a class="image" href="_images/02/search-ui.png" target="_blank" rel="noopener"><img src="_images/02/search-ui.png" alt="search ui" width="100%"></a>
-</div>
-<div class="title">Figure 6. Seach Service: a Quarkus client that integrates with Elastic for easier search results visualization.</div>
+<p>Unresolved include directive in <a href="https://raw.githubusercontent.com/redhat-solution-patterns/solution-pattern-modernization-cdc/master/documentation/modules/ROOT/pages/partials/_02-in-depth-solution.adoc" class="bare">https://raw.githubusercontent.com/redhat-solution-patterns/solution-pattern-modernization-cdc/master/documentation/modules/ROOT/pages/partials/_02-in-depth-solution.adoc</a> - include::_02-architecture-search-scenario.adoc[]</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_see_the_solution_in_action"><a class="anchor" href="#_see_the_solution_in_action"></a><a class="link" href="#_see_the_solution_in_action">7. See the Solution in Action</a></h2>
+<h2 id="_solutions_demonstration"><a class="anchor" href="#_solutions_demonstration"></a><a class="link" href="#_solutions_demonstration">Solution&#8217;s demonstration</a></h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>This section brings information about the implementation of the solution pattern, how you can install it, try it out and check the details of the implementation with an actual running application.</p>
-</div>
 <div class="paragraph">
 <p>Here&#8217;s a list of videos that you can use to explore this solution pattern.</p>
 </div>
@@ -751,1044 +512,14 @@ Introduction for the architecture of this solution pattern.
 <iframe width="800" height="480" src="https://www.youtube.com/embed/vTdP2mLXiHg?rel=0" frameborder="0" allowfullscreen></iframe>
 </div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_run_this_demonstration"><a class="anchor" href="#_run_this_demonstration"></a><a class="link" href="#_run_this_demonstration">8. Run this demonstration</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>In order to try out this demonstration you will need to provision the environment. From an overall perspective, these are the steps to provision the demo:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Log in to OpenShift with <code>cluster-admin</code> role;</p>
-</li>
-<li>
-<p>Create an OpenShift Streams instance, configure ACL and topics;</p>
-</li>
-<li>
-<p>For ansible, configure the set of variables pointing with your environment settings;</p>
-</li>
-<li>
-<p>Run the ansible playbook and enjoy the demo.</p>
-</li>
-</ol>
-</div>
 <div class="sect2">
-<h3 id="_see_the_provisioning_in_action"><a class="anchor" href="#_see_the_provisioning_in_action"></a><a class="link" href="#_see_the_provisioning_in_action">8.1. See the provisioning in action</a></h3>
-<div class="paragraph">
-<p>The video below demonstrates how to do the provisioning that is described in details the next sections. You can follow the provisioning steps as you follow the video.</p>
-</div>
-<div class="videoblock">
-<div class="content">
-<iframe width="800" height="480" src="https://www.youtube.com/embed/TvrbX4gKiv0?rel=0" frameborder="0" allowfullscreen></iframe>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_pre_requisites"><a class="anchor" href="#_pre_requisites"></a><a class="link" href="#_pre_requisites">8.2. Pre-requisites</a></h3>
-<div class="sect3">
-<h4 id="_preparing_the_local_environment"><a class="anchor" href="#_preparing_the_local_environment"></a><a class="link" href="#_preparing_the_local_environment">8.2.1. Preparing the local environment</a></h4>
-<div class="paragraph">
-<p>Here is the list of tools you need in your machine to so you can use the automated installation.</p>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-For a better experience during provisioning and demo usage, it&#8217;s recommended to have these CLI tools installed locally.
-</td>
-</tr>
-</table>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://docs.openshift.com/container-platform/4.10/cli_reference/openshift_cli/getting-started-cli.html#installing-openshift-cli">OpenShift CLI (oc client)</a></p>
-</li>
-<li>
-<p><a href="https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html">Ansible CLI</a> (<em>tested with v2.9</em>)</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Ansible <a href="https://docs.ansible.com/ansible/latest/collections/kubernetes/core/k8s_module.html">kubernetes.core</a> module</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p><em>(optional)</em> <a href="https://github.com/redhat-developer/app-services-guides/tree/main/docs/rhoas/rhoas-cli-installation#installing-the-rhoas-cli">RHOAS CLI</a> for OpenShift Streams management.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>To check if you have the cli tools, you can open your terminal and use following commands:</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">oc version #openshift cli client
-ansible --version
-ansible-galaxy --version
-ansible-galaxy collection list #the list should include kubernetes.core</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>If you can&#8217;t see <code>kubernetes.core</code> collection listed, you can install it with <code>ansible-galaxy</code>:</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">$ ansible-galaxy collection install kubernetes.core</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p><strong>Optional: Managing OpenShift Streams using a CLI tool</strong></p>
-</div>
-<div class="paragraph">
-<p>It is possible to do all interaction with your OpenShift Streams managed service (kafka) via the web console. If instead you like using the terminal and want to use a CLI tool, you will need <strong>rhoas cli</strong>. This cli allows interaction with Red Hat OpenShift Application Services like the OpenShift Streams kafka we will use.</p>
-</div>
-<div class="paragraph">
-<p>You can find a straightforward installation guide for multiple OS at <a href="https://github.com/redhat-developer/app-services-guides/tree/main/docs/rhoas/rhoas-cli-installation#installing-the-rhoas-cli">Installing the RHOAS CLI</a>.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_preparing_the_platforms"><a class="anchor" href="#_preparing_the_platforms"></a><a class="link" href="#_preparing_the_platforms">8.2.2. Preparing the platforms</a></h4>
-<div class="ulist">
-<ul>
-<li>
-<p>OpenShift cluster (version &gt;= 4.9) with <em>cluster-admin</em> privileges.</p>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-If you have access to rhpds, you can request and use an <code>OpenShift 4.10 Workshop</code> enviroment.
-</td>
-</tr>
-</table>
-</div>
-</li>
-<li>
-<p>Access to OpenShift Streams for Apache Kafka.</p>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-If it&#8217;s your first time using OpenShift Streams, don&#8217;t worry. It&#8217;s a zero-cost service for developers and everyone can try it out. You can register and order your instance at <a href="https://red.ht/TryKafka">https://red.ht/TryKafka</a>.
-</td>
-</tr>
-</table>
-</div>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_provisioning_the_demo"><a class="anchor" href="#_provisioning_the_demo"></a><a class="link" href="#_provisioning_the_demo">8.3. Provisioning the demo</a></h3>
-<div class="paragraph">
-<p>The solution&#8217;s components and services can be automatically provisioned using an ansible playbook.</p>
-</div>
-<div class="paragraph">
-<p>The following steps will guide you on setting up an instance of OpenShift Streams for Apache Kafka and its resources, plus provisioning the demo services using Ansible.</p>
-</div>
-<div class="sect3">
-<h4 id="cli-tools"><a class="anchor" href="#cli-tools"></a><a class="link" href="#cli-tools">8.3.1. Provisioning OpenShift Streams (Kafka)</a></h4>
-<div class="paragraph">
-<p>Before moving ahead to the steps of provisioning the services within your OpenShift cluster, first you should provision and configure your Kafka instance.</p>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-If you need detailed instructions on how to provision, configure and operate of your managed Kafka instance, please check this step-by-step <a href="https://redhat-scholars.github.io/managed-kafka-workshop/managed-kafka-workshop/main/01-getting-started.html">Getting Started with OpenShift Streams for Apache Kafka</a> guide.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>See below a straightforward guide to create and your instance:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Navigate to <a href="https://console.redhat.com" class="bare">https://console.redhat.com</a> and log in with your Red Hat Account ID;</p>
-</li>
-<li>
-<p>Select the <strong>Service Account</strong> menu and create a new Service Account to connect to your Kafka instance;</p>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Take note of the service account id and password, you&#8217;ll need both information during the provisioning.
-</td>
-</tr>
-</table>
-</div>
-</li>
-<li>
-<p>Next, in the left menu, select <strong>Application and Data Services &#8594; Streams for Apache Kafka &#8594; Kafka instances</strong>;</p>
-</li>
-<li>
-<p>Create a new Kafka instance;</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Use a name of your choice. You can use the default values for creating the instance.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Once your instance is ready, click on the instance and open the "connection" tab. take note of the following data:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Bootstrap server (e.g. cdc-kafka-caah-ekucfsh&#8212;&#8203;lhhsqa.bf2.kafka.rhcloud.com:443)</p>
-<div class="imageblock">
-<div class="content">
-<img src="_images/03/kafka_instance_connection_info.png" alt="kafka instance connection info">
-</div>
-</div>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Configure the ACL for your Service Account. The Service Account should have the following permissions:</p>
-<div class="ulist">
-<ul>
-<li>
-<p><code>read</code>, <code>write</code>, <code>create</code> permissions for all topics</p>
-</li>
-<li>
-<p><code>read</code> permissions for all consumer groups</p>
-</li>
-<li>
-<p>If you have <code>rhosak</code> CLI installed, you can execute the following commands to login to the service, select your kafka instance and add the proper configuration, <strong>replacing <code>srvc-acct-9999</code> with your service client id</strong>:</p>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-If you do not use the right service account id, the deployed services will throw an authentication error.
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-ssh hljs" data-lang="ssh">rhoas login
-rhoas kafka list
-rhoas kafka use
-rhoas kafka acl grant-access --producer --consumer --service-account srvc-acct-9999 --topic all --group all -y</code></pre>
-</div>
-</div>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Create the following topics, <strong>all with 1 partition</strong>:</p>
-<div class="ulist">
-<ul>
-<li>
-<p><code>retail.sale-aggregated</code></p>
-</li>
-<li>
-<p><code>retail.expense-event</code></p>
-</li>
-<li>
-<p><code>retail.updates.public.line_item</code></p>
-</li>
-<li>
-<p><code>retail.retail.updates.public.sale</code></p>
-</li>
-<li>
-<p><code>retail.updates.public.customer</code></p>
-</li>
-<li>
-<p><code>retail.updates.public.product</code></p>
-<div class="imageblock">
-<div class="content">
-<img src="_images/03/kafka_instance_topics.png" alt="kafka instance topics">
-</div>
-</div>
-</li>
-<li>
-<p>if you are using <code>rhoas cli</code>, you can create the topics with these commands:</p>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-ssh hljs" data-lang="ssh">rhoas kafka topic create --name=retail.sale-aggregated --partitions=1
-rhoas kafka topic create --name=retail.updates.public.customer --partitions=1
-rhoas kafka topic create --name=retail.updates.public.product --partitions=1
-rhoas kafka topic create --name=retail.updates.public.sale --partitions=1
-rhoas kafka topic create --name=retail.updates.public.line_item --partitions=1
-rhoas kafka topic create --name=retail.expense-event --partitions=1</code></pre>
-</div>
-</div>
-</li>
-</ul>
-</div>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_installing_the_demo"><a class="anchor" href="#_installing_the_demo"></a><a class="link" href="#_installing_the_demo">8.3.2. Installing the demo</a></h4>
-<div class="paragraph">
-<p>This solution pattern offers an easy installation process through ansible automation and helm charts. To get your environment up and running, follow the steps below:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Clone the repository below to your workstation</p>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">git clone https://github.com/solution-pattern-cdc/ansible.git
-cd ansible</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Copy the <code>inventories/inventory.template</code> file to <code>inventories/inventory</code>;</p>
-</li>
-<li>
-<p>Remember the OpenShift Streams values we took note? It&#8217;s time to use them. In the <code>inventories/inventory</code> file, provide the connection details for your Kafka instance:</p>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>rhosak_bootstrap_server</strong>: Bootstrap server of your managed Kafka instance;</p>
-</li>
-<li>
-<p><strong>rhosak_service_account_client_id</strong>: Client ID of your Service Account;</p>
-</li>
-<li>
-<p><strong>rhosak_service_account_client_secret</strong>: Client Secret of your Service Account;</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Run the Ansible playbook:</p>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">ansible-playbook -i inventories/inventory playbooks/install.yml</code></pre>
-</div>
-</div>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>Once the playbook finished successfully, you should be able to see the different components of the demo installed in the <code>retail</code> namespace on your OpenShift cluster.</p>
-</div>
-<div class="paragraph">
-<p>To check if your environment is healthy:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Access your OpenShift console, and using the Administrator view, on the left menu select <strong>Workloads &#8594; Deployments</strong>;</p>
-</li>
-<li>
-<p>All services should be healthy, like displayed below:</p>
-<div class="imageblock">
-<div class="content">
-<img src="_images/03/ocp_pods_running.png" alt="ocp pods running">
-</div>
-</div>
-</li>
-</ol>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_obtaining_services_url"><a class="anchor" href="#_obtaining_services_url"></a><a class="link" href="#_obtaining_services_url">8.4. Obtaining services' URL</a></h3>
-<div class="paragraph">
-<p>You can access the three services that exposes a UI through the exposed routes. Use one of the two options below to get the routes:</p>
-</div>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a">
-<li>
-<p>Using <code>oc cli</code>, copy and paste the whole command below:</p>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">cat &lt;&lt; EOF
-========================================
-Kafdrop: https://$(oc get route kafdrop --template='{{ .spec.host }}' -n retail)
-Search service: https://$(oc get route search-service --template='{{ .spec.host }}' -n retail)
-Simulation Service: https://$(oc get route retail-simulation --template='{{ .spec.host }}' -n retail)/q/swagger-ui
-Cashback Wallet UI: https://$(oc get route cashback-service-ui --template='{{ .spec.host }}' -n retail)
-========================================
-EOF</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Using the OpenShift console:</p>
-<div class="imageblock">
-<div class="content">
-<img src="_images/03/ocp_routes.png" alt="ocp routes">
-</div>
-</div>
-</li>
-</ol>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_walkthrough_guide"><a class="anchor" href="#_walkthrough_guide"></a><a class="link" href="#_walkthrough_guide">9. Walkthrough guide</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>A retail store specialized in plants wants to grow its market by expanding in the online market. To do so, they need to start the adoption of new technologies without impacting the existing application that is currently running in production. All information about sales, customers and products are still maintained via legacy application, but this data is also required by the new capabilities.</p>
-</div>
-<div class="paragraph">
-<p>Two new functionalities are now part of the retail solution:
-1. Enhanced search capabilities for products
-1. Cashback wallet for customers</p>
-</div>
-<div class="paragraph">
-<p>Both solutions are build on top of an event driven architecture, which means that all services are integrated with an orchestration where each one execute its own operations when relevant events are published in the ecosystem.</p>
-</div>
-<div class="paragraph">
-<p>Let&#8217;s see both solutions in action, starting with the new search capabilities.</p>
-</div>
-<div class="sect2">
-<h3 id="_enhanced_search_capabilities_for_products"><a class="anchor" href="#_enhanced_search_capabilities_for_products"></a><a class="link" href="#_enhanced_search_capabilities_for_products">9.1. Enhanced search capabilities for products</a></h3>
-<div class="paragraph">
-<p>To test the enhanced search capabilities, we will:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Use the <code>search service</code> to see existing data that is available in the ElasticSearch index;</p>
-</li>
-<li>
-<p>Add a new product directly to the <code>retail database</code> (legacy), to check the ecosystem behavior;</p>
-</li>
-<li>
-<p>Confirm that the new product shows up in the search;</p>
-</li>
-<li>
-<p>Check the events that were published in order for the synchronization to happen;</p>
-</li>
-<li>
-<p>Delete the product directly on the retail database;</p>
-</li>
-<li>
-<p>Confirm that the product no longer shows up in the <code>search service</code>.</p>
-</li>
-</ol>
-</div>
-<div class="sect3">
-<h4 id="_see_the_search_feature_in_action"><a class="anchor" href="#_see_the_search_feature_in_action"></a><a class="link" href="#_see_the_search_feature_in_action">9.1.1. See the search feature in action</a></h4>
-<div class="paragraph">
-<p>In this video you can see the working implementation of the new enhanced search capabilities:</p>
-</div>
-<div class="videoblock">
-<div class="content">
-<iframe width="800" height="480" src="https://www.youtube.com/embed/C90x_utWQkk?rel=0" frameborder="0" allowfullscreen></iframe>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_trying_out_the_new_enhanced_search"><a class="anchor" href="#_trying_out_the_new_enhanced_search"></a><a class="link" href="#_trying_out_the_new_enhanced_search">9.1.2. Trying out the new enhanced search</a></h4>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Using your browser, open the <code>search service</code>.</p>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-You can get the URL as described in the section <a href="03-demo.html#cli-tools" class="xref page">obtaining the services URL</a>.
-</td>
-</tr>
-</table>
-</div>
-</li>
-<li>
-<p>In the search field, search for "<strong>yellow</strong>". You should see several results.</p>
-<div class="imageblock">
-<div class="content">
-<img src="_images/03/search-service-result-yellow.png" alt="search service result yellow">
-</div>
-</div>
-</li>
-<li>
-<p>Next, search for "kopi" or "java. No result will show up.</p>
-</li>
-<li>
-<p>Let&#8217;s insert a new product directly in the <code>retail-db</code> and see if it will reflect on this service. Use the console inside the <code>retail-db</code> container. You can either access the container using your browser, accessing the OpenShit Console (<strong>Workloads &#8594; Pods &#8594; retail-db-XXXX &#8594; Terminal</strong>);</p>
-<div class="paragraph">
-<p>Or by using your terminal as shown below:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">oc project retail
-oc rsh deployment/retail-db</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Next, inside the container, we will access postgres, connect to the <code>retail</code> database and check the structure of the <code>product</code> table:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">psql
-\c retail
-\d product</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>As we can see, a product has an <code>id</code>, <code>name</code>, <code>description</code> and a <code>price</code>.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/03/retail-db-terminal.png" alt="retail db terminal">
-</div>
-</div>
-</li>
-<li>
-<p>Let&#8217;s add a new product in this table, the product "<strong>Kopi luwak</strong>":</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-sql hljs" data-lang="sql">insert into public.product (product_id, name, price, description) values (7777, 'Kopi luwak', 20, 'Kopi luwak is a coffee that consists of partially digested coffee cherries, which have been eaten and defecated by the Asian palm civet (Paradoxurus hermaphroditus). It is produced mainly on the Indonesian islands of Sumatra, Java, Bali, Sulawesi, and in East Timor.');</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Now, as required by the use case, even though this data was changed in the legacy database, it should be available for search in the new services. Let&#8217;s confirm that this change was reflected in the ElasticSearch products index.</p>
-<div class="paragraph">
-<p>Open the <code>search-service</code> application in your browser and search for "java" or "kopi". You should be able to see your new product.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/03/search-service-result-java.png" alt="search service result java">
-</div>
-</div>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>Let&#8217;s delete this product from the retail database to validate if delete operations are also being tracked.</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>In the <code>retail-tb</code> container terminal, now execute the following SQL:</p>
-</li>
-</ol>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-sql hljs" data-lang="sql">DELETE FROM public.product where product_id = 7777;</code></pre>
-</div>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Go back to the <code>search-service</code> in your browser, and search for '<strong>kopi</strong>' or '<strong>java</strong>' again.</p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_looking_behind_the_scenes_enhanced_search"><a class="anchor" href="#_looking_behind_the_scenes_enhanced_search"></a><a class="link" href="#_looking_behind_the_scenes_enhanced_search">9.1.3. Looking behind the scenes - enhanced search</a></h4>
-<div class="paragraph">
-<p>It&#8217;s now time to take a look at how the system is working in order to allow this capability to work as we have seen.</p>
-</div>
-<div class="paragraph">
-<p>The components of the search capability we have just tried are:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 28%;">
-<col style="width: 13%;">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong>Service</strong></code></p></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>Type</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Description</strong></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>retail-db</code></p></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">PostgreSQL database used by the legacy services;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Persistence</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>kafka-connect-connect</code></p></td>
-<td class="tableblock halign-center valign-middle" rowspan="2"><p class="tableblock">Integration</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Kafka connectors for database event streaming (debezium);</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>elastic-connector</code></p></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">Camel + Quarkus service for event-driven synchronization of product data with ElasticSearch;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>kafdrop</code></p></td>
-<td class="tableblock halign-center valign-middle" rowspan="2"><p class="tableblock">Data Visualization</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">a kafka client ui to facilitate the visualization of events and topics;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>search-service</code></p></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">Quarkus + ElasticSearch extension to simplify the visualization of the indexed data residing in elastic search;</p></td>
-</tr>
-</tbody>
-</table>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-If you go to your OpenShift, you should be able to see one <code>deployment</code> resource for each of the above services.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p><strong>So, how was the new product added to the ElasticSearch index?</strong></p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>A new product is created in the <code>retail.product</code> table, in the legacy database <code>retail-db</code>;</p>
-</li>
-<li>
-<p><a href="appendix-a.html#_kafka_connect__debezium_installation" class="xref page">Debezium</a> tracks it and publishes the events it to topics in OpenShift Streams;</p>
-</li>
-<li>
-<p>The <code>elastic-connector</code>, implemented with Camel and Quarkus is subscribed to the topic mentioned above. It processes the event data and pushes the <strong>product name</strong> and <strong>description</strong> to an ElasticSearch index:</p>
-</li>
-</ol>
-</div>
-<div class="listingblock console-input">
-<div class="title">Partial code - processing logic in the <a href="https://github.com/solution-pattern-cdc/elastic-connector/blob/main/src/main/java/org/acme/retail/ProductRoute.java"><code>ProductRoute</code></a></div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">(...)
-    .process(exchange -&gt; {
-        Message in = exchange.getIn();
-        JsonObject after = new JsonObject(in.getBody(Map.class)).getJsonObject("after");
-        Map&lt;String, String&gt; document = new HashMap&lt;&gt;();
-        document.put("name", after.getString("name"));
-        document.put("description", after.getString("description"));
-        IndexRequest request = new IndexRequest(in.getHeader(ElasticsearchConstants.PARAM_INDEX_NAME, String.class))
-                .id(String.valueOf(after.getLong("product_id"))).source(document);
-        in.setBody(request);
-    })
-(...)</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This flow can be represented like this:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/03/arch_search.png" alt="arch search">
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_cashback_wallet_functionality"><a class="anchor" href="#_cashback_wallet_functionality"></a><a class="link" href="#_cashback_wallet_functionality">9.2. Cashback Wallet functionality</a></h3>
-<div class="paragraph">
-<p>Now, let&#8217;s see more ways we can explore CDC to add new capabilities to our existing stack. Since we have all the new sales being streamed as events, we can use it to build the new cashback wallet business.</p>
-</div>
-<div class="paragraph">
-<p>To walk through this demonstration, you will need to access the following services in your browser:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>cashback-service-ui</p>
-</li>
-<li>
-<p>kafdrop</p>
-</li>
-<li>
-<p>simulation service Swagger-UI</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_see_the_cashback_wallet_in_action"><a class="anchor" href="#_see_the_cashback_wallet_in_action"></a><a class="link" href="#_see_the_cashback_wallet_in_action">9.3. See the Cashback Wallet in action</a></h3>
-<div class="paragraph">
-<p>The following video shows the working implementation of the new cashback wallet capabilities:</p>
-</div>
-<div class="videoblock">
-<div class="content">
-<iframe width="800" height="480" src="https://www.youtube.com/embed/W813zm5qG2Q?rel=0" frameborder="0" allowfullscreen></iframe>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_trying_out_the_new_cashback_wallet"><a class="anchor" href="#_trying_out_the_new_cashback_wallet"></a><a class="link" href="#_trying_out_the_new_cashback_wallet">9.3.1. Trying out the new cashback wallet</a></h4>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Open the <code>cashback-service-ui</code>:</p>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-You can get the URL as described in the section <a href="03-demo.html#cli-tools" class="xref page">obtaining the services URL</a>.
-</td>
-</tr>
-</table>
-</div>
-</li>
-<li>
-<p>You should be able to see a list of cashback wallets and its data:</p>
-<div class="imageblock">
-<div class="content">
-<img src="_images/03/cashback-wallet-clean.png" alt="cashback wallet clean">
-</div>
-</div>
-</li>
-<li>
-<p>Choose one of the customers in that list that has no cashback. It will be easier ot see the new cashback credits. You can see the customer ID in the beggining of the line:</p>
-<div class="imageblock">
-<div class="content">
-<img src="_images/03/cashback-wallet-customer-id.png" alt="cashback wallet customer id">
-</div>
-</div>
-</li>
-<li>
-<p>Next, we will simulate as if a customer has purchased five items in the store. In your browser open the <code>simulation service</code> swagger-ui, (service-url/q/swagger-ui).</p>
-<div class="imageblock">
-<div class="content">
-<img src="_images/03/simulate-purchase.png" alt="simulate purchase">
-</div>
-</div>
-</li>
-<li>
-<p>Click on <code>try it out</code>, input the customer ID you have chosen, and submit the request. This will generate five purchases for this customer.</p>
-<div class="imageblock">
-<div class="content">
-<img src="_images/03/simulate-purchase-result.png" alt="simulate purchase result">
-</div>
-</div>
-</li>
-<li>
-<p>You should get an HTTP 200 result. In the legacy system, the purchases are stored in two different tables, the <code>retail.sale</code> and <code>retail.line_item</code>. So if you simulate five sales, the data will be stored in both tables and streamed as events by Debezium to two respective topics.</p>
-<div class="paragraph">
-<p>Through a series of orchestrated operations, the data will be aggregated, processed, and enriched (<code>sales-aggregated</code> service), to finally be used to calculate and update the cashback wallet&#8217;s values (<code>cashback-service</code>).</p>
-</div>
-</li>
-<li>
-<p>Open Kafdrop in your browser.</p>
-</li>
-<li>
-<p>Locate and click on the topic <code>retail.sale-aggregated</code>, and then, click on <strong>view messages</strong>. This is the result of the Kafka Streams (<code>sales-stream</code> service) operations of aggregation, processing and enrichment of the events' data that were streamed by Debezium:</p>
-<div class="imageblock">
-<div class="content">
-<img src="_images/03/kafdrop-sales-aggregated-messages.png" alt="kafdrop sales aggregated messages">
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-To see a detailed explanation about the events processing refer to the <a href="#_looking_behind_the_scenes__cashback_solution">Looking behind the scenes</a> section.
-</td>
-</tr>
-</table>
-</div>
-</li>
-<li>
-<p>Open the Cashback Wallet in your browser and refresh the page. You should be able to check the new earned cashback for each purchase of your customer!</p>
-<div class="imageblock">
-<div class="content">
-<img src="_images/03/cashback-wallet-complete.png" alt="cashback wallet complete">
-</div>
-</div>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>See below a diagram that represents the orchestration processing that just happened when you simulated new purchases and saw the respective incoming cashback:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/03/arch-cashback.png" alt="arch cashback">
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_looking_behind_the_scenes_cashback_solution"><a class="anchor" href="#_looking_behind_the_scenes_cashback_solution"></a><a class="link" href="#_looking_behind_the_scenes_cashback_solution">9.3.2. Looking behind the scenes - cashback solution</a></h4>
-<div class="paragraph">
-<p>Differently than the search capability that only requires the integration layer (Retail DB &#8594; ElasticSearch), to create cashback wallets we&#8217;ll need to process and enrich the data before we use it. We will also need to guarantee the synchronization between the customer data in the <code>retail-db</code> and the <code>cashback-db</code>.</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>When a new sale is registered, new lines are created in the <code>retail.sale</code> and <code>retail.line_item</code> tables.</p>
-</li>
-<li>
-<p>Debezium then tracks and publishes events to <strong>two topics</strong>, one for each respective table, and one event for each respective line added/updated event that was tracked. But notice that in order for us to apply the cashback calculation business logic, we&#8217;ll have in mind good design and architecture practices for microservices, where each microservice "is supposed to do one thing, and do it well". So, the event data aggregation, processing and enrichment will be executed by a service (<code>sales-streams</code>) before we actually do the cashback operations in another service (<code>cashback-service</code>);</p>
-<div class="paragraph">
-<p>Here&#8217;s another way to explain this:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>if someone buys two cactus and one lilly in the same purchase, there will be two line_items registered for a single sale. See below the tables structures:</p>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-sql hljs" data-lang="sql">$ oc rsh deployment/retail-db <i class="conum" data-value="1"></i><b>(1)</b>
-sh-4.4$ psql <i class="conum" data-value="2"></i><b>(2)</b>
-psql (12.5)
-Type "help" for help.
-
-postgres=# \c retail <i class="conum" data-value="3"></i><b>(3)</b>
-You are now connected to database "retail" as user "postgres".
-retail=# select * from sale;  <i class="conum" data-value="4"></i><b>(4)</b>
-sale_id | customer_id |          date
----------+-------------+-------------------------
-1000 |        1000 | 2022-06-03 20:27:57.66
-1001 |        1000 | 2022-06-03 20:27:57.767
-1002 |        1000 | 2022-06-03 20:27:57.852
-1003 |        1000 | 2022-06-03 20:27:57.854
-1004 |        1000 | 2022-06-03 20:27:57.857
-(5 rows)
-
-retail=# select * from line_item; <i class="conum" data-value="5"></i><b>(5)</b>
-line_item_id | sale_id | product_id | price  | quantity
---------------+---------+------------+--------+----------
-1000 |    1000 |        198 |  99.40 |        2
-1001 |    1000 |        851 |  72.97 |        3
-1002 |    1000 |         87 |  66.19 |        3
-1003 |    1000 |        243 |  83.20 |        1
-1004 |    1001 |         80 | 127.56 |        3
-1005 |    1001 |        639 | 193.80 |        1
-1006 |    1002 |        563 | 156.08 |        3
-1007 |    1003 |        532 |  89.98 |        3
-1008 |    1003 |        374 |  87.17 |        1
-1009 |    1003 |        932 |  32.69 |        3
-1010 |    1003 |        662 | 141.31 |        3
-1011 |    1003 |        304 |  39.84 |        1
-1012 |    1004 |        138 | 125.81 |        3
-1013 |    1004 |        656 | 103.99 |        3
-1014 |    1004 |        285 | 168.79 |        3
-1015 |    1004 |         84 | 113.79 |        2
-(16 rows)</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Use <code>oc-client</code> to access the <code>retail-db</code> container;</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Access PostgreSQL from within the container;</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Connect to the retail database;</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>List all the sales;</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>List all the items of the sales;</td>
-</tr>
-</table>
-</div>
-</li>
-<li>
-<p>Debezium will stream each change individually, which results with several events in two topics, one of each table.</p>
-</li>
-<li>
-<p>But, when we calculate the earned cashback for the sale, we use the total amount of the sale - the sum of all the line items of that sale.</p>
-</li>
-<li>
-<p>Using <a href="https://developers.redhat.com/learn/openshift-streams-for-apache-kafka/guided-workshop-for-kafka-streams/what-is-kafka-streams"><strong>Kafka Streams</strong></a>, the <code>sales-aggregated</code> service aggregates, processes and enriches the events' data.</p>
-<div class="listingblock console-input">
-<div class="title">Partial code in the <code>Sales-Streams</code> service used to aggregate and enrich data;</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">// Join LineItem events with sale events by foreign key, aggregate Linetem price in sale
-KTable&lt;Long, AggregatedSale&gt; aggregatedSales = lineItemTable
-        .join(saleTable, lineItem -&gt; lineItem.sale,
-                (lineItem, sale) -&gt; new SaleAndLineItem(sale, lineItem),
-                Materialized.with(Serdes.Long(), saleAndLineItemSerde))
-        .groupBy((key, value) -&gt; KeyValue.pair(value.sale.saleId, value), Grouped.with(Serdes.Long(), saleAndLineItemSerde))
-        .aggregate(AggregatedSale::new, (key, value, aggregate) -&gt; aggregate.addLineItem(value),
-                (key, value, aggregate) -&gt; aggregate.removeLineItem(value),
-                Materialized.with(Serdes.Long(), aggregatedSaleSerde));
-
-aggregatedSales.toStream().to(aggregatedSaleTopic, Produced.with(Serdes.Long(), aggregatedSaleSerde));</code></pre>
-</div>
-</div>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Next, if you go back to the homepage of Kafdrop, open <strong><code>retail.expense-event</code> &#8594; view messages &#8594; view messages</strong>; The <code>sales-streams</code> service to notify the ecosystem that new processed information is available by publishing events on the <code>expense-event</code> topic.</p>
-<div class="paragraph">
-<p>Let&#8217;s see the result of this processing with Kafdrop.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/03/kafdrop-expense-event.png" alt="kafdrop expense event">
-</div>
-</div>
-<div class="paragraph">
-<p>Based on these events published in the <code>expense-event</code>, services like the <code>cashback-service</code> can react and use the event data to handle the cashback business logic operations.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-See how the values are calculated and persisted in the <a href="https://github.com/solution-pattern-cdc/cashback-service/blob/main/src/main/java/org/acme/cashback/processor/ValuesProcessor.java">cashback values processor</a> in the <code>cashback-service</code>
-</td>
-</tr>
-</table>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Let&#8217;s take a look over the cashback service processing:</p>
-<div class="listingblock console-input">
-<div class="title">Partial code implementation in the <a href="https://github.com/solution-pattern-cdc/cashback-service/blob/e116b0b0f8067c1a69298e6e4b214224c0d3e1b6/src/main/java/org/acme/cashback/route/CashbackRoute.java">Cashback Route</a> in the cashback-service.</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">        from("kafka:{{kafka.expenses.topic.name}}?groupId={{kafka.cashback_processor.consumer.group}}" + <i class="conum" data-value="1"></i><b>(1)</b>
-                "&amp;autoOffsetReset=earliest")
-                .routeId("CashbackProcessor")
-                .unmarshal(new JacksonDataFormat(ExpenseEvent.class))
-                .setHeader("operation", simple("${body.operation}")) <i class="conum" data-value="2"></i><b>(2)</b>
-                .setHeader("sale_id", simple("${body.saleId}")) <i class="conum" data-value="2"></i><b>(2)</b>
-                .to("direct:filterInvalidOperationCodes") <i class="conum" data-value="3"></i><b>(3)</b>
-                .to("direct:getData") <i class="conum" data-value="4"></i><b>(4)</b>
-                .to("direct:filterInvalidData") <i class="conum" data-value="5"></i><b>(5)</b>
-                .choice()
-                .when().simple("${header.operation} == 'c'").log(LoggingLevel.DEBUG,"Processing create event") <i class="conum" data-value="6"></i><b>(6)</b>
-                    .process("valuesProcessor")
-                    .choice()
-                        .when(simple("${body.cashbackId} == null"))
-                            .log(LoggingLevel.DEBUG, "No cashback wallet exists. Creating new cashback for: ${body}")
-                            .to("direct:createAndPersistCashback")
-                    .end()
-                    .to("direct:updateEarnedCashbackData")
-                .endChoice()
-                .otherwise().when().simple("${header.operation}== 'u'").log(LoggingLevel.DEBUG,"Processing update event") <i class="conum" data-value="7"></i><b>(7)</b>
-                    .process("valuesProcessor")
-                    .to("direct:updateEarnedCashbackData")
-                .end();</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Consumed topic with name configured in the property <code>kafka.expenses.topic.name</code>;</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Sets incoming information in the message header;</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Filter out incoming operations that are not <code>create</code> and <code>update</code>;</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Retrieves existing customer and cashback information from the local database for the incoming sale;</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Filter out information for incoming data that is invalid - is not in the cashback database;</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>When a new expense "create" event is received, the service checks if the customer already has a wallet - if not, creates one. Then, it updates the cashback wallet values calculated and persisted.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="7"></i><b>7</b></td>
-<td>If the incoming operation is "update", then, a new wallet does not need to be created. The values are calculated and updated.</td>
-</tr>
-</table>
-</div>
-</li>
-</ul>
-</div>
-</li>
-</ol>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_conclusion"><a class="anchor" href="#_conclusion"></a><a class="link" href="#_conclusion">10. Conclusion</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>In this section you have learned how to:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Provision the demo environment;</p>
-</li>
-<li>
-<p>How to try out and check how CDC enables the delivery of the demo implementation:</p>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a">
-<li>
-<p>How a new search index technology could be added to the existing solution and enable enhanced search capabilities for legacy data;</p>
-</li>
-<li>
-<p>How a whole new cashback wallet capability could be added without impacting the legacy systems by using a distributed, event-driven and microservice-based architecture;</p>
-</li>
-</ol>
-</div>
-</li>
-<li>
-<p>Learn in-depth details about services can be orchestrated;</p>
-</li>
-</ol>
-</div>
+<h3 id="_conclusion"><a class="anchor" href="#_conclusion"></a><a class="link" href="#_conclusion">Conclusion</a></h3>
 <div class="paragraph">
 <p>The solution is built on top of a hybrid cloud model, with containerized services running on OpenShift (can be on a private or public cloud depending on how you provision the demo) consuming a managed OpenShift Streams for Apache Kafka. OpenShift streams is heart of this solution - it&#8217;s a resilient and highly available Kafka instance managed by Red Hat, where all the topics reside and where all services can receive and send all events from/to.</p>
 </div>
 <div class="paragraph">
 <p>This design is only possible by the designing the architecture based on the Change Data Capture pattern - which was delivered with Debezium and Kafka Connectors.</p>
+</div>
 </div>
 </div>
 </div>
