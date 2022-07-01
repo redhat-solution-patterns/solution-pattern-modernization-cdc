@@ -7,8 +7,21 @@
 This section brings information about the implementation of the solution pattern, how you can install it, try it out and check the details of the implementation with an actual running application.
 
 == See the Solution in Action
+// tag::demo[]
+Here's a list of videos that you can use to explore this solution pattern.
 
-include::partials/_03-solution-in-action.adoc[]
+* xref:03-demo.adoc#_see_an_overview_and_demonstration_of_this_solution_pattern[Solution Pattern Overview]
+* xref:03-demo.adoc#_see_the_provisioning_in_action[How to provision this demo]
+* xref:03-demo.adoc#_see_the_search_feature_in_action[The enhanced search capability in action]
+* xref:03-demo.adoc#_see_the_cashback_wallet_in_action[The Cashback Wallet capability in action]
+
+[#_see_an_overview_and_demonstration_of_this_solution_pattern]
+See an overview and demonstration of this solution pattern:
+
+Check below a twenty minutes explanation and demonstration of this solution pattern:
+
+video::vTdP2mLXiHg[youtube, width=800, height=480]
+// end::demo[]
 
 == Run this demonstration
 
@@ -535,4 +548,8 @@ In this section you have learned how to:
 .. How a whole new cashback wallet capability could be added without impacting the legacy systems by using a distributed, event-driven and microservice-based architecture; 
 . Learn in-depth details about services can be orchestrated;
 
-include::partials/_03-wrap-up.adoc[]   
+// tag::conclusion[]
+The solution is built on top of a hybrid cloud model, with containerized services running on OpenShift (can be on a private or public cloud depending on how you provision the demo) consuming a managed OpenShift Streams for Apache Kafka. OpenShift streams is heart of this solution - it's a resilient and highly available Kafka instance managed by Red Hat, where all the topics reside and where all services can receive and send all events from/to.
+
+This design is only possible by the designing the architecture based on the Change Data Capture pattern - which was delivered with Debezium and Kafka Connectors.
+// end::conclusion[]

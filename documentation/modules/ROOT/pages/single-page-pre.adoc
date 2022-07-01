@@ -1,0 +1,51 @@
+= Solution Pattern: Using Change Data Capture for Stack Modernization
+:homepage: https://gitlab.com/osspa/portfolio-architecture-examples
+:solution-url: http://red.ht/modernize-with-cdc
+:imagesdir: https://redhat-solution-patterns.github.io/solution-pattern-modernization-cdc/solution-pattern-modernization-cdc/_images/
+:toclevels: 1
+:icons: font
+:source-highlighter: prettify
+:toc: left
+:sectlinks:
+
+
+////
+tags:
+tag=about  //About this solution pattern
+tag=use-cases //Targeted use cases and objectives
+tag=challenges //Technical challenges
+tag=arch-overview //Modernization boosted by event-driven architecture and enterprise integration patterns
+tag=arch-in-depth
+tag=demo //Solution in action: demonstration
+tag=conclusion
+tag=learn-more 
+
+# tag::about[]
+# end::about[]
+
+////
+
+== About this solution pattern
+include::index.adoc[tag=about]
+
+== Targeted use cases and objectives
+include::index.adoc[tag=use-cases]
+
+== Technical challenges
+include::02-architecture.adoc[tag=technical-challenges]
+
+== Modernization boosted by event-driven architecture and enterprise integration patterns
+include::01-pattern.adoc[tag=arch-overview]
+
+== See the solution in action
+include::03-demo.adoc[tag=demo]
+
+== Learn more about this solution pattern
+For a complete documentation about how to modernize your application adopting the practices recommended by this solution pattern at: {solution-url}
+
+== Extra knowledge: an in-depth look at the solution
+include::02-architecture.adoc[tag=arch-in-depth]
+
+== Summary
+include::03-demo.adoc[tag=conclusion]
+
