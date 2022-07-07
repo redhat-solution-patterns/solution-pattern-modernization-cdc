@@ -242,63 +242,7 @@ Our first step into modernization is developing a new cashback system for our cu
 <cite>On modernization goals</cite>
 </div>
 </div>
-<h3 id="_story_goals" class="discrete">Story Goals</h3>
-<div class="paragraph">
-<p>To get started, the business and technical executives came up with initial goals to be achieved as a first step towards the organization modernization:</p>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">The Cashback Wallet Functionality</dt>
-<dd>
-<div class="ulist">
-<ul>
-<li>
-<p>Customers should receive a percentage of their purchases as cashback.</p>
-</li>
-<li>
-<p>All the earned cashback is now part of the Cashback Wallet.</p>
-</li>
-<li>
-<p>With this, upcoming purchases can be paid either with the customer money or using available cashback in the customer Cashback Wallet.</p>
-</li>
-<li>
-<p>The customer should be able to check all transaction history including earned cashback and spent cashback</p>
-</li>
-<li>
-<p>New services and technologies must easily fit in cloud environments as we seek to move forward with clo adoption.</p>
-</li>
-</ul>
-</div>
-</dd>
-<dt class="hdlist1">Enhanced search capabilities</dt>
-<dd>
-<div class="ulist">
-<ul>
-<li>
-<p>Customers should be able to easily search for what they need;</p>
-</li>
-<li>
-<p>They should be able to search by part or all of the product name.</p>
-</li>
-<li>
-<p>The operations should still be able to use the legacy application to maintain the catalog and this data should benefit from the enhanced search capabilities.</p>
-</li>
-<li>
-<p>The new solution should be able to provide to technical team metrics about the search, like query latency and  request rate;</p>
-</li>
-<li>
-<p>If a new tool is used, we want to be able to choose where to deploy it - we want to be free of vendor lock-in.</p>
-</li>
-</ul>
-</div>
-</dd>
-</dl>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_technical_overview"><a class="anchor" href="#_technical_overview"></a>Technical overview</h2>
-<div class="sectionbody">
+<h2 id="_technical_overview" class="discrete">Technical overview</h2>
 <div class="paragraph">
 <p>This solution pattern builds on top an event-driven architecture in order to support the extension of the legacy stack. The architecture includes new microservices, event streaming, event processing and search indexing tools.</p>
 </div>
@@ -351,6 +295,64 @@ For detailed architecture diagrams please check the <a href="02-architecture.htm
 <img src="_images/01/simplified-tech-usage.png" alt="simplified tech usage" width="100%">
 </div>
 <div class="title">Figure 1. Simplified representation of the integration between the legacy application and the new technology stack.</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_technical_overview_2"><a class="anchor" href="#_technical_overview_2"></a>Technical overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This solution pattern builds on top an event-driven architecture in order to support the extension of the legacy stack. The architecture includes new microservices, event streaming, event processing and search indexing tools.</p>
+</div>
+<div class="paragraph">
+<p>In respect to the <a href="#_story_goals">story goals</a> and <a href="#use-cases">targeted use cases</a>, it&#8217;s recommended to consider adopting an <a href="https://www.enterpriseintegrationpatterns.com/">Enterprise Integration Pattern</a> for data integration, more specifically, adopting the <a href="https://www.redhat.com/en/topics/integration/what-is-change-data-capture">Change Data Capture (CDC)</a> pattern.</p>
+</div>
+<div class="paragraph">
+<p>This solution requires <strong>no source code changes</strong> in the existing services. The core concept builds on data integration between legacy and new services through usage of asynchronous events. A short description of this solution key concept is:</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>Relevant changes to data persisted in the tracked databases (e.g. delete/insert/update) are captured and published as events. Then, external services react to events and execute necessary operations.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The integration happens like this:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Using <a href="https://debezium.io/">Debezium</a>, the database becomes an event stream. Since data changes are directly tracked, the legacy application code won&#8217;t require changes.</p>
+</li>
+<li>
+<p>The captured data changes are pushed to topics in a <a href="https://www.redhat.com/en/topics/integration/what-is-apache-kafka">Kafka</a> broker.</p>
+</li>
+<li>
+<p>The services that offers that extra capabilities can then subscribe to relevant topics and use the events to obtain the information needed to execute its logic.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+For detailed architecture diagrams please check the <a href="02-architecture.html" class="xref page">In Depth Architecture</a> section.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>See below a simplified representation of the solution:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/01/simplified-tech-usage.png" alt="simplified tech usage" width="100%">
+</div>
+<div class="title">Figure 2. Simplified representation of the integration between the legacy application and the new technology stack.</div>
 </div>
 </div>
 </div>
