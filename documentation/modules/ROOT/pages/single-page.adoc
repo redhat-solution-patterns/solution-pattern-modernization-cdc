@@ -8,7 +8,6 @@
 :toc: left
 :sectlinks:
 
-
 ////
 tags:
 tag=about  //About this solution pattern
@@ -22,7 +21,6 @@ tag=learn-more
 
 # tag::about[]
 # end::about[]
-
 ////
 
 == About this solution pattern
@@ -103,6 +101,8 @@ In respect to the xref:_story_goals[story goals] and xref:use-cases[targeted use
 This solution requires *no source code changes* in the existing services. The core concept builds on data integration between legacy and new services through usage of asynchronous events. A short description of this solution key concept is:
 
 ****
+**TIP:**
+
 Relevant changes to data persisted in the tracked databases (e.g. delete/insert/update) are captured and published as events. Then, external services react to events and execute necessary operations.
 ****
 
@@ -196,6 +196,7 @@ Similarly to the behavior of the cashback scenario, here Debezium is tracking ch
 For demonstration purposes, the `search-service` holds a sample UI to allow searching data in the indexing tool.
 
 The following services are part of this scenario:
+
 
 * *Retail database*: stores all information from the legacy application. It includes information about *products*, *customers* and new *sales* (detailed through *line items*).The tables in this database are tracked by Debezium.
 * *Debezium*: tracks all events that happens in tables from retail db (public.customer,public.sale,public.line_item,public.product) and streams changes into Kafka streams;
