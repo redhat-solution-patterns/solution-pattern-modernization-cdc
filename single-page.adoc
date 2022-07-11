@@ -8,7 +8,6 @@
 :toc: left
 :sectlinks:
 
-
 ////
 tags:
 tag=about  //About this solution pattern
@@ -22,7 +21,6 @@ tag=learn-more
 
 # tag::about[]
 # end::about[]
-
 ////
 
 == About this solution pattern
@@ -32,6 +30,7 @@ This solution pattern brings an architectural solution for scenarios where servi
 The architecture demonstrates how *https://www.redhat.com/en/topics/integration/what-is-change-data-capture[Change Data Capture (CDC)]* design pattern and event-driven architectures supports the *extension of existing capabilities with no changes to legacy apps* where new features can be delivered by cloud-native microservices and can deliver with *zero impact new search capabilities* through the integration of legacy and new services with specialized search index services.
 
 == Targeted use cases and objectives
+
 Common use cases that can be addressed with this architecture are:
 
 - Legacy services need to be extended or enhanced but, it is *not* a possibility to implement the changes in the existing application;
@@ -56,7 +55,7 @@ Currently, there is a production legacy *retail service* that persists all sales
 
 At a first glance, a simple solution to such complex problem would be to implement the cashback service with its own database for cashback domain data, and directly accessing retail database to obtain and update sales information.
 
-image::01/incorrect-db-access.png[width=75%]
+image::01/incorrect-db-access.png[width=50%]
 
 Unfortunately, this is an anti-pattern for data access and management in a distributed architecture. Multiple services should not consume and change data directly in databases owned by other services.
 
@@ -77,7 +76,7 @@ One could think about changing the service to push the data not only to its own 
 [IMPORTANT]
 https://developers.redhat.com/articles/2021/07/30/avoiding-dual-writes-event-driven-applications[Dual writes] can cause data inconsistency problems for distributed systems.
 
-image::01/incorrect-dual-write.png[width=75%]
+image::01/incorrect-dual-write.png[width=50%]
 
 The consequence of issues in this solution would be to have an outdated data being queried by the user, in other words, a user could potentially see an item for sale that is no longer available, or see a list of items with an outdated price.
 
@@ -122,6 +121,7 @@ See below a simplified representation of the solution:
 image::01/simplified-tech-usage.png[width=100%]
 
 == See the solution in action
+
 Here's a list of videos that you can use to explore this solution pattern.
 
 * xref:03-demo.adoc#_see_an_overview_and_demonstration_of_this_solution_pattern[Solution Pattern Overview]
@@ -130,7 +130,6 @@ Here's a list of videos that you can use to explore this solution pattern.
 * xref:03-demo.adoc#_see_the_cashback_wallet_in_action[The Cashback Wallet capability in action]
 
 [#_see_an_overview_and_demonstration_of_this_solution_pattern]
-See an overview and demonstration of this solution pattern:
 
 Check below a twenty minutes explanation and demonstration of this solution pattern:
 
@@ -180,8 +179,6 @@ image::02/arch-cashback-overview.png[width=100%]
 [link=_images/02/cashback-ui.png, window="_blank"]
 image::02/cashback-ui.png[width=100%]
 
-
-
 [#scenario-search]
 === Scenario: Full-text search for data in legacy database
 
@@ -202,12 +199,13 @@ The following services are part of this scenario:
 * *Elastic connector service*: an event-driven microservice that reacts to products' events and push relevant updates to Elastic. This service capabilities were developed with with Camel and Quarkus.
 * *Search service*: a sample quarkus service that integrates with ElasticSearch using the https://quarkus.io/guides/elasticsearch[quarkus elastic-rest-client extension], and exposes a REST endpoint for searching products by name and description. For demonstration purposes, this service has a page to facilitate visualizing the search results.
 
-.Seach Service: a Quarkus client that integrates with Elastic for easier search results visualization.
+.Search Service: a Quarkus client that integrates with Elastic for easier search results visualization.
+
 [link=_images/02/search-ui.png, window="_blank"]
 image::02/search-ui.png[width=100%]
 
-
 == Summary
+
 The solution is built on top of a hybrid cloud model, with containerized services running on OpenShift (can be on a private or public cloud depending on how you provision the demo) consuming a managed OpenShift Streams for Apache Kafka. OpenShift streams is heart of this solution - it's a resilient and highly available Kafka instance managed by Red Hat, where all the topics reside and where all services can receive and send all events from/to.
 
 This design is only possible by the designing the architecture based on the Change Data Capture pattern - which was delivered with Debezium and Kafka Connectors.
