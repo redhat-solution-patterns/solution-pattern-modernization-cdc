@@ -135,7 +135,7 @@ rhoas kafka acl grant-access --producer --consumer --service-account srvc-acct-9
 * `retail.sale-aggregated`
 * `retail.expense-event`
 * `retail.updates.public.line_item`
-* `retail.retail.updates.public.sale`
+* `retail.updates.public.sale`
 * `retail.updates.public.customer`
 * `retail.updates.public.product`
 +
