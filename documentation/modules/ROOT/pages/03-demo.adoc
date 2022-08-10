@@ -189,7 +189,7 @@ To check if your environment is healthy:
 +
 image::03/ocp_pods_running.png[]
 
-=== Obtaining services' URL
+=== Accessing the services
 
 You can access the three services that exposes a UI through the exposed routes. Use one of the two options below to get the routes:
 
