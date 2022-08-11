@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Solution Pattern: Using Change Data Capture for Stack Modernization :: Solution Patterns for Cloud Native Architectures</title>
     <link rel="canonical" href="https://redhat-solution-patterns.github.io/solution-pattern-modernization-cdc/solution-pattern-modernization-cdc/index.html">
-    <link rel="next" href="01-pattern.html#_story">
+    <link rel="next" href="02-architecture.html">
     <meta name="generator" content="Antora 3.0.0">
 <link rel="stylesheet" href="../_/css/site.css">
 <link rel="stylesheet" href="../_/css/extra.css">
@@ -73,19 +73,16 @@
     <a class="nav-link" href="index.html">1. Home page</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#use-cases">1.1 Use cases</a>
+    <a class="nav-link" href="#use-cases">1. Use cases</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#_content_overview">1.2 Content Overview</a>
+    <a class="nav-link" href="#background">2. The story behind this solution pattern</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="01-pattern.html#_story">1.3 The story behind this solution pattern</a>
+    <a class="nav-link" href="#_solution">3. Technical Overview</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="01-pattern.html#_solution">1.4 The solution</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#_content_overview">1.5 Explore more solution patterns</a>
+    <a class="nav-link" href="#_explore_more_solution_patterns">4. Explore more solution patterns</a>
   </li>
 </ul>
   </li>
@@ -94,20 +91,20 @@
     <a class="nav-link" href="02-architecture.html">2. Architecture</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="02-architecture.html#challenges">2.1. Common challenges</a>
+    <a class="nav-link" href="02-architecture.html#_common_challenges_when_extending_stack_capabilities">1. Common challenges</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="02-architecture.html#tech_stack">2.2. Technology stack</a>
+    <a class="nav-link" href="02-architecture.html#tech_stack">2. Technology stack</a>
   </li>
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="02-architecture.html#in_depth">2.3. An in-depth look at the solution&#8217;s architecture</a>
+    <a class="nav-link" href="02-architecture.html#in_depth">3. An in-depth look at the solution&#8217;s architecture</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="02-architecture.html#scenario-cashback-wallet">2.3.1 Scenario: Cashback Wallet</a>
+    <a class="nav-link" href="02-architecture.html#scenario-cashback-wallet">3.1 Scenario: Cashback Wallet</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="02-architecture.html#scenario-search">2.3.2 Scenario: Full-text search for data in legacy database</a>
+    <a class="nav-link" href="02-architecture.html#scenario-search">3.2 Scenario: Full-text search for data in legacy database</a>
   </li>
 </ul>
   </li>
@@ -118,34 +115,43 @@
     <a class="nav-link" href="03-demo.html">3. See the Solution in Action</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="03-demo.html#_see_the_solution_in_action">3.1. Demonstration</a>
+    <a class="nav-link" href="03-demo.html#_see_the_solution_in_action">1. Demonstration</a>
   </li>
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="03-demo.html#_run_this_demonstration">3.2. Run this demonstration</a>
+    <a class="nav-link" href="03-demo.html#_run_this_demonstration">2. Run this demonstration</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="03-demo.html#_pre_requisites">3.2.1. Pre-requisites</a>
+    <a class="nav-link" href="03-demo.html#_see_the_provisioning_in_action">2.1. See the provisioning in action</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="03-demo.html#_provisioning_the_demo">3.2.2. Provisioning</a>
+    <a class="nav-link" href="03-demo.html#_pre_requisites">2.2. Pre-requisites</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="03-demo.html#_installing_the_demo">3.2.2. Accessing Services</a>
+    <a class="nav-link" href="03-demo.html#_provisioning_the_demo">2.3. Provisioning the demo</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="03-demo.html#_accessing_the_services">2.3. Accessing the services</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="03-demo.html#_walkthrough_guide">3.3. Walkthrough guide</a>
+    <a class="nav-link" href="03-demo.html#_walkthrough_guide">3. Walkthrough guide</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="03-demo.html#_enhanced_search_capabilities_for_products">3.3.1. Enhanced Search</a>
+    <a class="nav-link" href="03-demo.html#_enhanced_search_capabilities_for_products">3.1. Enhanced Search</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="03-demo.html#_cashback_wallet_functionality">3.3.2. Cashback Wallet</a>
+    <a class="nav-link" href="03-demo.html#_cashback_wallet_functionality">3.2. Cashback Wallet</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="03-demo.html#_see_the_cashback_wallet_in_action">3.3. See the Cashback Wallet in action</a>
   </li>
 </ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-demo.html#_conclusion">4. Conclusion</a>
   </li>
 </ul>
   </li>
@@ -154,7 +160,7 @@
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="https://redhat-solution-patterns.github.io/">4. Other Red Hat Solution Patterns</a>
+    <a class="nav-link" href="https://redhat-solution-patterns.github.io/">Explore More Red Hat Solution Patterns</a>
   </li>
 </ul>
   </li>
@@ -195,8 +201,7 @@
   <div class="content">
 <article class="doc">
 <h1 class="page">Solution Pattern: Using Change Data Capture for Stack Modernization</h1>
-<div class="sect1">
-<h2 id="_solution_overview"><a class="anchor" href="#_solution_overview"></a><a class="link" href="#_solution_overview">1. Solution Overview</a></h2>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>This solution pattern brings an architectural solution for scenarios where services integration must happen through data integration and cause no impact to the existing stack.</p>
@@ -222,25 +227,25 @@
 <div class="content">
 <div class="tab-pane" aria-labelledby="tabset1_a-href-1-solution-pattern-a">
 <div class="paragraph">
-<p><a href="#use-cases">1.1. Use cases</a><br>
-<a href="#_content_overview">1.2. Content overview</a><br>
-<a href="01-pattern.html#_the_story_behind_this_solution_pattern" class="xref page">1.3. The story behind this solution pattern</a><br>
-<a href="01-pattern.html#_the_solution" class="xref page">1.4. The solution</a><br>
-<a href="#_explore_more_solution_patterns">1.5. Explore more solution patterns</a></p>
+<p><a href="#use-cases">1. Use cases</a><br>
+<a href="#background">2. The story behind this solution pattern</a><br>
+<a href="#_solution">3. Technical Overview</a><br>
+<a href="#_explore_more_solution_patterns">4. Explore more solution patterns</a></p>
 </div>
 </div>
 <div class="tab-pane" aria-labelledby="tabset1_a-href-02-architecture-html-class-xref-page-2-architecture-a">
 <div class="paragraph">
-<p><a href="02-architecture.html#_common_challenges_when_extending_stack_capabilities" class="xref page">2.1. Common challenges</a><br>
-<a href="02-architecture.html#tech_stack" class="xref page">2.2. Technology stack</a><br>
-<a href="02-architecture.html#in_depth" class="xref page">2.3. An in-depth look at the solution&#8217;s architecture</a><br></p>
+<p><a href="02-architecture.html#_common_challenges_when_extending_stack_capabilities" class="xref page">1. Common challenges</a><br>
+<a href="02-architecture.html#tech_stack" class="xref page">2. Technology stack</a><br>
+<a href="02-architecture.html#in_depth" class="xref page">3. An in-depth look at the solution&#8217;s architecture</a><br></p>
 </div>
 </div>
 <div class="tab-pane" aria-labelledby="tabset1_a-href-03-demo-html-class-xref-page-3-demonstration-a">
 <div class="paragraph">
-<p><a href="03-demo.html#_see_the_solution_in_action" class="xref page">3.1. See the Solution in Action</a><br>
-<a href="03-demo.html#_run_this_demonstration" class="xref page">3.2. Run this demonstration</a><br>
-<a href="03-demo.html#_walkthrough_guide" class="xref page">3.3. Walkthrough guide</a></p>
+<p><a href="03-demo.html#_see_the_solution_in_action" class="xref page">1. See the Solution in Action</a><br>
+<a href="03-demo.html#_run_this_demonstration" class="xref page">2. Run this demonstration</a><br>
+<a href="03-demo.html#_walkthrough_guide" class="xref page">3. Walkthrough guide</a><br>
+<a href="03-demo.html#_conclusion" class="xref page">4. Conclusion</a></p>
 </div>
 </div>
 </div>
@@ -248,7 +253,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="use-cases"><a class="anchor" href="#use-cases"></a><a class="link" href="#use-cases">2. Use cases</a></h2>
+<h2 id="use-cases"><a class="anchor" href="#use-cases"></a><a class="link" href="#use-cases">1. Use cases</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Common use cases that can be addressed with this architecture are:</p>
@@ -272,7 +277,117 @@
 </li>
 </ul>
 </div>
-<h2 id="_explore_more_solution_patterns" class="discrete">Explore more solution patterns</h2>
+</div>
+</div>
+<div class="sect1">
+<h2 id="background"><a class="anchor" href="#background"></a><a class="link" href="#background">2. The story behind this solution pattern</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The solution pattern is backed by the story of a retail store that has been active in the market for more than fifteen years. This retail store uses a single application to manage the <code>inventory</code>, <code>catalog</code> and <code>sales</code> during their daily operations.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+We are a leading retail store acting in the market for over 15 years. We managed to start digital technologies adoption many years ago by acquiring a solution for our inventory and sales registrations. Our biggest challenge is to join competition with high-tech competitors.
+</blockquote>
+<div class="attribution">
+&#8212; Alex Tizon - CEO<br>
+<cite>About company current situation</cite>
+</div>
+</div>
+<div class="paragraph">
+<p>Here are some characteristics of the existing technology stack:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The technology has been acquired many years ago, and no source code is available.</p>
+</li>
+<li>
+<p>The application, application server and databases are installed and running in an on premise environment.</p>
+</li>
+<li>
+<p>There are domain experts who know how to keep the inventory and catalog list updated.</p>
+</li>
+<li>
+<p>There are operations running 24/7 using the sales application, stopping the application impacts the money income directly.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>It&#8217;s getting hard to compete with more high-tech companies, but the technical team does not have the required skills to boostrap the adoption of cloud-native technologies to enhance the organization online services.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+Our first step into modernization is developing a new cashback system for our customers. Adding to that, our current service lacks good searching capabilities so we need better ways for customers to find what they need.
+</blockquote>
+<div class="attribution">
+&#8212; Avery Smith- CTO<br>
+<cite>On modernization goals</cite>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_solution"><a class="anchor" href="#_solution"></a><a class="link" href="#_solution">3. Technical overview</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This solution pattern builds on top an event-driven architecture in order to support the extension of the legacy stack. The architecture includes new microservices, event streaming, event processing and search indexing tools.</p>
+</div>
+<div class="paragraph">
+<p>In respect to the <a href="#_story_goals">story goals</a> and <a href="#use-cases">targeted use cases</a>, it&#8217;s recommended to consider adopting an <a href="https://www.enterpriseintegrationpatterns.com/">Enterprise Integration Pattern</a> for data integration, more specifically, adopting the <a href="https://www.redhat.com/en/topics/integration/what-is-change-data-capture">Change Data Capture (CDC)</a> pattern.</p>
+</div>
+<div class="paragraph">
+<p>This solution requires <strong>no source code changes</strong> in the existing services. The core concept builds on data integration between legacy and new services through usage of asynchronous events. A short description of this solution key concept is:</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>Relevant changes to data persisted in the tracked databases (e.g. delete/insert/update) are captured and published as events. Then, external services react to events and execute necessary operations.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The integration happens like this:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Using <a href="https://debezium.io/">Debezium</a>, the database becomes an event stream. Since data changes are directly tracked, the legacy application code won&#8217;t require changes.</p>
+</li>
+<li>
+<p>The captured data changes are pushed to topics in a <a href="https://www.redhat.com/en/topics/integration/what-is-apache-kafka">Kafka</a> broker.</p>
+</li>
+<li>
+<p>The services that offers that extra capabilities can then subscribe to relevant topics and use the events to obtain the information needed to execute its logic.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+For detailed architecture diagrams please check the <a href="02-architecture.html" class="xref page">In Depth Architecture</a> section.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>See below a simplified representation of the solution:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/01/simplified-tech-usage.png" alt="simplified tech usage" width="100%">
+</div>
+<div class="title">Figure 1. Simplified representation of the integration between the legacy application and the new technology stack.</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_explore_more_solution_patterns"><a class="anchor" href="#_explore_more_solution_patterns"></a><a class="link" href="#_explore_more_solution_patterns">4. Explore more solution patterns</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>It&#8217;s time to boost your cloud-native application architectural design with bleeding-edge technology backed by open-source software. Explore the use cases and learn recommended solutions for each of these challenges:</p>
 </div>
@@ -299,7 +414,7 @@
 </div>
 </div>
 <nav class="pagination">
-  <span class="next"><a href="01-pattern.html#_story" class="query-params-link">1.3 The story behind this solution pattern</a></span>
+  <span class="next"><a href="02-architecture.html" class="query-params-link">2. Architecture</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
