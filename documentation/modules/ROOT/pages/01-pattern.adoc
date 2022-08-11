@@ -1,3 +1,16 @@
+[#use-cases]
+== Use cases
+// tag::use-cases[]
+Common use cases that can be addressed with this architecture are:
+
+- Legacy services need to be extended or enhanced but, it is *not* a possibility to implement the changes in the existing application;
+- New applications or services must leverage existing data from an existing stack of services;
+- The organization seeks to move towards cloud environments and comply to best practices on cloud-native architectures but must also guarantee that any production-active legacy system data is also synchronized to the new services;
+- The organization seeks to move towards cloud environments and comply to best practices on cloud-native architectures but must also guarantee that any production-active legacy system data is also synchronized to the new services;
+- Legacy applications are now extended and complemented by capabilities delivered by new microservices or services (e.g. search index, cache) but the data should always be synchronized.
+// end::use-cases[]
+
+[#background]
 == The story behind this solution pattern
 
 The solution pattern is backed by the story of a retail store that has been active in the market for more than fifteen years. This retail store uses a single application to manage the `inventory`, `catalog` and `sales` during their daily operations.
@@ -17,7 +30,7 @@ It's getting hard to compete with more high-tech companies, but the technical te
 [quote, Avery Smith- CTO, On modernization goals]
 Our first step into modernization is developing a new cashback system for our customers. Adding to that, our current service lacks good searching capabilities so we need better ways for customers to find what they need.
 
-[discrete]
+[#_solution]
 == Technical overview
 // tag::arch-overview[]
 
@@ -46,30 +59,3 @@ See below a simplified representation of the solution:
 
 image::01/simplified-tech-usage.png[width=100%]
 // end::arch-overview[]
-
-== Technical overview
-
-This solution pattern builds on top an event-driven architecture in order to support the extension of the legacy stack. The architecture includes new microservices, event streaming, event processing and search indexing tools.
-
-In respect to the xref:_story_goals[story goals] and xref:use-cases[targeted use cases], it's recommended to consider adopting an https://www.enterpriseintegrationpatterns.com/[Enterprise Integration Pattern] for data integration, more specifically, adopting the https://www.redhat.com/en/topics/integration/what-is-change-data-capture[Change Data Capture (CDC)] pattern.
-
-This solution requires *no source code changes* in the existing services. The core concept builds on data integration between legacy and new services through usage of asynchronous events. A short description of this solution key concept is:
-
-****
-Relevant changes to data persisted in the tracked databases (e.g. delete/insert/update) are captured and published as events. Then, external services react to events and execute necessary operations.
-****
-
-The integration happens like this:
-
-1. Using https://debezium.io/[Debezium], the database becomes an event stream. Since data changes are directly tracked, the legacy application code won't require changes.
-2. The captured data changes are pushed to topics in a https://www.redhat.com/en/topics/integration/what-is-apache-kafka[Kafka] broker.
-3. The services that offers that extra capabilities can then subscribe to relevant topics and use the events to obtain the information needed to execute its logic.
-
-[TIP]
-For detailed architecture diagrams please check the xref:02-architecture.adoc[In Depth Architecture] section.
-
-See below a simplified representation of the solution:
-
-.Simplified representation of the integration between the legacy application and the new technology stack.
-
-image::01/simplified-tech-usage.png[width=100%]

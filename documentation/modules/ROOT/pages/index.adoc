@@ -4,7 +4,6 @@
 :sectlinks:
 :doctype: book
 
-== Solution Overview
 // tag::about[]
 
 This solution pattern brings an architectural solution for scenarios where services integration must happen through data integration and cause no impact to the existing stack.
@@ -12,45 +11,10 @@ This solution pattern brings an architectural solution for scenarios where servi
 The architecture demonstrates how *https://www.redhat.com/en/topics/integration/what-is-change-data-capture[Change Data Capture (CDC)]* design pattern and event-driven architectures supports the *extension of existing capabilities with no changes to legacy apps* where new features can be delivered by cloud-native microservices and can deliver with *zero impact new search capabilities* through the integration of legacy and new services with specialized search index services.
 // end::about[]
 
-[discrete]
-== Content overview
+include::content-overview.adoc[]
 
-[tabs]
-====
-xref:index.adoc[{counter:module:1}. Solution Pattern]::
-+
-xref:index.adoc#use-cases[{counter:module1}.{counter:submodule1:1}. Use cases] +
-xref:index.adoc#_content_overview[{module1}.{counter:submodule1}. Content overview] +
-xref:01-pattern.adoc#_the_story_behind_this_solution_pattern[{module1}.{counter:submodule1}. The story behind this solution pattern] +
-xref:01-pattern#_the_solution[{module1}.{counter:submodule1}. The solution] +
-xref:index.adoc#_explore_more_solution_patterns[{module1}.{counter:submodule1}. Explore more solution patterns]
-+
-xref:02-architecture.adoc[{counter:module2:2}. Architecture]::
-+
-xref:02-architecture.adoc#_common_challenges_when_extending_stack_capabilities[{module2}.{counter:submodule2:1}. Common challenges] +
-xref:02-architecture.adoc#tech_stack[{module2}.{counter:submodule2}. Technology stack] +
-xref:02-architecture.adoc#in_depth[{module2}.{counter:submodule2}. An in-depth look at the solution's architecture] + 
-+
-xref:03-demo.adoc[{counter:module3:3}. Demonstration]::
-+
-xref:03-demo.adoc#_see_the_solution_in_action[{module3}.{counter:submodule3:1}. See the Solution in Action] +
-xref:03-demo.adoc#_run_this_demonstration[{module3}.{counter:submodule3}. Run this demonstration] +
-xref:03-demo.adoc#_walkthrough_guide[{module3}.{counter:submodule3}. Walkthrough guide]
-====
+include::01-pattern.adoc[]
 
-
-[#use-cases]
-== Use cases
-// tag::use-cases[]
-Common use cases that can be addressed with this architecture are:
-
-- Legacy services need to be extended or enhanced but, it is *not* a possibility to implement the changes in the existing application;
-- New applications or services must leverage existing data from an existing stack of services;
-- The organization seeks to move towards cloud environments and comply to best practices on cloud-native architectures but must also guarantee that any production-active legacy system data is also synchronized to the new services;
-- The organization seeks to move towards cloud environments and comply to best practices on cloud-native architectures but must also guarantee that any production-active legacy system data is also synchronized to the new services;
-- Legacy applications are now extended and complemented by capabilities delivered by new microservices or services (e.g. search index, cache) but the data should always be synchronized.
-// end::use-cases[]
-
-[discrete]
+[#_explore_more_solution_patterns]
 == Explore more solution patterns
 include::https://raw.githubusercontent.com/redhat-solution-patterns/redhat-solution-patterns.github.io/master/documentation/modules/ROOT/pages/solution-pattern-list.adoc[]
