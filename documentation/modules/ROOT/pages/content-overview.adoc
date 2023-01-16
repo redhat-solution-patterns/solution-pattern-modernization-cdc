@@ -3,23 +3,37 @@
 
 [tabs]
 ====
-xref:index.adoc[{counter:module:1}. Solution Pattern]::
+xref:index.adoc[{counter:module}. Solution Pattern]::
 +
 xref:index.adoc#use-cases[{counter:submodule1:1}. Use cases] +
 xref:index.adoc#background[{counter:submodule1}. The story behind this solution pattern] +
 xref:index.adoc#_solution[{counter:submodule1}. Technical Overview] +
 xref:index.adoc#_explore_more_solution_patterns[{counter:submodule1}. Explore more solution patterns]
 +
-xref:02-architecture.adoc[{counter:module2:2}. Architecture]::
+xref:02-architecture.adoc[{counter:module}. Architecture]::
 +
 xref:02-architecture.adoc#_common_challenges_when_extending_stack_capabilities[{counter:submodule2:1}. Common challenges] +
 xref:02-architecture.adoc#tech_stack[{counter:submodule2}. Technology stack] +
 xref:02-architecture.adoc#in_depth[{counter:submodule2}. An in-depth look at the solution's architecture] + 
 +
-xref:03-demo.adoc[{counter:module3:3}. Demonstration]::
+xref:03-demo.adoc[{counter:module}. Demonstration]::
 +
 xref:03-demo.adoc#_see_the_solution_in_action[{counter:submodule3:1}. See the Solution in Action] +
 xref:03-demo.adoc#_run_this_demonstration[{counter:submodule3}. Run this demonstration] +
 xref:03-demo.adoc#_walkthrough_guide[{counter:submodule3}. Walkthrough guide] +
 xref:03-demo.adoc#_conclusion[{counter:submodule3}. Conclusion]
++
+xref:04-devresources.adoc[{counter:module}. Developer Resources]::
++
+https://developers.redhat.com/register[{counter:submodule4}. Register] for Red Hat developers subscription to get access to Red Hat products for personal use at no cost +
+https://developers.redhat.com/products/openshift/overview[{counter:submodule4}. Red Hat OpenShift] +
+https://developers.redhat.com/products/quarkus/overview[{counter:submodule4}. Quarkus] + 
+https://developers.redhat.com/products/fuse/overview[{counter:submodule4}. Camel] (a.k.a. Red Hat Fuse) +
+https://developers.redhat.com/products/amq/overview[{counter:submodule4}. AMQ] +
+https://developers.redhat.com/products/red-hat-openshift-streams-for-apache-kafka/overview[{counter:submodule4}. Red Hat OpenShift Streams for Apache Kafka]
++
+
+
+
+
 ====
