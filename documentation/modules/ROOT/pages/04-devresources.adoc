@@ -7,7 +7,7 @@
 
 Here you find a list of developer resources relevant to this Solution Pattern
 
-https://developers.redhat.com/register[{counter:submodule4}. Register] for Red Hat developers subscription to get access to Red Hat products for personal use at no cost +
+https://developers.redhat.com/about[{counter:submodule4}. Register] for Red Hat developers subscription to get access to Red Hat products for personal use at no cost +
 https://developers.redhat.com/products/openshift/overview[{counter:submodule4}. Red Hat OpenShift] +
 https://developers.redhat.com/products/quarkus/overview[{counter:submodule4}. Quarkus] + 
 https://developers.redhat.com/products/fuse/overview[{counter:submodule4}. Camel] (a.k.a. Red Hat Fuse) +
