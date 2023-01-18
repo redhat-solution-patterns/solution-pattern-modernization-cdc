@@ -24,6 +24,8 @@
 *** xref:03-demo.adoc#_see_the_cashback_wallet_in_action[{submodule3}.{counter:_submodule4}. See the Cashback Wallet in action]
 ** xref:03-demo.adoc#_conclusion[{counter:submodule3}. Conclusion]
 
+* xref:04-devresources.adoc[{counter:module}. Developer Resources]
+
 //* xref:04-workshop.adoc[{counter:module}. Workshop]
 //** xref:04-workshop.adoc#install_wksp[{module}.{counter:submodule4}. Installing the workshop environment]
 //*** xref:04-workshop.adoc#pre_reqs_wksp[{module}.{counter:submodule4}. Before getting started]
