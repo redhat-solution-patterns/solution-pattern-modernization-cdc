@@ -286,7 +286,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>One could think about changing the service to push the data not only to its own database, but also to elasticsearch. It becomes a distributed system where the core data operations are no longer handled in single transactions. Be aware: this is yet another anti-pattern, called <a href="https://developers.redhat.com/articles/2021/07/30/avoiding-dual-writes-event-driven-applications">dual write</a>.</p>
+<p>One could think about changing the service to push the data not only to its own database, but also to ElasticSearch. It becomes a distributed system where the core data operations are no longer handled in single transactions. Be aware: this is yet another anti-pattern, called <a href="https://developers.redhat.com/articles/2021/07/30/avoiding-dual-writes-event-driven-applications">dual write</a>.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -336,7 +336,7 @@
 <h2 id="_modernization_boosted_by_event_driven_architecture_and_enterprise_integration_patterns"><a class="anchor" href="#_modernization_boosted_by_event_driven_architecture_and_enterprise_integration_patterns"></a><a class="link" href="#_modernization_boosted_by_event_driven_architecture_and_enterprise_integration_patterns">Modernization boosted by event-driven architecture and enterprise integration patterns</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This solution pattern builds on top an event-driven architecture in order to support the extension of the legacy stack. The architecture includes new microservices, event streaming, event processing and search indexing tools.</p>
+<p>This solution pattern builds on top of an event-driven architecture in order to support the extension of the legacy stack. The architecture includes new microservices, event streaming, event processing and search indexing tools.</p>
 </div>
 <div class="paragraph">
 <p>In respect to the <a href="#_story_goals">story goals</a> and <a href="#use-cases">targeted use cases</a>, it&#8217;s recommended to consider adopting an <a href="https://www.enterpriseintegrationpatterns.com/">Enterprise Integration Pattern</a> for data integration, more specifically, adopting the <a href="https://www.redhat.com/en/topics/integration/what-is-change-data-capture">Change Data Capture (CDC)</a> pattern.</p>
@@ -481,7 +481,7 @@ For detailed architecture diagrams please check the <a href="02-architecture.htm
 </div>
 </li>
 <li>
-<p>Next, <a href="https://debezium.io">Debezium</a> streams the data them over to Kafka. The event streaming solution can be hosted on-premise or on the cloud. In this implementation, we are using <a href="https://red.ht/TryKafka">Red Hat Managed OpenShift Streams for Apache Kafka</a>.</p>
+<p>Next, <a href="https://debezium.io">Debezium</a> streams the data them over to Kafka. The event streaming solution can be hosted on-premise or on the cloud. In this implementation, we are using <a href="https://www.redhat.com/en/resources/amq-streams-datasheet">AMQ Streams</a>, Red Hat&#8217;s Kubernetes-native Apache Kafka distribution.</p>
 </li>
 <li>
 <p>An integration microservice, <code>sales-streams</code>, reacts to events captured by Debezium and published on three topics, respective to <code>sale-change-event</code> and <code>lineitem-change-event</code>.</p>
@@ -572,7 +572,7 @@ For detailed architecture diagrams please check the <a href="02-architecture.htm
 <h2 id="_summary"><a class="anchor" href="#_summary"></a><a class="link" href="#_summary">Summary</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The solution is built on top of a hybrid cloud model, with containerized services running on OpenShift (can be on a private or public cloud depending on how you provision the demo) consuming a managed OpenShift Streams for Apache Kafka. OpenShift streams is heart of this solution - it&#8217;s a resilient and highly available Kafka instance managed by Red Hat, where all the topics reside and where all services can receive and send all events from/to.</p>
+<p>The solution is built on top of a hybrid cloud model, with containerized services running on OpenShift (can be on a private or public cloud depending on how you provision the demo), using an Apache Kafka broker cluster running in the same OpenShift instance.</p>
 </div>
 <div class="paragraph">
 <p>This design is only possible by the designing the architecture based on the Change Data Capture pattern - which was delivered with Debezium and Kafka Connectors.</p>

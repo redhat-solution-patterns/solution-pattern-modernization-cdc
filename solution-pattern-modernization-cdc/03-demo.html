@@ -260,13 +260,7 @@
 <p>Log in to OpenShift with <code>cluster-admin</code> role;</p>
 </li>
 <li>
-<p>Create an OpenShift Streams instance, configure ACL and topics;</p>
-</li>
-<li>
-<p>For ansible, configure the set of variables pointing with your environment settings;</p>
-</li>
-<li>
-<p>Run the ansible playbook and enjoy the demo.</p>
+<p>Run the <a href="https://github.com/solution-pattern-cdc/ansible.git">Ansible playbook</a> and enjoy the demo.</p>
 </li>
 </ol>
 </div>
@@ -303,7 +297,7 @@ For a better experience during provisioning and demo usage, it&#8217;s recommend
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://docs.openshift.com/container-platform/4.10/cli_reference/openshift_cli/getting-started-cli.html#installing-openshift-cli">OpenShift CLI (oc client)</a></p>
+<p><a href="https://docs.openshift.com/container-platform/4.12/cli_reference/openshift_cli/getting-started-cli.html#installing-openshift-cli">OpenShift CLI (oc client)</a></p>
 </li>
 <li>
 <p><a href="https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html">Ansible CLI</a> (<em>tested with v2.9</em>)</p>
@@ -315,9 +309,6 @@ For a better experience during provisioning and demo usage, it&#8217;s recommend
 </ul>
 </div>
 </li>
-<li>
-<p><em>(optional)</em> <a href="https://github.com/redhat-developer/app-services-guides/tree/main/docs/rhoas/rhoas-cli-installation#installing-the-rhoas-cli">RHOAS CLI</a> for OpenShift Streams management.</p>
-</li>
 </ul>
 </div>
 <div class="paragraph">
@@ -325,7 +316,7 @@ For a better experience during provisioning and demo usage, it&#8217;s recommend
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">oc version #openshift cli client
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">oc version #openshift cli client
 ansible --version
 ansible-galaxy --version
 ansible-galaxy collection list #the list should include kubernetes.core</code></pre>
@@ -336,17 +327,8 @@ ansible-galaxy collection list #the list should include kubernetes.core</code></
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">$ ansible-galaxy collection install kubernetes.core</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">$ ansible-galaxy collection install kubernetes.core</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p><strong>Optional: Managing OpenShift Streams using a CLI tool</strong></p>
-</div>
-<div class="paragraph">
-<p>It is possible to do all interaction with your OpenShift Streams managed service (kafka) via the web console. If instead you like using the terminal and want to use a CLI tool, you will need <strong>rhoas cli</strong>. This cli allows interaction with Red Hat OpenShift Application Services like the OpenShift Streams kafka we will use.</p>
-</div>
-<div class="paragraph">
-<p>You can find a straightforward installation guide for multiple OS at <a href="https://github.com/redhat-developer/app-services-guides/tree/main/docs/rhoas/rhoas-cli-installation#installing-the-rhoas-cli">Installing the RHOAS CLI</a>.</p>
 </div>
 </div>
 <div class="sect3">
@@ -354,7 +336,7 @@ ansible-galaxy collection list #the list should include kubernetes.core</code></
 <div class="ulist">
 <ul>
 <li>
-<p>OpenShift cluster (version &gt;= 4.9) with <em>cluster-admin</em> privileges.</p>
+<p>OpenShift cluster (version &gt;= 4.12) with <em>cluster-admin</em> privileges.</p>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -362,22 +344,7 @@ ansible-galaxy collection list #the list should include kubernetes.core</code></
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-If you have access to rhpds, you can request and use an <code>OpenShift 4.10 Workshop</code> enviroment.
-</td>
-</tr>
-</table>
-</div>
-</li>
-<li>
-<p>Access to OpenShift Streams for Apache Kafka.</p>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-If it&#8217;s your first time using OpenShift Streams, don&#8217;t worry. It&#8217;s a zero-cost service for developers and everyone can try it out. You can register and order your instance at <a href="https://red.ht/TryKafka">https://red.ht/TryKafka</a>.
+If you have access to RHDP, you can request and use an <code>OpenShift 4.12 Workshop</code> enviroment.
 </td>
 </tr>
 </table>
@@ -390,165 +357,15 @@ If it&#8217;s your first time using OpenShift Streams, don&#8217;t worry. It&#82
 <div class="sect2">
 <h3 id="_provisioning_the_demo"><a class="anchor" href="#_provisioning_the_demo"></a><a class="link" href="#_provisioning_the_demo">2.3. Provisioning the demo</a></h3>
 <div class="paragraph">
-<p>The solution&#8217;s components and services can be automatically provisioned using an ansible playbook.</p>
+<p>The solution&#8217;s components and services can be automatically provisioned using an Ansible playbook.</p>
 </div>
 <div class="paragraph">
 <p>The following steps will guide you on setting up an instance of OpenShift Streams for Apache Kafka and its resources, plus provisioning the demo services using Ansible.</p>
 </div>
 <div class="sect3">
-<h4 id="cli-tools"><a class="anchor" href="#cli-tools"></a><a class="link" href="#cli-tools">2.3.1. Provisioning OpenShift Streams (Kafka)</a></h4>
+<h4 id="cli-tools"><a class="anchor" href="#cli-tools"></a><a class="link" href="#cli-tools">2.3.1. Installing the demo</a></h4>
 <div class="paragraph">
-<p>Before moving ahead to the steps of provisioning the services within your OpenShift cluster, first you should provision and configure your Kafka instance.</p>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-If you need detailed instructions on how to provision, configure and operate of your managed Kafka instance, please check this step-by-step <a href="https://redhat-scholars.github.io/managed-kafka-workshop/managed-kafka-workshop/main/01-getting-started.html">Getting Started with OpenShift Streams for Apache Kafka</a> guide.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>See below a straightforward guide to create and your instance:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Navigate to <a href="https://console.redhat.com" class="bare">https://console.redhat.com</a> and log in with your Red Hat Account ID;</p>
-</li>
-<li>
-<p>Select the <strong>Service Account</strong> menu and create a new Service Account to connect to your Kafka instance;</p>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Take note of the service account id and password, you&#8217;ll need both information during the provisioning.
-</td>
-</tr>
-</table>
-</div>
-</li>
-<li>
-<p>Next, in the left menu, select <strong>Application and Data Services &#8594; Streams for Apache Kafka &#8594; Kafka instances</strong>;</p>
-</li>
-<li>
-<p>Create a new Kafka instance;</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Use a name of your choice. You can use the default values for creating the instance.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Once your instance is ready, click on the instance and open the "connection" tab. take note of the following data:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Bootstrap server (e.g. cdc-kafka-caah-ekucfsh&#8212;&#8203;lhhsqa.bf2.kafka.rhcloud.com:443)</p>
-<div class="imageblock">
-<div class="content">
-<img src="_images/03/kafka_instance_connection_info.png" alt="kafka instance connection info">
-</div>
-</div>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Configure the ACL for your Service Account. The Service Account should have the following permissions:</p>
-<div class="ulist">
-<ul>
-<li>
-<p><code>read</code>, <code>write</code>, <code>create</code> permissions for all topics</p>
-</li>
-<li>
-<p><code>read</code> permissions for all consumer groups</p>
-</li>
-<li>
-<p>If you have <code>rhosak</code> CLI installed, you can execute the following commands to login to the service, select your kafka instance and add the proper configuration, <strong>replacing <code>srvc-acct-9999</code> with your service client id</strong>:</p>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-If you do not use the right service account id, the deployed services will throw an authentication error.
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-ssh hljs" data-lang="ssh">rhoas login
-rhoas kafka list
-rhoas kafka use
-rhoas kafka acl grant-access --producer --consumer --service-account srvc-acct-9999 --topic all --group all -y</code></pre>
-</div>
-</div>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Create the following topics, <strong>all with 1 partition</strong>:</p>
-<div class="ulist">
-<ul>
-<li>
-<p><code>retail.sale-aggregated</code></p>
-</li>
-<li>
-<p><code>retail.expense-event</code></p>
-</li>
-<li>
-<p><code>retail.updates.public.line_item</code></p>
-</li>
-<li>
-<p><code>retail.updates.public.sale</code></p>
-</li>
-<li>
-<p><code>retail.updates.public.customer</code></p>
-</li>
-<li>
-<p><code>retail.updates.public.product</code></p>
-<div class="imageblock">
-<div class="content">
-<img src="_images/03/kafka_instance_topics.png" alt="kafka instance topics">
-</div>
-</div>
-</li>
-<li>
-<p>if you are using <code>rhoas cli</code>, you can create the topics with these commands:</p>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-ssh hljs" data-lang="ssh">rhoas kafka topic create --name=retail.sale-aggregated --partitions=1
-rhoas kafka topic create --name=retail.updates.public.customer --partitions=1
-rhoas kafka topic create --name=retail.updates.public.product --partitions=1
-rhoas kafka topic create --name=retail.updates.public.sale --partitions=1
-rhoas kafka topic create --name=retail.updates.public.line_item --partitions=1
-rhoas kafka topic create --name=retail.expense-event --partitions=1</code></pre>
-</div>
-</div>
-</li>
-</ul>
-</div>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_installing_the_demo"><a class="anchor" href="#_installing_the_demo"></a><a class="link" href="#_installing_the_demo">2.3.2. Installing the demo</a></h4>
-<div class="paragraph">
-<p>This solution pattern offers an easy installation process through ansible automation and helm charts. To get your environment up and running, follow the steps below:</p>
+<p>This solution pattern offers an easy installation process through Ansible automation, Red hat OpenShift Gitops and Helm charts. To get your environment up and running, follow the steps below:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -556,35 +373,16 @@ rhoas kafka topic create --name=retail.expense-event --partitions=1</code></pre>
 <p>Clone the repository below to your workstation</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">git clone https://github.com/solution-pattern-cdc/ansible.git
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">git clone https://github.com/solution-pattern-cdc/ansible.git
 cd ansible</code></pre>
 </div>
-</div>
-</li>
-<li>
-<p>Copy the <code>inventories/inventory.template</code> file to <code>inventories/inventory</code>;</p>
-</li>
-<li>
-<p>Remember the OpenShift Streams values we took note? It&#8217;s time to use them. In the <code>inventories/inventory</code> file, provide the connection details for your Kafka instance:</p>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>rhosak_bootstrap_server</strong>: Bootstrap server of your managed Kafka instance;</p>
-</li>
-<li>
-<p><strong>rhosak_service_account_client_id</strong>: Client ID of your Service Account;</p>
-</li>
-<li>
-<p><strong>rhosak_service_account_client_secret</strong>: Client Secret of your Service Account;</p>
-</li>
-</ul>
 </div>
 </li>
 <li>
 <p>Run the Ansible playbook:</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">ansible-playbook -i inventories/inventory playbooks/install.yml</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">ansible-playbook -playbooks/install.yml</code></pre>
 </div>
 </div>
 </li>
@@ -616,7 +414,7 @@ cd ansible</code></pre>
 <div class="sect2">
 <h3 id="_accessing_the_services"><a class="anchor" href="#_accessing_the_services"></a><a class="link" href="#_accessing_the_services">2.4. Accessing the services</a></h3>
 <div class="paragraph">
-<p>You can access the three services that exposes a UI through the exposed routes. Use one of the two options below to get the routes:</p>
+<p>You can access the three services that expose a UI through the exposed routes. Use one of the two options below to get the routes:</p>
 </div>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
@@ -624,7 +422,7 @@ cd ansible</code></pre>
 <p>Using <code>oc cli</code>, copy and paste the whole command below:</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">cat &lt;&lt; EOF
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">cat &lt;&lt; EOF
 ========================================
 Kafdrop: https://$(oc get route kafdrop --template='{{ .spec.host }}' -n retail)
 Search service: https://$(oc get route search-service --template='{{ .spec.host }}' -n retail)
@@ -655,9 +453,17 @@ EOF</code></pre>
 <p>A retail store specialized in plants wants to grow its market by expanding in the online market. To do so, they need to start the adoption of new technologies without impacting the existing application that is currently running in production. All information about sales, customers and products are still maintained via legacy application, but this data is also required by the new capabilities.</p>
 </div>
 <div class="paragraph">
-<p>Two new functionalities are now part of the retail solution:
-1. Enhanced search capabilities for products
-1. Cashback wallet for customers</p>
+<p>Two new functionalities are now part of the retail solution:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Enhanced search capabilities for products</p>
+</li>
+<li>
+<p>Cashback wallet for customers</p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
 <p>Both solutions are build on top of an event driven architecture, which means that all services are integrated with an orchestration where each one execute its own operations when relevant events are published in the ecosystem.</p>
@@ -673,10 +479,10 @@ EOF</code></pre>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Use the <code>search service</code> to see existing data that is available in the ElasticSearch index;</p>
+<p>Use the <strong>search service</strong> to see existing data that is available in the ElasticSearch index;</p>
 </li>
 <li>
-<p>Add a new product directly to the <code>retail database</code> (legacy), to check the ecosystem behavior;</p>
+<p>Add a new product directly to the <strong>retail database</strong> (legacy), to check the ecosystem behavior;</p>
 </li>
 <li>
 <p>Confirm that the new product shows up in the search;</p>
@@ -688,7 +494,7 @@ EOF</code></pre>
 <p>Delete the product directly on the retail database;</p>
 </li>
 <li>
-<p>Confirm that the product no longer shows up in the <code>search service</code>.</p>
+<p>Confirm that the product no longer shows up in the <strong>search service</strong>.</p>
 </li>
 </ol>
 </div>
@@ -708,7 +514,7 @@ EOF</code></pre>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Using your browser, open the <code>search service</code>.</p>
+<p>Using your browser, open the <strong>search service</strong>.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -731,25 +537,25 @@ You can get the URL as described in the section <a href="#cli-tools">obtaining t
 </div>
 </li>
 <li>
-<p>Next, search for "kopi" or "java. No result will show up.</p>
+<p>Next, search for "kopi" or "java". No result will show up.</p>
 </li>
 <li>
-<p>Let&#8217;s insert a new product directly in the <code>retail-db</code> and see if it will reflect on this service. Use the console inside the <code>retail-db</code> container. You can either access the container using your browser, accessing the OpenShit Console (<strong>Workloads &#8594; Pods &#8594; retail-db-XXXX &#8594; Terminal</strong>);</p>
+<p>Let&#8217;s insert a new product directly in the <strong>retail database</strong> and see if it will reflect on this service. Use the console inside the <strong>retail-db</strong> container. You can either access the container using your browser, accessing the OpenShift Console (<strong>Workloads &#8594; Pods &#8594; retail-db-XXXX &#8594; Terminal</strong>);</p>
 <div class="paragraph">
 <p>Or by using your terminal as shown below:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">oc project retail
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">oc project retail
 oc rsh deployment/retail-db</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>Next, inside the container, we will access postgres, connect to the <code>retail</code> database and check the structure of the <code>product</code> table:</p>
-<div class="listingblock">
+<p>Next, inside the container, we will access postgres, connect to the <strong>retail</strong> database and check the structure of the <strong>product</strong> table:</p>
+<div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">psql
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">psql
 \c retail
 \d product</code></pre>
 </div>
@@ -765,7 +571,7 @@ oc rsh deployment/retail-db</code></pre>
 </li>
 <li>
 <p>Let&#8217;s add a new product in this table, the product "<strong>Kopi luwak</strong>":</p>
-<div class="listingblock">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-sql hljs" data-lang="sql">insert into public.product (product_id, name, price, description) values (7777, 'Kopi luwak', 20, 'Kopi luwak is a coffee that consists of partially digested coffee cherries, which have been eaten and defecated by the Asian palm civet (Paradoxurus hermaphroditus). It is produced mainly on the Indonesian islands of Sumatra, Java, Bali, Sulawesi, and in East Timor.');</code></pre>
 </div>
@@ -774,7 +580,7 @@ oc rsh deployment/retail-db</code></pre>
 <li>
 <p>Now, as required by the use case, even though this data was changed in the legacy database, it should be available for search in the new services. Let&#8217;s confirm that this change was reflected in the ElasticSearch products index.</p>
 <div class="paragraph">
-<p>Open the <code>search-service</code> application in your browser and search for "java" or "kopi". You should be able to see your new product.</p>
+<p>Open the <strong>search-service</strong> application in your browser and search for "java" or "kopi". You should be able to see your new product.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -790,19 +596,15 @@ oc rsh deployment/retail-db</code></pre>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>In the <code>retail-tb</code> container terminal, now execute the following SQL:</p>
-</li>
-</ol>
-</div>
-<div class="listingblock">
+<p>In the <strong>retail-db</strong> container terminal, now execute the following SQL:</p>
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-sql hljs" data-lang="sql">DELETE FROM public.product where product_id = 7777;</code></pre>
 </div>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
+</li>
 <li>
-<p>Go back to the <code>search-service</code> in your browser, and search for '<strong>kopi</strong>' or '<strong>java</strong>' again.</p>
+<p>Go back to the <strong>search-service</strong> in your browser, and search for '<strong>kopi</strong>' or '<strong>java</strong>' again.</p>
 </li>
 </ol>
 </div>
@@ -829,7 +631,7 @@ oc rsh deployment/retail-db</code></pre>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>retail-db</code></p></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">PostgreSQL database used by the legacy services;</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">PostgreSQL database used by the legacy services</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Persistence</p></td>
 </tr>
 <tr>
@@ -870,17 +672,17 @@ If you go to your OpenShift, you should be able to see one <code>deployment</cod
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>A new product is created in the <code>retail.product</code> table, in the legacy database <code>retail-db</code>;</p>
+<p>A new product is created in the <strong>retail.product</strong> table, in the legacy database <strong>retail-db</strong>;</p>
 </li>
 <li>
-<p><a href="appendix-a.html#_kafka_connect__debezium_installation" class="xref page">Debezium</a> tracks it and publishes the events it to topics in OpenShift Streams;</p>
+<p><a href="appendix-a.html#_kafka_connect__debezium_installation" class="xref page">Debezium</a> tracks it and publishes the events it to topics in Apache Kafka;</p>
 </li>
 <li>
-<p>The <code>elastic-connector</code>, implemented with Camel and Quarkus is subscribed to the topic mentioned above. It processes the event data and pushes the <strong>product name</strong> and <strong>description</strong> to an ElasticSearch index:</p>
+<p>The <strong>elastic-connector</strong>, implemented with Camel and Quarkus is subscribed to the topic mentioned above. It processes the event data and pushes the <strong>product name</strong> and <strong>description</strong> to an ElasticSearch index:</p>
 </li>
 </ol>
 </div>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="title">Partial code - processing logic in the <a href="https://github.com/solution-pattern-cdc/elastic-connector/blob/main/src/main/java/org/acme/retail/ProductRoute.java"><code>ProductRoute</code></a></div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">(...)
@@ -910,7 +712,7 @@ If you go to your OpenShift, you should be able to see one <code>deployment</cod
 <div class="sect2">
 <h3 id="_cashback_wallet_functionality"><a class="anchor" href="#_cashback_wallet_functionality"></a><a class="link" href="#_cashback_wallet_functionality">3.2. Cashback Wallet functionality</a></h3>
 <div class="paragraph">
-<p>Now, let&#8217;s see more ways we can explore CDC to add new capabilities to our existing stack. Since we have all the new sales being streamed as events, we can use it to build the new cashback wallet business.</p>
+<p>Now, let&#8217;s see more ways we can explore CDC to add new capabilities to our existing stack. Since we have all the new sales being streamed as events, we can use it to build the new cashback wallet service.</p>
 </div>
 <div class="paragraph">
 <p>To walk through this demonstration, you will need to access the following services in your browser:</p>
@@ -944,7 +746,7 @@ If you go to your OpenShift, you should be able to see one <code>deployment</cod
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Open the <code>cashback-service-ui</code>:</p>
+<p>Open the <strong>cashback-service-ui</strong>:</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -967,7 +769,7 @@ You can get the URL as described in the section <a href="#cli-tools">obtaining t
 </div>
 </li>
 <li>
-<p>Choose one of the customers in that list that has no cashback. It will be easier ot see the new cashback credits. You can see the customer ID in the beggining of the line:</p>
+<p>Choose one of the customers in that list that has no cashback. It will be easier to see the new cashback credits. You can see the customer ID in the beginning of the line:</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/03/cashback-wallet-customer-id.png" alt="cashback wallet customer id">
@@ -975,7 +777,7 @@ You can get the URL as described in the section <a href="#cli-tools">obtaining t
 </div>
 </li>
 <li>
-<p>Next, we will simulate as if a customer has purchased five items in the store. In your browser open the <code>simulation service</code> swagger-ui, (service-url/q/swagger-ui).</p>
+<p>Next, we will simulate as if a customer has purchased five items in the store. In your browser open the <strong>simulation service</strong> swagger-ui, (service-url/q/swagger-ui).</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/03/simulate-purchase.png" alt="simulate purchase">
@@ -983,7 +785,7 @@ You can get the URL as described in the section <a href="#cli-tools">obtaining t
 </div>
 </li>
 <li>
-<p>Click on <code>try it out</code>, input the customer ID you have chosen, and submit the request. This will generate five purchases for this customer.</p>
+<p>Click on <strong>try it out</strong>, input the customer ID you have chosen, and submit the request. This will generate five purchases for this customer.</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/03/simulate-purchase-result.png" alt="simulate purchase result">
@@ -1000,7 +802,7 @@ You can get the URL as described in the section <a href="#cli-tools">obtaining t
 <p>Open Kafdrop in your browser.</p>
 </li>
 <li>
-<p>Locate and click on the topic <code>retail.sale-aggregated</code>, and then, click on <strong>view messages</strong>. This is the result of the Kafka Streams (<code>sales-stream</code> service) operations of aggregation, processing and enrichment of the events' data that were streamed by Debezium:</p>
+<p>Locate and click on the topic <code>retail.sale-aggregated</code>, and then, click on <strong>view messages</strong>. This is the result of the Kafka Streams (<strong>sales-stream</strong> service) operations of aggregation, processing and enrichment of the events' data that were streamed by Debezium:</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/03/kafdrop-sales-aggregated-messages.png" alt="kafdrop sales aggregated messages">
@@ -1041,7 +843,7 @@ To see a detailed explanation about the events processing refer to the <a href="
 <div class="sect3">
 <h4 id="_looking_behind_the_scenes_cashback_solution"><a class="anchor" href="#_looking_behind_the_scenes_cashback_solution"></a><a class="link" href="#_looking_behind_the_scenes_cashback_solution">3.3.2. Looking behind the scenes - cashback solution</a></h4>
 <div class="paragraph">
-<p>Differently than the search capability that only requires the integration layer (Retail DB &#8594; ElasticSearch), to create cashback wallets we&#8217;ll need to process and enrich the data before we use it. We will also need to guarantee the synchronization between the customer data in the <code>retail-db</code> and the <code>cashback-db</code>.</p>
+<p>Differently than the search capability that only requires the integration layer (Retail DB &#8594; ElasticSearch), to create cashback wallets we&#8217;ll need to process and enrich the data before we use it. We will also need to guarantee the synchronization between the customer data in the <strong>retail-db</strong> and the <strong>cashback-db</strong>.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -1049,7 +851,7 @@ To see a detailed explanation about the events processing refer to the <a href="
 <p>When a new sale is registered, new lines are created in the <code>retail.sale</code> and <code>retail.line_item</code> tables.</p>
 </li>
 <li>
-<p>Debezium then tracks and publishes events to <strong>two topics</strong>, one for each respective table, and one event for each respective line added/updated event that was tracked. But notice that in order for us to apply the cashback calculation business logic, we&#8217;ll have in mind good design and architecture practices for microservices, where each microservice "is supposed to do one thing, and do it well". So, the event data aggregation, processing and enrichment will be executed by a service (<code>sales-streams</code>) before we actually do the cashback operations in another service (<code>cashback-service</code>);</p>
+<p>Debezium then tracks and publishes events to <strong>two topics</strong>, one for each respective table, and one event for each respective line added/updated event that was tracked. But notice that in order for us to apply the cashback calculation business logic, we&#8217;ll have in mind good design and architecture practices for microservices, where each microservice <em>is supposed to do one thing, and do it well</em>. So, the event data aggregation, processing and enrichment will be executed by a service (<strong>sales-streams</strong>) before we actually do the cashback operations in another service (<strong>cashback-service</strong>);</p>
 <div class="paragraph">
 <p>Here&#8217;s another way to explain this:</p>
 </div>
@@ -1057,7 +859,7 @@ To see a detailed explanation about the events processing refer to the <a href="
 <ul>
 <li>
 <p>if someone buys two cactus and one lilly in the same purchase, there will be two line_items registered for a single sale. See below the tables structures:</p>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-sql hljs" data-lang="sql">$ oc rsh deployment/retail-db <i class="conum" data-value="1"></i><b>(1)</b>
 sh-4.4$ psql <i class="conum" data-value="2"></i><b>(2)</b>
@@ -1131,7 +933,7 @@ line_item_id | sale_id | product_id | price  | quantity
 </li>
 <li>
 <p>Using <a href="https://developers.redhat.com/learn/openshift-streams-for-apache-kafka/guided-workshop-for-kafka-streams/what-is-kafka-streams"><strong>Kafka Streams</strong></a>, the <code>sales-aggregated</code> service aggregates, processes and enriches the events' data.</p>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="title">Partial code in the <code>Sales-Streams</code> service used to aggregate and enrich data;</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">// Join LineItem events with sale events by foreign key, aggregate Linetem price in sale
@@ -1152,7 +954,7 @@ aggregatedSales.toStream().to(aggregatedSaleTopic, Produced.with(Serdes.Long(), 
 </div>
 </li>
 <li>
-<p>Next, if you go back to the homepage of Kafdrop, open <strong><code>retail.expense-event</code> &#8594; view messages &#8594; view messages</strong>; The <code>sales-streams</code> service to notify the ecosystem that new processed information is available by publishing events on the <code>expense-event</code> topic.</p>
+<p>Next, if you go back to the homepage of Kafdrop, open <strong><code>retail.expense-event</code> &#8594; view messages &#8594; view messages</strong>; The <strong>sales-streams</strong> service to notify the ecosystem that new processed information is available by publishing events on the <code>expense-event</code> topic.</p>
 <div class="paragraph">
 <p>Let&#8217;s see the result of this processing with Kafdrop.</p>
 </div>
@@ -1162,7 +964,7 @@ aggregatedSales.toStream().to(aggregatedSaleTopic, Produced.with(Serdes.Long(), 
 </div>
 </div>
 <div class="paragraph">
-<p>Based on these events published in the <code>expense-event</code>, services like the <code>cashback-service</code> can react and use the event data to handle the cashback business logic operations.</p>
+<p>Based on these events published in the <code>expense-event</code> topic, services like the <strong>cashback-service</strong> can react and use the event data to handle the cashback business logic operations.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1180,7 +982,7 @@ See how the values are calculated and persisted in the <a href="https://github.c
 <ul>
 <li>
 <p>Let&#8217;s take a look over the cashback service processing:</p>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="title">Partial code implementation in the <a href="https://github.com/solution-pattern-cdc/cashback-service/blob/e116b0b0f8067c1a69298e6e4b214224c0d3e1b6/src/main/java/org/acme/cashback/route/CashbackRoute.java">Cashback Route</a> in the cashback-service.</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">        from("kafka:{{kafka.expenses.topic.name}}?groupId={{kafka.cashback_processor.consumer.group}}" + <i class="conum" data-value="1"></i><b>(1)</b>
@@ -1280,7 +1082,7 @@ See how the values are calculated and persisted in the <a href="https://github.c
 </ol>
 </div>
 <div class="paragraph">
-<p>The solution is built on top of a hybrid cloud model, with containerized services running on OpenShift (can be on a private or public cloud depending on how you provision the demo) consuming a managed OpenShift Streams for Apache Kafka. OpenShift streams is heart of this solution - it&#8217;s a resilient and highly available Kafka instance managed by Red Hat, where all the topics reside and where all services can receive and send all events from/to.</p>
+<p>The solution is built on top of a hybrid cloud model, with containerized services running on OpenShift (can be on a private or public cloud depending on how you provision the demo), using an Apache Kafka broker cluster running in the same OpenShift instance.</p>
 </div>
 <div class="paragraph">
 <p>This design is only possible by the designing the architecture based on the Change Data Capture pattern - which was delivered with Debezium and Kafka Connectors.</p>
