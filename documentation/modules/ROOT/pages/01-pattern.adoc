@@ -34,7 +34,7 @@ Our first step into modernization is developing a new cashback system for our cu
 == Technical overview
 // tag::arch-overview[]
 
-This solution pattern builds on top an event-driven architecture in order to support the extension of the legacy stack. The architecture includes new microservices, event streaming, event processing and search indexing tools.
+This solution pattern builds on top of an event-driven architecture in order to support the extension of the legacy stack. The architecture includes new microservices, event streaming, event processing and search indexing tools.
 
 In respect to the xref:_story_goals[story goals] and xref:use-cases[targeted use cases], it's recommended to consider adopting an https://www.enterpriseintegrationpatterns.com/[Enterprise Integration Pattern] for data integration, more specifically, adopting the https://www.redhat.com/en/topics/integration/what-is-change-data-capture[Change Data Capture (CDC)] pattern.
 
