@@ -76,10 +76,6 @@ TIP: If you have access to RHDP, you can request and use an `OpenShift 4.12 Work
 
 The solution's components and services can be automatically provisioned using an Ansible playbook.
 
-The following steps will guide you on setting up an instance of OpenShift Streams for Apache Kafka and its resources, plus provisioning the demo services using Ansible.
-[#cli-tools]
-
-
 ==== Installing the demo
 
 This solution pattern offers an easy installation process through Ansible automation, Red hat OpenShift Gitops and Helm charts. To get your environment up and running, follow the steps below:
@@ -98,7 +94,7 @@ cd ansible
 [.console-input]
 [source,shell script]
 ----
-ansible-playbook -playbooks/install.yml
+ansible-playbook playbooks/install.yml
 ----
 
 Once the playbook finished successfully, you should be able to see the different components of the demo installed in the `retail` namespace on your OpenShift cluster.
