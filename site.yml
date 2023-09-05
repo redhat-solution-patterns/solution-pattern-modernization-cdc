@@ -3,7 +3,7 @@ runtime:
 
 site:
   title: Solution Patterns for Cloud Native Architectures
-  url: https://redhat-solution-patterns.github.io/solution-pattern-modernization-cdc/
+  url: https://redhat-solution-patterns.github.io
   start_page: solution-pattern-modernization-cdc::index.adoc
 
 content:
