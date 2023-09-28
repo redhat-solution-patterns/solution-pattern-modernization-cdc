@@ -163,7 +163,7 @@
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="https://redhat-solution-patterns.github.io/">Explore More Red Hat Solution Patterns</a>
+    <span class="nav-text"><a href="https://redhat-solution-patterns.github.io/solution-patterns/patterns.html" target="_blank" rel="noopener">Explore More Red Hat Solution Patterns</a></span>
   </li>
 </ul>
   </li>
@@ -505,7 +505,7 @@ For detailed architecture diagrams please check the <a href="02-architecture.htm
 </div>
 </li>
 <li>
-<p>Next, <a href="https://debezium.io">Debezium</a> streams the data them over to Kafka. The event streaming solution can be hosted on-premise or on the cloud. In this implementation, we are using <a href="https://red.ht/TryKafka">Red Hat Managed OpenShift Streams for Apache Kafka</a>.</p>
+<p>Next, <a href="https://debezium.io">Debezium</a> streams the data them over to Kafka. The event streaming solution can be hosted on-premise or on the cloud. In this implementation, we are using <a href="https://www.redhat.com/en/resources/amq-streams-datasheet">Red Hat Managed AMQ Streams</a>.</p>
 </li>
 <li>
 <p>An integration microservice, <code>sales-streams</code>, reacts to events captured by Debezium and published on three topics, respective to <code>sale-change-event</code> and <code>lineitem-change-event</code>.</p>
