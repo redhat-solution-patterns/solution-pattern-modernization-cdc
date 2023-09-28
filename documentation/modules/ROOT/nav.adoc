@@ -32,4 +32,4 @@
 //*** xref:04-workshop.adoc#install_wksp_details[{module}.{counter:submodule4}. Installing the environment]
 //** xref:04-workshop.adoc#deliver_wksp[{module}.{counter:submodule4}. Delivering the workshop]
 //
-* https://redhat-solution-patterns.github.io/[Explore More Red Hat Solution Patterns]
+* https://redhat-solution-patterns.github.io/solution-patterns/patterns.html[Explore More Red Hat Solution Patterns^]

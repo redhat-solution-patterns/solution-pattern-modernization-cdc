@@ -164,7 +164,7 @@ image::02/arch-cashback-overview.png[width=100%]
 1. The cashback processing kicks-off when a new purchase is registered via legacy application. In the demonstration implemented for this solution pattern, we use a service to simulate purchases and register them in the database.
 2. Debezium will capture all changes in the database tables below;
 - List of tracked tables in retail database: `public.customer`,`public.sale`,`public.line_item`,`public.product`
-3. Next, https://debezium.io[Debezium] streams the data them over to Kafka. The event streaming solution can be hosted on-premise or on the cloud. In this implementation, we are using https://red.ht/TryKafka[Red Hat Managed OpenShift Streams for Apache Kafka].
+3. Next, https://debezium.io[Debezium] streams the data them over to Kafka using https://www.redhat.com/en/resources/amq-streams-datasheet[Red Hat AMQ Streams].
 4. An integration microservice, `sales-streams`, reacts to events captured by Debezium and published on three topics, respective to `sale-change-event` and `lineitem-change-event`.
 5. Using https://quarkus.io/guides/kafka-streams[Kafka Streams], the service aggregates multiple events that correlates to a unique purchase. The service will calculate the total amount of the purchase based on individual items price captured, and will publish the enriched data to the topic `sales-aggregated`.
 6. Another event-driven microservice is responsible for tracking customer's change streamed by Debezium, and for reacting to new enriched sales information - in other words, reacting to data processed by the `sales-stream` application.
@@ -206,6 +206,6 @@ image::02/search-ui.png[width=100%]
 
 == Summary
 
-The solution is built on top of a hybrid cloud model, with containerized services running on OpenShift (can be on a private or public cloud depending on how you provision the demo) consuming a managed OpenShift Streams for Apache Kafka. OpenShift streams is heart of this solution - it's a resilient and highly available Kafka instance managed by Red Hat, where all the topics reside and where all services can receive and send all events from/to.
+The solution is built on top of a hybrid cloud model, with containerized services running on OpenShift (can be on a private or public cloud depending on how you provision the demo) consuming AMQ Streams (Apache Kafka). The Red Hat® AMQ streams component is a massively scalable, distributed, and high-performance data streaming platform based on the Apache Kafka project.
 
 This design is only possible by the designing the architecture based on the Change Data Capture pattern - which was delivered with Debezium and Kafka Connectors.

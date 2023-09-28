@@ -397,7 +397,7 @@ line_item_id | sale_id | product_id | price  | quantity
 +
 * Debezium will stream each change individually, which results with several events in two topics, one of each table.
 * But, when we calculate the earned cashback for the sale, we use the total amount of the sale - the sum of all the line items of that sale.
-* Using https://developers.redhat.com/learn/openshift-streams-for-apache-kafka/guided-workshop-for-kafka-streams/what-is-kafka-streams[*Kafka Streams*], the `sales-aggregated` service aggregates, processes and enriches the events' data.
+* Using https://www.redhat.com/en/resources/amq-streams-datasheet[AMQ Streams^], the `sales-aggregated` service aggregates, processes and enriches the events' data.
 +
 .Partial code in the `Sales-Streams` service used to aggregate and enrich data;
 [source,java] 

@@ -25,15 +25,12 @@ xref:03-demo.adoc#_conclusion[{counter:submodule3}. Conclusion]
 +
 xref:04-devresources.adoc[{counter:module}. Developer Resources]::
 +
-https://developers.redhat.com/about[{counter:submodule4}. Register] for Red Hat developers subscription to get access to Red Hat products for personal use at no cost +
-https://developers.redhat.com/products/openshift/overview[{counter:submodule4}. Red Hat OpenShift] +
-https://developers.redhat.com/products/quarkus/overview[{counter:submodule4}. Quarkus] + 
-https://developers.redhat.com/products/fuse/overview[{counter:submodule4}. Camel] (a.k.a. Red Hat Fuse) +
-https://developers.redhat.com/products/amq/overview[{counter:submodule4}. AMQ] +
-https://developers.redhat.com/products/red-hat-openshift-streams-for-apache-kafka/overview[{counter:submodule4}. Red Hat OpenShift Streams for Apache Kafka]
-+
-
-
+* https://developers.redhat.com/about[{counter:submodule4}. Register] for Red Hat developers subscription to get access to Red Hat products for personal use at no cost
+* https://developers.redhat.com/products/openshift/overview[{counter:submodule4}. Red Hat OpenShift]
+* https://developers.redhat.com/products/quarkus/overview[{counter:submodule4}. Quarkus]
+* https://developers.redhat.com/products/fuse/overview[{counter:submodule4}. Camel] (a.k.a. Red Hat Fuse)
+* https://developers.redhat.com/products/amq/overview[{counter:submodule4}. AMQ]
+* https://www.redhat.com/en/resources/amq-streams-datasheet[{counter:submodule4}. AMQ Streams^]
 
 
 ====
